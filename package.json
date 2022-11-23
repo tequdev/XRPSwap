@@ -8,10 +8,22 @@
     "lint": "next lint && prettier . --write"
   },
   "dependencies": {
+    "assert": "^2.0.0",
+    "buffer": "^6.0.3",
+    "bufferutil": "^4.0.7",
+    "crypto-browserify": "^3.12.0",
+    "https-browserify": "^1.0.0",
     "next": "^13.0.4",
+    "null-loader": "^4.0.1",
+    "os-browserify": "^0.3.0",
+    "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
     "tailwindcss-classnames": "^3.0.7",
+    "url": "^0.11.0",
+    "utf-8-validate": "^5.0.10",
     "xrpl": "2.6.0-beta.0"
   },
   "devDependencies": {
