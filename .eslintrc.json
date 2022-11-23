@@ -1,0 +1,17 @@
+{
+  "extends": ["next/core-web-vitals", "plugin:tailwindcss/recommended", "prettier"],
+  "plugins": ["tailwindcss", "unused-imports"],
+  "rules": {
+    "unused-imports/no-unused-imports": "warn",
+    "tailwindcss/migration-from-tailwind-2": "off",
+    "import/order": [
+      "warn",
+      {
+        "alphabetize": {
+          "order": "asc"
+        },
+        "newlines-between": "always"
+      }
+    ]
+  }
+}
