@@ -12,6 +12,7 @@
     "buffer": "^6.0.3",
     "bufferutil": "^4.0.7",
     "crypto-browserify": "^3.12.0",
+    "encoding": "^0.1.13",
     "https-browserify": "^1.0.0",
     "next": "^13.0.4",
     "null-loader": "^4.0.1",
@@ -19,12 +20,15 @@
     "process": "^0.11.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-hooks-use-modal": "^2.1.0",
     "stream-browserify": "^3.0.0",
     "stream-http": "^3.2.0",
+    "tailwind-override": "^0.6.1",
     "tailwindcss-classnames": "^3.0.7",
     "url": "^0.11.0",
     "utf-8-validate": "^5.0.10",
-    "xrpl": "2.6.0-beta.0"
+    "xrpl": "2.7.0-beta.0",
+    "xumm-oauth2-pkce": "^2.5.5"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",
