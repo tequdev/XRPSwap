@@ -1,16 +1,14 @@
 import { createContext, FC, useEffect, useMemo, useState } from 'react'
 import { dropsToXrp } from 'xrpl'
-import { Currency as XRPLCurrency } from 'xrpl/dist/npm/models/common'
 
-import { PathOption } from '@/@types/xrpl'
+import { CurrencyAmount, PathOption } from '@/@types/xrpl'
 import { usePathFind } from '@/hooks/usePathFind'
 import { parseCurrencyToAmount } from '@/utils/xrpl'
 
-type Currency = XRPLCurrency & { value: number }
 type ContextState = {
-  currencies: [Currency, Currency]
-  setCurrency1: (currency: XRPLCurrency) => void
-  setCurrency2: (currency: XRPLCurrency) => void
+  currencies: [CurrencyAmount, CurrencyAmount]
+  setCurrency1: (currency: CurrencyAmount) => void
+  setCurrency2: (currency: CurrencyAmount) => void
   setValue1: (value: number) => void
   setValue2: (value: number) => void
   switchCurrencies: () => void
@@ -21,9 +19,9 @@ type ContextState = {
 export const SwapContext = createContext<ContextState>({} as any)
 
 export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
-  const [currencies, setCurrencies] = useState<[Currency, Currency]>([
-    { currency: 'XRP', value: 1 },
-    { currency: 'CSC', issuer: 'rCSCManTZ8ME9EoLrSHHYKW8PPwWMgkwr', value: 1 },
+  const [currencies, setCurrencies] = useState<[CurrencyAmount, CurrencyAmount]>([
+    { currency: 'XRP', name: 'XRP', issuer: '', value: 1 },
+    { currency: 'CSC', name: 'CSC', issuer: 'rCSCManTZ8ME9EoLrSHHYKW8PPwWMgkwr', value: 1 },
   ])
   const { bestRoute, setAccount, setPathFrom, setPathTo } = usePathFind({
     account: 'rQQQrUdN1cLdNmxH4dHfKgmX5P4kf3ZrM',
@@ -36,13 +34,23 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
     setPathTo(parseCurrencyToAmount(currencies[1]))
   }, [currencies, setPathFrom, setPathTo])
 
-  const setCurrency1 = (currency: XRPLCurrency) => {
-    const currency0 = { ...currency, value: 0 }
+  const setCurrency1 = (currency: Omit<CurrencyAmount, 'value'>) => {
+    const currency0: CurrencyAmount = {
+      issuer: currency.issuer,
+      currency: currency.issuer,
+      name: currency.name,
+      value: 0,
+    }
     setCurrencies([currency0, currencies[1]])
   }
 
-  const setCurrency2 = (currency: XRPLCurrency) => {
-    const currency1 = { ...currency, value: 0 }
+  const setCurrency2 = (currency: CurrencyAmount) => {
+    const currency1: CurrencyAmount = {
+      issuer: currency.issuer,
+      currency: currency.issuer,
+      name: currency.name,
+      value: 0,
+    }
     setCurrencies([currencies[0], currency1])
   }
 
@@ -62,21 +70,21 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
   }
 
   const switchCurrencies = () => {
-    setCurrencies(currenciesResult.reverse() as [Currency, Currency])
+    setCurrencies(currenciesResult.reverse() as [CurrencyAmount, CurrencyAmount])
   }
 
-  const currenciesResult = useMemo((): [Currency, Currency] => {
+  const currenciesResult = useMemo((): [CurrencyAmount, CurrencyAmount] => {
     const bestRouteValue =
       typeof bestRoute?.destination_amount === 'string'
         ? dropsToXrp(bestRoute.destination_amount)
         : bestRoute?.destination_amount.value
     const destValue = bestRouteValue !== undefined ? parseFloat(parseFloat(bestRouteValue).toFixed(6)) : undefined
     return currencies.map(
-      (c, i): Currency => ({
+      (c, i): CurrencyAmount => ({
         ...c,
         value: i === 1 ? destValue || c.value : c.value,
       })
-    ) as [Currency, Currency]
+    ) as [CurrencyAmount, CurrencyAmount]
   }, [bestRoute, currencies])
 
   const pathLoading = useMemo(() => bestRoute === null, [bestRoute])

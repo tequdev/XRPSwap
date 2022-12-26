@@ -1,5 +1,7 @@
 import { xrpToDrops } from 'xrpl'
-import { Amount, Currency as XRPLCurrency, IssuedCurrency } from 'xrpl/dist/npm/models/common'
+import { Amount, IssuedCurrency } from 'xrpl/dist/npm/models/common'
+
+import { CurrencyAmount } from '@/@types/xrpl'
 
 export const convertCurrencyCode = (currency: string): string => {
   if (currency && currency.length > 3) {
@@ -26,7 +28,7 @@ export const parseToXrpAmount = (amount: Amount): Amount => {
   return amount
 }
 
-export const parseCurrencyToAmount = (currency: XRPLCurrency & { value: number }): Amount => {
+export const parseCurrencyToAmount = (currency: CurrencyAmount): Amount => {
   if (currency.currency === 'XRP') {
     return currency.value.toString()
   }

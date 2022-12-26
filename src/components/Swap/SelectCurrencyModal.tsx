@@ -2,19 +2,14 @@ import { FC, useContext } from 'react'
 import { overrideTailwindClasses } from 'tailwind-override'
 import { Currency } from 'xrpl/dist/npm/models/common'
 
+import { CurrencyInfo } from '@/@types/xrpl'
 import { SwapContext } from '@/context/swapContext'
 import { TokenContext } from '@/context/tokenContext'
 
 type Props = {
-  onSelect: (currency: Currency) => void
+  onSelect: (currency: CurrencyInfo) => void
   current: Currency
 }
-
-// const CURRENCIES: Currency[] = [
-//   { currency: 'XRP' },
-//   // { currency: 'JPY', issuer: 'rE5xha1LiHpS6rS7z8RrWGYWKh5pqBUn87' }
-//   { currency: 'CSC', issuer: 'rCSCManTZ8ME9EoLrSHHYKW8PPwWMgkwr' },
-// ]
 
 export const SelectCurrencyModal: FC<Props> = ({ onSelect }) => {
   const { currencies: allCurrencies } = useContext(TokenContext)

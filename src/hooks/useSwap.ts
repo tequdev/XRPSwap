@@ -1,20 +1,19 @@
 import { useCallback, useContext } from 'react'
-import { Amount, Currency as XRPLCurrency, IssuedCurrency } from 'xrpl/dist/npm/models/common'
+import { Amount } from 'xrpl/dist/npm/models/common'
 
+import { CurrencyAmount } from '@/@types/xrpl'
 import { AuthContext } from '@/context/authContext'
 import { SwapContext } from '@/context/swapContext'
-
-type Currency = XRPLCurrency & { value: number }
 
 export const useSwap = () => {
   const { bestRoute, currencies } = useContext(SwapContext)
   const { state } = useContext(AuthContext)
 
-  const convertCurrencyValueToString = (currency: Currency): Amount => {
+  const convertCurrencyValueToString = (currency: CurrencyAmount): Amount => {
     if (currency.currency === 'XRP') {
       return currency.value.toString()
     }
-    return { ...(currency as IssuedCurrency), value: currency.value.toString() }
+    return { issuer: currency.issuer, currency: currency.currency, value: currency.value.toString() }
   }
 
   const swap = useCallback(async () => {

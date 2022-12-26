@@ -6,3 +6,5 @@ export type AMMInfo = AMMInfoResponse['result']
 export type CurrencyInfo = IssuedCurrency & { name: string; icon?: string; balance: number }
 
 type PathOption = PathFindResponse['result']['alternatives'][number] & { destination_amount: Amount }
+
+export type CurrencyAmount = IssuedCurrency & { name: string; value: number }

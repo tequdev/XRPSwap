@@ -38,7 +38,8 @@ export const getTokens = async (address: string): Promise<CurrencyInfo[]> => {
 
   const lines = response.map((line) => ({
     issuer: line.issuer || '',
-    currency: convertCurrencyCode(line.currency),
+    currency: line.currency,
+    name: convertCurrencyCode(line.currency),
     balance: parseFloat(line.value),
   }))
   const responseMeta = await fetch('https://api.onthedex.live/public/v1/token/meta', {
@@ -52,7 +53,7 @@ export const getTokens = async (address: string): Promise<CurrencyInfo[]> => {
     return {
       issuer: line.issuer,
       currency: line.currency,
-      name: meta?.token_name || line.currency,
+      name: meta?.token_name || line.name,
       icon: line.currency !== 'XRP' ? meta?.logo_file : 'https://cryptologos.cc/logos/xrp-xrp-logo.svg',
       balance: line.balance,
     }
