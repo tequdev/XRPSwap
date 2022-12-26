@@ -3,6 +3,6 @@ import { Amount, IssuedCurrency } from 'xrpl/dist/npm/models/common'
 
 export type AMMInfo = AMMInfoResponse['result']
 
-export type IssuedCurrencyInfo = IssuedCurrency & { name: string; icon?: string }
+export type CurrencyInfo = IssuedCurrency & { name: string; icon?: string; balance: number }
 
 type PathOption = PathFindResponse['result']['alternatives'][number] & { destination_amount: Amount }

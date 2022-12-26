@@ -27,7 +27,7 @@ export const SelectCurrency: FC<Props> = ({ type, current }) => {
   }
   return (
     <>
-      <button className='rounded-xl bg-blue-100 px-4 py-2 text-xl' onClick={open}>
+      <button className=' rounded-xl bg-blue-100 px-4 py-2 text-xl' onClick={open}>
         {currency.currency}
       </button>
       <Modal>

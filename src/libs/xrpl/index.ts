@@ -1,7 +1,7 @@
 import { AMMInfoRequest, AMMInfoResponse, Client } from 'xrpl'
 import { IssuedCurrency } from 'xrpl/dist/npm/models/common'
 
-import { IssuedCurrencyInfo } from '@/@types/xrpl'
+import { CurrencyInfo } from '@/@types/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
 // const server = 'wss://amm.devnet.rippletest.net:51233'
 const server = 'wss://xrpl.ws'
@@ -32,20 +32,18 @@ export const getAmmBalance = async (ammAddress: string, currency: any) => {
   return parseFloat(value)
 }
 
-export const getTokens = async (address: string): Promise<IssuedCurrencyInfo[]> => {
+export const getTokens = async (address: string): Promise<CurrencyInfo[]> => {
   await client.connect()
-  const response = await client.request({
-    account: address,
-    command: 'account_lines',
-  })
+  const response = await client.getBalances(address)
 
-  const lines = response.result.lines.map((line) => ({
-    issuer: line.account,
+  const lines = response.map((line) => ({
+    issuer: line.issuer || '',
     currency: convertCurrencyCode(line.currency),
+    balance: parseFloat(line.value),
   }))
   const responseMeta = await fetch('https://api.onthedex.live/public/v1/token/meta', {
     method: 'POST',
-    body: JSON.stringify({ tokens: lines }),
+    body: JSON.stringify({ tokens: lines.filter((l) => l.currency !== 'XRP') }),
   })
   const metaJson = await responseMeta.json()
   const metas = metaJson.meta as any[]
@@ -55,7 +53,8 @@ export const getTokens = async (address: string): Promise<IssuedCurrencyInfo[]> 
       issuer: line.issuer,
       currency: line.currency,
       name: meta?.token_name || line.currency,
-      icon: meta?.logo_file,
+      icon: line.currency !== 'XRP' ? meta?.logo_file : 'https://cryptologos.cc/logos/xrp-xrp-logo.svg',
+      balance: line.balance,
     }
   })
 }
