@@ -3,9 +3,10 @@ import { IssuedCurrency } from 'xrpl/dist/npm/models/common'
 
 import { CurrencyInfo } from '@/@types/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
+// const server = 'wss://s.altnet.rippletest.net:51233/'
 // const server = 'wss://amm.devnet.rippletest.net:51233'
 const server = 'wss://xrpl.ws'
-const client = new Client(server)
+export const client = new Client(server)
 
 type GetAmmInfoProps = Pick<AMMInfoRequest, 'asset' | 'asset2'>
 

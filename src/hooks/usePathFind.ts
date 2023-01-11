@@ -1,13 +1,10 @@
 import { useEffect, useMemo, useState } from 'react'
-import { Client, PathFindCreateRequest, PathFindResponse, PathFindStream } from 'xrpl'
+import { PathFindCreateRequest, PathFindResponse, PathFindStream } from 'xrpl'
 import { Amount, IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 
 import { PathOption } from '@/@types/xrpl'
+import { client } from '@/libs/xrpl'
 import { parseToXrpAmount, parseAmountValue } from '@/utils/xrpl'
-
-// const server = 'wss://amm.devnet.rippletest.net:51233'
-const server = 'wss://xrpl.ws'
-const client = new Client(server)
 
 type Props = {
   account: string
