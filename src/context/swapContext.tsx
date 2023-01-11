@@ -37,7 +37,7 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
   const setCurrency1 = (currency: Omit<CurrencyAmount, 'value'>) => {
     const currency0: CurrencyAmount = {
       issuer: currency.issuer,
-      currency: currency.issuer,
+      currency: currency.currency,
       name: currency.name,
       value: 0,
     }
@@ -47,7 +47,7 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
   const setCurrency2 = (currency: CurrencyAmount) => {
     const currency1: CurrencyAmount = {
       issuer: currency.issuer,
-      currency: currency.issuer,
+      currency: currency.currency,
       name: currency.name,
       value: 0,
     }

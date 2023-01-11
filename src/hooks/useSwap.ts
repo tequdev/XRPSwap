@@ -1,4 +1,5 @@
 import { useCallback, useContext } from 'react'
+import { xrpToDrops } from 'xrpl'
 import { Amount } from 'xrpl/dist/npm/models/common'
 
 import { CurrencyAmount } from '@/@types/xrpl'
@@ -11,7 +12,7 @@ export const useSwap = () => {
 
   const convertCurrencyValueToString = (currency: CurrencyAmount): Amount => {
     if (currency.currency === 'XRP') {
-      return currency.value.toString()
+      return xrpToDrops(currency.value)
     }
     return { issuer: currency.issuer, currency: currency.currency, value: currency.value.toString() }
   }
