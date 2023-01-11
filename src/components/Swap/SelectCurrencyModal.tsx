@@ -20,7 +20,7 @@ export const SelectCurrencyModal: FC<Props> = ({ onSelect }) => {
         const currency = data.currency
         const issuer = (data as any)?.issuer
         const key = currency + issuer
-        const isUsed = currencies.some(
+        const isUsed = [currencies.from, currencies.to].some(
           (c) => c.currency === currency && (currency === 'XRP' || (c as any).issuer === issuer)
         )
         return (

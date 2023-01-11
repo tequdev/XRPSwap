@@ -26,7 +26,7 @@ export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ chi
     if (state) {
       const f = async () => {
         const currencies = await getTokens(state.me.account)
-        setCurrencies(currencies)
+        setCurrencies([XRP, ...currencies])
       }
       f()
     }

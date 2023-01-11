@@ -13,15 +13,15 @@ type Props = {
 
 export const SelectCurrency: FC<Props> = ({ type, current }) => {
   const [Modal, open, close] = useModal('root')
-  const { currencies, setCurrency1, setCurrency2 } = useContext(SwapContext)
-  const currency = useMemo(() => currencies[type === 'from' ? 0 : 1], [currencies, type])
+  const { currencies, setCurrencyFrom, setCurrencyTo } = useContext(SwapContext)
+  const currency = useMemo(() => (type === 'from' ? currencies.from : currencies.to), [currencies, type])
 
   const setCurrency = useCallback(
     (currencyProp: CurrencyInfo) => {
       const currency = { ...currencyProp, value: 0 }
-      type === 'from' ? setCurrency1(currency) : setCurrency2(currency)
+      type === 'from' ? setCurrencyFrom(currency) : setCurrencyTo(currency)
     },
-    [setCurrency1, setCurrency2, type]
+    [setCurrencyFrom, setCurrencyTo, type]
   )
 
   const onSelectCurrency = (currency: CurrencyInfo) => {

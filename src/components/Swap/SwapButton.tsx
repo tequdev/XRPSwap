@@ -10,7 +10,7 @@ export const SwapButton: FC<Props> = ({ onClick }) => {
   const { currencies: swapInfo, pathLoading } = useContext(SwapContext)
   const { currencies: tokenInfo } = useContext(TokenContext)
 
-  const swapFrom = useMemo(() => swapInfo[0], [swapInfo])
+  const swapFrom = useMemo(() => swapInfo.from, [swapInfo])
 
   const tokenFrom = useMemo(
     () => tokenInfo.find((c) => c.issuer === swapFrom.issuer && c.currency === swapFrom.currency),

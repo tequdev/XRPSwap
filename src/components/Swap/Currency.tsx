@@ -11,14 +11,14 @@ type Props = {
   type: 'from' | 'to'
 }
 export const Currency: FC<Props> = ({ type }) => {
-  const { currencies, setValue1, setValue2, pathLoading } = useContext(SwapContext)
+  const { currencies, setValueFrom, setValueTo, pathLoading } = useContext(SwapContext)
   const { currencies: currencyDataList } = useContext(TokenContext)
-  const currency = useMemo(() => currencies[type === 'from' ? 0 : 1], [currencies, type])
+  const currency = useMemo(() => (type === 'from' ? currencies.from : currencies.to), [currencies, type])
   const [value, setDefaultValue] = useState(currency.value || '')
 
   const setValue = useCallback(
-    (value: number) => (type === 'from' ? setValue1(value) : setValue2(value)),
-    [setValue1, setValue2, type]
+    (value: number) => (type === 'from' ? setValueFrom(value) : setValueTo(value)),
+    [setValueFrom, setValueTo, type]
   )
 
   useEffect(() => {

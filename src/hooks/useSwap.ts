@@ -23,8 +23,8 @@ export const useSwap = () => {
       TransactionType: 'Payment',
       Account: state.me.account,
       Destination: state.me.account,
-      Amount: convertCurrencyValueToString(currencies[1]),
-      SendMax: convertCurrencyValueToString(currencies[0]),
+      Amount: convertCurrencyValueToString(currencies.to),
+      SendMax: convertCurrencyValueToString(currencies.from),
       Paths: bestRoute?.paths_computed,
     } as const
     return state.sdk.payload.create(payload).then((payload) => payload)
