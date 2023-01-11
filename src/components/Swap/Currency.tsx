@@ -63,7 +63,7 @@ export const Currency: FC<Props> = ({ type }) => {
           </div>
           <div className='relative flex items-center'>
             {type === 'from' && (
-              <div className='absolute -left-11 '>
+              <div className='absolute -left-11 flex h-12 items-center'>
                 <MaxAmountButton onClick={setMax} />
               </div>
             )}

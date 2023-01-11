@@ -5,7 +5,7 @@ type Props = {
 }
 export const MaxAmountButton: FC<Props> = ({ onClick }) => {
   return (
-    <button className='h-8 w-[40px] rounded-xl bg-blue-500 text-sm text-white' onClick={onClick}>
+    <button className='btn-info btn-sm btn w-[40px] rounded-xl' onClick={onClick}>
       MAX
     </button>
   )
