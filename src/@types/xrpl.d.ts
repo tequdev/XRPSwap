@@ -8,3 +8,15 @@ export type CurrencyInfo = IssuedCurrency & { name: string; icon?: string; balan
 type PathOption = PathFindResponse['result']['alternatives'][number] & { destination_amount: Amount }
 
 export type CurrencyAmount = IssuedCurrency & { name: string; value: number }
+
+export type TokensMarketData = {
+  issuer: string
+  currency: string
+  name: string
+  volume: number
+  market_cap: number
+  last_trade_at: string
+  price: number
+  trades: number
+  logo?: string
+}

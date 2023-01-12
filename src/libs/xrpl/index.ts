@@ -1,7 +1,7 @@
 import { AMMInfoRequest, AMMInfoResponse, Client } from 'xrpl'
 import { IssuedCurrency } from 'xrpl/dist/npm/models/common'
 
-import { CurrencyInfo } from '@/@types/xrpl'
+import { CurrencyInfo, TokensMarketData } from '@/@types/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
 // const server = 'wss://s.altnet.rippletest.net:51233/'
 // const server = 'wss://amm.devnet.rippletest.net:51233'
@@ -59,4 +59,38 @@ export const getAccountTokensMeta = async (address: string): Promise<CurrencyInf
       balance: line.balance,
     }
   })
+}
+
+type TokensMarketDataOption = {
+  page: number
+}
+type TokensMarketDataResponse = {
+  tokens: {
+    currency: string
+    issuer: string
+    token_name?: string | null
+    volume_token: number
+    volume_usd: number
+    num_trades: number
+    market_cap: number
+    last_trade_at: string
+    price_mid_usd: number
+    supply: number
+    logo_file?: string | null
+  }[]
+}
+export const getTokensMarketData = async ({ page }: TokensMarketDataOption): Promise<TokensMarketData[]> => {
+  const response = await fetch('https://api.onthedex.live/public/v1/daily/tokens')
+  const json = (await response.json()) as TokensMarketDataResponse
+  return json.tokens.map((token) => ({
+    issuer: token.issuer,
+    currency: token.currency,
+    name: token.token_name || token.currency,
+    volume: token.volume_usd,
+    market_cap: token.market_cap,
+    last_trade_at: token.last_trade_at,
+    price: token.price_mid_usd,
+    trades: token.num_trades,
+    logo: token.logo_file || undefined,
+  }))
 }

@@ -1,0 +1,43 @@
+import Image from 'next/image'
+import { FC } from 'react'
+
+import { TokensMarketData } from '@/@types/xrpl'
+
+type Props = {
+  data: TokensMarketData
+}
+
+export const Token: FC<Props> = ({ data }) => {
+  return (
+    <div className='card my-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 shadow-xl'>
+      <div className='flex'>
+        <div className='w-full'>
+          <div className='flex w-full justify-between'>
+            <div className='flex items-center'>
+              <div className='mr-2 flex h-8 w-8 items-center justify-center'>
+                {data.logo && <Image src={data.logo} alt={data.currency} unoptimized height={32} width={32} />}
+              </div>
+              <div className='text-2xl'>{data.currency}</div>
+            </div>
+            <div className='text-3xl'>${data.price.toFixed(2)}</div>
+          </div>
+          <div className='ml-8 pl-2 text-sm text-gray-400'>{data.currency !== data.name ? data.name : data.issuer}</div>
+          <div className='flex'>
+            <div className='stat place-items-center'>
+              <div className='stat-title'>Market Cap</div>
+              <div className='stat-value text-xl'>${data.market_cap.toLocaleString()}</div>
+            </div>
+            <div className='stat place-items-center'>
+              <div className='stat-title'>Volume</div>
+              <div className='stat-value text-xl'>${data.volume.toLocaleString()}</div>
+            </div>
+            <div className='stat place-items-center'>
+              <div className='stat-title'>Trades</div>
+              <div className='stat-value text-xl'>{data.trades.toLocaleString()}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
