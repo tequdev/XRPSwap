@@ -4,14 +4,16 @@ import { FC } from 'react'
 import { TokensMarketData } from '@/@types/xrpl'
 
 type Props = {
+  index: number
   data: TokensMarketData
 }
 
-export const Token: FC<Props> = ({ data }) => {
+export const Token: FC<Props> = ({ index, data }) => {
   return (
-    <div className='card my-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 shadow-xl'>
+    <div className='card my-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>
       <div className='flex'>
         <div className='w-full'>
+          <div className='absolute top-2 left-4 font-bold'>#{index}</div>
           <div className='flex w-full justify-between'>
             <div className='flex items-center'>
               <div className='mr-2 flex h-8 w-8 items-center justify-center'>
