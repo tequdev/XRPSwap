@@ -28,14 +28,17 @@ export const Token: FC<Props> = ({ index, data }) => {
             <div className='stat place-items-center'>
               <div className='stat-title'>Market Cap</div>
               <div className='stat-value text-xl'>${data.market_cap.toLocaleString()}</div>
+              <div className='stat-desc'>&nbsp;</div>
             </div>
             <div className='stat place-items-center'>
               <div className='stat-title'>Volume</div>
               <div className='stat-value text-xl'>${data.volume.toLocaleString()}</div>
+              <div className='stat-desc'>24h</div>
             </div>
             <div className='stat place-items-center'>
               <div className='stat-title'>Trades</div>
               <div className='stat-value text-xl'>{data.trades.toLocaleString()}</div>
+              <div className='stat-desc'>24h</div>
             </div>
           </div>
         </div>
