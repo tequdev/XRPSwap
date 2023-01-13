@@ -5,6 +5,7 @@ import { SelectCurrencyModal } from './SelectCurrencyModal'
 
 import { CurrencyAmount, CurrencyInfo } from '@/@types/xrpl'
 import { SwapContext } from '@/context/swapContext'
+import { convertCurrencyCode } from '@/utils/xrpl'
 
 type Props = {
   current: CurrencyAmount
@@ -31,7 +32,7 @@ export const SelectCurrency: FC<Props> = ({ type, current }) => {
   return (
     <>
       <button className='btn-outline btn-secondary btn rounded-xl px-4 py-2 text-xl' onClick={open}>
-        {currency.name}
+        {convertCurrencyCode(currency.currency)}
       </button>
       <Modal>
         <SelectCurrencyModal current={current} onSelect={onSelectCurrency} />

@@ -32,11 +32,14 @@ export const Currency: FC<Props> = ({ type }) => {
         setDefaultValue('')
         setValue(0)
       } else if (RegExp(/^[0-9]+[.,]?[0-9]*$/).test(value)) {
+        if (currency.name === 'XRP' && RegExp(/^[0-9]+[.,]?[0-9]{7}$/).test(value)) {
+          return
+        }
         setDefaultValue(value)
         setValue(parseFloat(value))
       }
     },
-    [setValue]
+    [currency.name, setValue]
   )
   const setMax = useCallback(() => {
     const tokenMaxValue = currencyDataList.find((c) => c.currency === currency.currency)?.balance
