@@ -21,15 +21,19 @@ export const Swap = () => {
   return (
     <div className='w-full max-w-[450px]'>
       <div className='card flex flex-col gap-6 rounded-xl bg-base-200 p-4 shadow-xl'>
-        <div className='relative flex flex-col gap-4'>
-          <Currency type='from' />
-          <div className='absolute inset-1/2 m-auto'>
-            <SwapCurrencyButton onClick={switchCurrencies} />
-          </div>
-          <Currency type='to' />
-        </div>
         {!state && <ConnectWallet />}
-        {state && <SwapButton onClick={handleSwap} />}
+        {state && (
+          <>
+            <div className='relative flex flex-col gap-4'>
+              <Currency type='from' />
+              <div className='absolute inset-1/2 m-auto'>
+                <SwapCurrencyButton onClick={switchCurrencies} />
+              </div>
+              <Currency type='to' />
+            </div>
+            <SwapButton onClick={handleSwap} />
+          </>
+        )}
       </div>
     </div>
   )
