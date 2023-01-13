@@ -2,6 +2,8 @@ import Image from 'next/image'
 import { FC } from 'react'
 
 import { TokensMarketData } from '@/@types/xrpl'
+import { useSetTrustLine } from '@/hooks/useSetTrustLine'
+import { parseCurrencyCode } from '@/utils/xrpl'
 
 type Props = {
   index: number
@@ -9,6 +11,16 @@ type Props = {
 }
 
 export const Token: FC<Props> = ({ index, data }) => {
+  const { setTrustLine } = useSetTrustLine()
+  const handleSetTrustLine = async () => {
+    console.log(
+      await setTrustLine({
+        issuer: data.issuer,
+        currency: parseCurrencyCode(data.currency),
+        value: data.supply.toString(),
+      })
+    )
+  }
   return (
     <div className='card my-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>
       <div className='flex'>
@@ -40,6 +52,11 @@ export const Token: FC<Props> = ({ index, data }) => {
               <div className='stat-value text-xl'>{data.trades.toLocaleString()}</div>
               <div className='stat-desc'>24h</div>
             </div>
+          </div>
+          <div className='card-actions justify-end'>
+            <button className='btn-primary btn-sm btn' onClick={handleSetTrustLine}>
+              Set Trustline
+            </button>
           </div>
         </div>
       </div>

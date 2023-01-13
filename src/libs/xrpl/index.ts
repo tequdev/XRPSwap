@@ -97,6 +97,7 @@ export const getTokensMarketData = async ({ page, per_page }: TokensMarketDataOp
     last_trade_at: token.last_trade_at,
     price: token.price_mid_usd,
     trades: token.num_trades,
+    supply: token.supply,
     logo: token.logo_file || undefined,
   }))
 }

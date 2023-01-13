@@ -18,5 +18,6 @@ export type TokensMarketData = {
   last_trade_at: string
   price: number
   trades: number
+  supply: number
   logo?: string
 }
