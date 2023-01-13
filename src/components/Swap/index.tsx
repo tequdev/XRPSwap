@@ -4,6 +4,7 @@ import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 
 import { ConnectWallet } from './ConnectWallet'
 import { Currency } from './Currency'
+import { Slippage } from './Slippage'
 import { SwapButton } from './SwapButton'
 
 import { AuthContext } from '@/context/authContext'
@@ -12,7 +13,7 @@ import { useSwap } from '@/hooks/useSwap'
 
 export const Swap = () => {
   const { state } = useContext(AuthContext)
-  const { switchCurrencies } = useContext(SwapContext)
+  const { switchCurrencies, bestPrice, swapPrice } = useContext(SwapContext)
   const { swap } = useSwap()
 
   const handleSwap = async () => {
@@ -30,6 +31,13 @@ export const Swap = () => {
                 <SwapCurrencyButton onClick={switchCurrencies} />
               </div>
               <Currency type='to' />
+            </div>
+            <div className='-my-4 flex items-center justify-between'>
+              <Slippage />
+              <div>
+                <div>SwapPrice: {swapPrice}</div>
+                <div>BestPrice: {bestPrice}</div>
+              </div>
             </div>
             <SwapButton onClick={handleSwap} />
           </>

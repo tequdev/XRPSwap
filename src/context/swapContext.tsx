@@ -15,9 +15,13 @@ type ContextState = {
   setCurrencyTo: (currency: CurrencyAmount) => void
   setValueFrom: (value: number) => void
   setValueTo: (value: number) => void
+  slippage: number
+  setSlippage: (value: number) => void
   switchCurrencies: () => void
   pathLoading: boolean
   bestRoute: PathOption | null
+  bestPrice: number
+  swapPrice: number
 }
 
 export const SwapContext = createContext<ContextState>({} as any)
@@ -25,15 +29,22 @@ export const SwapContext = createContext<ContextState>({} as any)
 export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
   const { state } = useContext(AuthContext)
   const { currencies: userCurrencies } = useContext(TokenContext)
+  const [slippage, setSlippage] = useState(1)
   const [currencies, setCurrencies] = useState<Currencies>({
     from: { ...userCurrencies[0], value: 1 },
     to: { ...userCurrencies[1], value: 1 },
   })
-  const { bestRoute, setAccount, setPathFrom, setPathTo } = usePathFind({
+  const { bestRoute, setAccount, setPathFrom, setPathTo, bestPrice, swapPrice } = usePathFind({
     account: state?.me.account || '',
     from: parseCurrencyToAmount(currencies.from),
     to: parseCurrencyToAmount(currencies.to),
   })
+
+  useEffect(() => {
+    if (state?.me.account) {
+      setAccount(state.me.account)
+    }
+  }, [setAccount, state?.me.account])
 
   useEffect(() => {
     setCurrencies({ from: { ...userCurrencies[0], value: 1 }, to: { ...userCurrencies[1], value: 1 } })
@@ -110,9 +121,13 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
         setCurrencyTo,
         setValueFrom,
         setValueTo,
+        slippage,
+        setSlippage,
         switchCurrencies,
         pathLoading,
         bestRoute,
+        bestPrice: parseFloat(bestPrice.toFixed(6)),
+        swapPrice: parseFloat(swapPrice.toFixed(6)),
       }}
     >
       {children}

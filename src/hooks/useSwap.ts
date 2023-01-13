@@ -7,14 +7,14 @@ import { AuthContext } from '@/context/authContext'
 import { SwapContext } from '@/context/swapContext'
 
 export const useSwap = () => {
-  const { bestRoute, currencies } = useContext(SwapContext)
+  const { bestRoute, currencies, slippage } = useContext(SwapContext)
   const { state } = useContext(AuthContext)
 
-  const convertCurrencyValueToString = (currency: CurrencyAmount): Amount => {
+  const convertCurrencyValueToString = (currency: CurrencyAmount, multipleBy: number = 1): Amount => {
     if (currency.currency === 'XRP') {
-      return xrpToDrops(currency.value)
+      return xrpToDrops(currency.value * multipleBy)
     }
-    return { issuer: currency.issuer, currency: currency.currency, value: currency.value.toString() }
+    return { issuer: currency.issuer, currency: currency.currency, value: (currency.value * multipleBy).toString() }
   }
 
   const swap = useCallback(async () => {
@@ -26,9 +26,10 @@ export const useSwap = () => {
       Amount: convertCurrencyValueToString(currencies.to),
       SendMax: convertCurrencyValueToString(currencies.from),
       Paths: bestRoute?.paths_computed,
+      DeliverMin: convertCurrencyValueToString(currencies.to, 1 - slippage),
     } as const
     return state.sdk.payload.create(payload).then((payload) => payload)
-  }, [bestRoute, currencies, state])
+  }, [bestRoute?.paths_computed, currencies.from, currencies.to, slippage, state])
 
   return { swap }
 }

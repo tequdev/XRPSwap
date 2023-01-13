@@ -14,7 +14,6 @@ export const useSetTrustLine = () => {
         Account: state.me.account,
         LimitAmount: trustLineAmount,
       } as const
-      console.log(payload)
       return state.sdk.payload.create(payload).then((payload) => payload)
     },
     [state]

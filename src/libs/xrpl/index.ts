@@ -7,6 +7,7 @@ import { convertCurrencyCode } from '@/utils/xrpl'
 // const server = 'wss://amm.devnet.rippletest.net:51233'
 const server = 'wss://xrpl.ws'
 export const client = new Client(server)
+export const client2 = new Client(server)
 
 type GetAmmInfoProps = Pick<AMMInfoRequest, 'asset' | 'asset2'>
 
