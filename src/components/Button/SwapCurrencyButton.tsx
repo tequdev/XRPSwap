@@ -9,7 +9,7 @@ export const SwapCurrencyButton: FC<Props> = ({ onClick }) => {
   return (
     <button
       onClick={onClick}
-      className='btn-outline no-animation btn-circle btn -translate-x-1/2 -translate-y-1/2 transform border-[3px] border-solid border-gray-400 bg-white px-1'
+      className='btn-outline no-animation btn-circle btn -translate-x-1/2 -translate-y-1/2 transform border-[3px] border-solid border-gray-400 bg-white px-1 active:hover:-translate-x-1/2 active:hover:-translate-y-1/2'
     >
       <SwapCurrencyIcon className='h-7 w-7' />
     </button>
