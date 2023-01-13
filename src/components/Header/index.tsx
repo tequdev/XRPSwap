@@ -1,6 +1,13 @@
 import Link from 'next/link'
+import { useContext } from 'react'
+
+import { AccountInfo } from './AccountInfo'
+import { ConnectWallet } from './ConnectWallet'
+
+import { AuthContext } from '@/context/authContext'
 
 export const Header = () => {
+  const { state } = useContext(AuthContext)
   const MenuList = () => {
     return (
       <>
@@ -42,9 +49,8 @@ export const Header = () => {
         </ul>
       </div>
       <div className='navbar-end'>
-        <Link href=''>
-          <span className='btn-primary btn'>Get started</span>
-        </Link>
+        {!state && <ConnectWallet />}
+        {state && <AccountInfo />}
       </div>
     </header>
   )

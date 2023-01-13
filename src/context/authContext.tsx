@@ -44,7 +44,9 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [])
 
   const disconnect = useCallback(() => {
-    return xumm.logout()
+    xumm.logout()
+    // https://github.com/XRPL-Labs/XummPkce/pull/3
+    setState(undefined)
   }, [])
 
   const authorization = useMemo(

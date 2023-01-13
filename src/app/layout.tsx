@@ -1,3 +1,4 @@
+'use client'
 import 'tailwindcss/tailwind.css'
 
 import { Footer } from '@/components/Footer'
@@ -8,12 +9,14 @@ const MyApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html>
       <body>
-        <Header />
-        <main>
-          <AuthContextProvider>{children}</AuthContextProvider>
-          <div id='root' />
-        </main>
-        <Footer />
+        <AuthContextProvider>
+          <Header />
+          <main>
+            {children}
+            <div id='root' />
+          </main>
+          <Footer />
+        </AuthContextProvider>
       </body>
     </html>
   )
