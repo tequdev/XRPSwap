@@ -1,5 +1,8 @@
-import { createContext, FC, useEffect, useMemo, useState } from 'react'
+import { createContext, FC, useContext, useEffect, useMemo, useState } from 'react'
 import { dropsToXrp } from 'xrpl'
+
+import { AuthContext } from './authContext'
+import { TokenContext } from './tokenContext'
 
 import { CurrencyAmount, PathOption } from '@/@types/xrpl'
 import { usePathFind } from '@/hooks/usePathFind'
@@ -20,15 +23,21 @@ type ContextState = {
 export const SwapContext = createContext<ContextState>({} as any)
 
 export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
+  const { state } = useContext(AuthContext)
+  const { currencies: userCurrencies } = useContext(TokenContext)
   const [currencies, setCurrencies] = useState<Currencies>({
-    from: { currency: 'XRP', name: 'XRP', issuer: '', value: 1 },
-    to: { currency: 'CSC', name: 'CSC', issuer: 'rCSCManTZ8ME9EoLrSHHYKW8PPwWMgkwr', value: 1 },
+    from: { ...userCurrencies[0], value: 1 },
+    to: { ...userCurrencies[1], value: 1 },
   })
   const { bestRoute, setAccount, setPathFrom, setPathTo } = usePathFind({
-    account: 'rQQQrUdN1cLdNmxH4dHfKgmX5P4kf3ZrM',
+    account: state?.me.account || '',
     from: parseCurrencyToAmount(currencies.from),
     to: parseCurrencyToAmount(currencies.to),
   })
+
+  useEffect(() => {
+    setCurrencies({ from: { ...userCurrencies[0], value: 1 }, to: { ...userCurrencies[1], value: 1 } })
+  }, [userCurrencies])
 
   useEffect(() => {
     setPathFrom(parseCurrencyToAmount(currencies.from))

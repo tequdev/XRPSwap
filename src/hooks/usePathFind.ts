@@ -27,14 +27,16 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
     }
     setActive(true)
     client.connect().then(() => {
-      client.request<PathFindCreateRequest, PathFindResponse>({
-        command: 'path_find',
-        subcommand: 'create',
-        source_account: account,
-        destination_account: account,
-        destination_amount: parseToXrpAmount(transformDestAmount(to)),
-        send_max: parseToXrpAmount(from),
-      })
+      client
+        .request<PathFindCreateRequest, PathFindResponse>({
+          command: 'path_find',
+          subcommand: 'create',
+          source_account: account,
+          destination_account: account,
+          destination_amount: parseToXrpAmount(transformDestAmount(to)),
+          send_max: parseToXrpAmount(from),
+        })
+        .catch(() => null)
     })
   }, [account, from, to])
 

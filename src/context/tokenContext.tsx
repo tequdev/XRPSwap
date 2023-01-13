@@ -3,7 +3,7 @@ import { createContext, FC, useContext, useEffect, useState } from 'react'
 import { AuthContext } from './authContext'
 
 import { CurrencyInfo } from '@/@types/xrpl'
-import { getAccountTokensMeta, getAccountXRPBalance } from '@/libs/xrpl'
+import { getAccountTokensMeta } from '@/libs/xrpl'
 
 type ContextState = {
   currencies: CurrencyInfo[]
@@ -16,18 +16,10 @@ export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ chi
   const [currencies, setCurrencies] = useState<CurrencyInfo[]>([])
 
   useEffect(() => {
-    const XRP: CurrencyInfo = {
-      currency: 'XRP',
-      issuer: '',
-      name: 'XRP',
-      icon: 'https://cryptologos.cc/logos/xrp-xrp-logo.svg',
-      balance: 100_000_000_000,
-    }
     if (state) {
       const f = async () => {
-        const currencies = await getAccountTokensMeta(state.me.account)
-        const xrpBalance = await getAccountXRPBalance(state.me.account)
-        setCurrencies([{ ...XRP, balance: xrpBalance }, ...currencies])
+        const tokenCurrencies = await getAccountTokensMeta(state.me.account)
+        setCurrencies([...tokenCurrencies])
       }
       f()
     }
