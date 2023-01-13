@@ -3,7 +3,7 @@ import { createContext, FC, useContext, useEffect, useState } from 'react'
 import { AuthContext } from './authContext'
 
 import { CurrencyInfo } from '@/@types/xrpl'
-import { getAccountTokensMeta } from '@/libs/xrpl'
+import { getAccountTokensMeta, getAccountXRPBalance } from '@/libs/xrpl'
 
 type ContextState = {
   currencies: CurrencyInfo[]
@@ -26,7 +26,8 @@ export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ chi
     if (state) {
       const f = async () => {
         const currencies = await getAccountTokensMeta(state.me.account)
-        setCurrencies([XRP, ...currencies])
+        const xrpBalance = await getAccountXRPBalance(state.me.account)
+        setCurrencies([{ ...XRP, balance: xrpBalance }, ...currencies])
       }
       f()
     }

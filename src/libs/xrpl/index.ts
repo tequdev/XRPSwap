@@ -33,6 +33,12 @@ export const getAmmBalance = async (ammAddress: string, currency: any) => {
   return parseFloat(value)
 }
 
+export const getAccountXRPBalance = async (address: string): Promise<number> => {
+  await client.connect()
+  const balance = await client.getXrpBalance(address)
+  return parseFloat(balance)
+}
+
 export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
   await client.connect()
   const response = await client.getBalances(address)
