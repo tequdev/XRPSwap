@@ -1,4 +1,4 @@
-import { Client } from 'xrpl'
+import { AccountInfoRequest, AccountInfoResponse, Client, ServerInfoRequest, ServerInfoResponse } from 'xrpl'
 
 import { CurrencyInfo, TokensMarketData } from '@/@types/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
@@ -8,15 +8,23 @@ const server = 'wss://xrpl.ws'
 export const client = new Client(server)
 export const client2 = new Client(server)
 
-export const getAccountXRPBalance = async (address: string): Promise<number> => {
-  await client.connect()
-  const balance = await client.getXrpBalance(address)
-  return parseFloat(balance)
-}
-
 export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
   await client.connect()
-  const response = await client.getBalances(address)
+  const [response, accountInfoResponse, serverInfoResponse] = await Promise.all([
+    client.getBalances(address),
+    client.request<AccountInfoRequest, AccountInfoResponse>({
+      command: 'account_info',
+      account: address,
+      ledger_index: 'validated',
+    }),
+    client.request<ServerInfoRequest, ServerInfoResponse>({ command: 'server_info' }),
+  ])
+  const { reserve_base_xrp: baseReserve, reserve_inc_xrp: incReserve } = serverInfoResponse.result.info
+    .validated_ledger || {
+    reserve_base_xrp: 10,
+    reserve_inc_xrp: 2,
+  }
+  const ownerCount = accountInfoResponse.result.account_data.OwnerCount
 
   const lines = response.map((line) => ({
     issuer: line.issuer || '',
@@ -37,7 +45,7 @@ export const getAccountTokensMeta = async (address: string): Promise<CurrencyInf
       currency: line.currency,
       name: meta?.token_name || line.name,
       icon: line.currency !== 'XRP' ? meta?.logo_file : 'https://cryptologos.cc/logos/xrp-xrp-logo.svg',
-      balance: line.balance,
+      balance: line.currency !== 'XRP' ? line.balance : line.balance - (baseReserve + incReserve * ownerCount),
     }
   })
 }
