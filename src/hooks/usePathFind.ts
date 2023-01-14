@@ -121,7 +121,8 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
 
   const bestRoute = useMemo(() => {
     const route = routes(alternatives)
-    return route ? route[0] : null
+    if (!route) return null
+    return route[0]
   }, [alternatives, routes])
 
   const bestPrice = useMemo(() => {
