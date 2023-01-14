@@ -7,7 +7,7 @@ import { AuthContext } from '@/context/authContext'
 import { SwapContext } from '@/context/swapContext'
 
 export const useSwap = () => {
-  const { bestRoute, currencies, slippage } = useContext(SwapContext)
+  const { bestRoute, currencies } = useContext(SwapContext)
   const { state } = useContext(AuthContext)
 
   const convertCurrencyValueToString = (currency: CurrencyAmount, multipleBy: number = 1): Amount => {
@@ -26,10 +26,9 @@ export const useSwap = () => {
       Amount: convertCurrencyValueToString(currencies.to),
       SendMax: convertCurrencyValueToString(currencies.from),
       Paths: bestRoute?.paths_computed,
-      DeliverMin: convertCurrencyValueToString(currencies.to, 1 - slippage),
     } as const
     return state.sdk.payload.create(payload).then((payload) => payload)
-  }, [bestRoute?.paths_computed, currencies.from, currencies.to, slippage, state])
+  }, [bestRoute?.paths_computed, currencies.from, currencies.to, state])
 
   return { swap }
 }

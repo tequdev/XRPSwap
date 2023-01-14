@@ -5,7 +5,7 @@ import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 import { ConnectWallet } from './ConnectWallet'
 import { Currency } from './Currency'
 import { PathFlow } from './PathFlow'
-import { Slippage } from './Slippage'
+import { PriceInfo } from './PriceInfo'
 import { SwapButton } from './SwapButton'
 
 import { AuthContext } from '@/context/authContext'
@@ -14,7 +14,7 @@ import { useSwap } from '@/hooks/useSwap'
 
 export const Swap = () => {
   const { state } = useContext(AuthContext)
-  const { switchCurrencies, bestRoute, bestPrice, swapPrice } = useContext(SwapContext)
+  const { switchCurrencies, bestRoute } = useContext(SwapContext)
   const { swap } = useSwap()
 
   const handleSwap = async () => {
@@ -33,11 +33,11 @@ export const Swap = () => {
               </div>
               <Currency type='to' />
             </div>
-            <div className='-my-4 flex items-center justify-between'>
-              <Slippage />
-              <div>
-                <div>SwapPrice: {swapPrice}</div>
-                <div>BestPrice: {bestPrice}</div>
+            <div className='collapse-arrow !min-h-6 collapse -my-4'>
+              <input type='checkbox' className='!min-h-6' />
+              <div className='collapse-title !min-h-6 py-2 text-sm'>Show Price Info</div>
+              <div className='collapse-content'>
+                <PriceInfo />
               </div>
             </div>
             <SwapButton onClick={handleSwap} />
