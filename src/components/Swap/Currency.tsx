@@ -55,7 +55,7 @@ export const Currency: FC<Props> = ({ type }) => {
           <div>
             <input
               type='text'
-              className={`appearance-none text-3xl text-gray-600 outline-none ${
+              className={`w-full appearance-none text-3xl text-gray-600 outline-none ${
                 type === 'to' && pathLoading && 'animate-pulse text-gray-400'
               }`}
               value={value}
@@ -64,9 +64,9 @@ export const Currency: FC<Props> = ({ type }) => {
               onChange={onChangeValue}
             />
           </div>
-          <div className='relative flex items-center'>
+          <div className='ml-1 flex items-center'>
             {type === 'from' && (
-              <div className='absolute -left-11 flex h-12 items-center'>
+              <div className='mr-1 items-center'>
                 <MaxAmountButton onClick={setMax} />
               </div>
             )}
