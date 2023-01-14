@@ -4,6 +4,7 @@ import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 
 import { ConnectWallet } from './ConnectWallet'
 import { Currency } from './Currency'
+import { PathFlow } from './PathFlow'
 import { Slippage } from './Slippage'
 import { SwapButton } from './SwapButton'
 
@@ -13,7 +14,7 @@ import { useSwap } from '@/hooks/useSwap'
 
 export const Swap = () => {
   const { state } = useContext(AuthContext)
-  const { switchCurrencies, bestPrice, swapPrice } = useContext(SwapContext)
+  const { switchCurrencies, bestRoute, bestPrice, swapPrice } = useContext(SwapContext)
   const { swap } = useSwap()
 
   const handleSwap = async () => {
@@ -43,6 +44,12 @@ export const Swap = () => {
           </>
         )}
       </div>
+      {!!bestRoute && (
+        <>
+          <div className='mt-12' />
+          <PathFlow path={bestRoute} />
+        </>
+      )}
     </div>
   )
 }
