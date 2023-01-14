@@ -29,9 +29,10 @@
     "tailwind-override": "^0.6.1",
     "tailwindcss-classnames": "^3.0.7",
     "url": "^0.11.0",
+    "use-open-window": "^1.4.0",
     "utf-8-validate": "^5.0.10",
     "xrpl": "2.7.0-beta.0",
-    "xumm-oauth2-pkce": "^2.5.5"
+    "xumm-oauth2-pkce": "2.7.3"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",

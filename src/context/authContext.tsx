@@ -24,10 +24,21 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   const loading = useMemo(() => state === null, [state])
 
   useEffect(() => {
-    xumm.on('retrieved', async () => {
+    const handler = async () => {
       const xummState = await xumm.state()
       setState(xummState)
-    })
+    }
+    const errorHandler = (e: Error) => {
+      console.error(e)
+    }
+    xumm.on('success', handler)
+    xumm.on('error', errorHandler)
+    xumm.on('retrieved', handler)
+    return () => {
+      xumm.off('success', handler)
+      xumm.off('error', errorHandler)
+      xumm.off('retrieved', handler)
+    }
   }, [])
 
   const connect = useCallback(() => {

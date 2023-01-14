@@ -2,6 +2,7 @@ import Image from 'next/image'
 import { FC } from 'react'
 
 import { TokensMarketData } from '@/@types/xrpl'
+import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSetTrustLine } from '@/hooks/useSetTrustLine'
 import { parseCurrencyCode } from '@/utils/xrpl'
 
@@ -12,14 +13,17 @@ type Props = {
 
 export const Token: FC<Props> = ({ index, data }) => {
   const { setTrustLine } = useSetTrustLine()
+  const { openWindow } = usePayloadOpen()
+
   const handleSetTrustLine = async () => {
-    console.log(
-      await setTrustLine({
-        issuer: data.issuer,
-        currency: parseCurrencyCode(data.currency),
-        value: data.supply.toString(),
-      })
-    )
+    const payload = await setTrustLine({
+      issuer: data.issuer,
+      currency: parseCurrencyCode(data.currency),
+      value: data.supply.toString(),
+    })
+    if (payload) {
+      openWindow(payload.next.always)
+    }
   }
   return (
     <div className='card my-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>
