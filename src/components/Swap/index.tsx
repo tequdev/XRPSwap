@@ -4,7 +4,7 @@ import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 
 import { ConnectWallet } from './ConnectWallet'
 import { Currency } from './Currency'
-import { PathFlow } from './PathFlow'
+// import { PathFlow } from './PathFlow'
 import { PriceInfo } from './PriceInfo'
 import { SwapButton } from './SwapButton'
 
@@ -44,12 +44,12 @@ export const Swap = () => {
           </>
         )}
       </div>
-      {!!bestRoute && (
+      {/* {!!bestRoute && (
         <>
           <div className='mt-12' />
           <PathFlow path={bestRoute} />
         </>
-      )}
+      )} */}
     </div>
   )
 }
