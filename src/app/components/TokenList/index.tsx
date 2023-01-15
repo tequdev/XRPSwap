@@ -1,10 +1,16 @@
 'use client'
+import { FC } from 'react'
+
 import { Token } from './Token'
 
+import { TokensMarketData } from '@/@types/xrpl'
 import { useTokenMarketData } from '@/hooks/useTokenMarketData'
 
-export const TokenList = () => {
-  const { page, perPage, data, next, prev, hasNextPage, hasPrevPage } = useTokenMarketData()
+type Props = {
+  tokens: TokensMarketData[]
+}
+export const TokenList: FC<Props> = ({ tokens }) => {
+  const { page, perPage, data, next, prev, hasNextPage, hasPrevPage } = useTokenMarketData(tokens)
   return (
     <div className='w-full max-w-[700px]'>
       <div className='min-h-[40vh]'>

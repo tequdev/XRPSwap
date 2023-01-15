@@ -5,8 +5,8 @@ import { usePagenation } from './usePagenation'
 import { TokensMarketData } from '@/@types/xrpl'
 import { getTokensMarketData } from '@/libs/xrpl'
 
-export const useTokenMarketData = () => {
-  const [tokensMarketData, setTokensMarketData] = useState<TokensMarketData[]>([])
+export const useTokenMarketData = (data: TokensMarketData[]) => {
+  const [tokensMarketData, setTokensMarketData] = useState<TokensMarketData[]>(data)
   const { page, next, prev } = usePagenation()
   const perPage = 25
 

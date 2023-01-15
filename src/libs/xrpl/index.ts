@@ -51,8 +51,8 @@ export const getAccountTokensMeta = async (address: string): Promise<CurrencyInf
 }
 
 type TokensMarketDataOption = {
-  page: number
-  per_page: number
+  page?: number
+  per_page?: number
 }
 type TokensMarketDataResponse = {
   tokens: {
@@ -69,13 +69,17 @@ type TokensMarketDataResponse = {
     logo_file?: string | null
   }[]
 }
-export const getTokensMarketData = async ({ page, per_page }: TokensMarketDataOption): Promise<TokensMarketData[]> => {
+export const getTokensMarketData = async (
+  { page, per_page }: TokensMarketDataOption = { page: undefined, per_page: undefined }
+): Promise<TokensMarketData[]> => {
   const param = new URLSearchParams({
     min_trades: '1',
-    per_page: per_page.toString(),
-    page: page.toString(),
+    per_page: (per_page || 25).toString(),
+    page: (page || 1).toString(),
   })
-  const response = await fetch(`https://api.onthedex.live/public/v1/daily/tokens?${param}`)
+  const response = await fetch(`https://api.onthedex.live/public/v1/daily/tokens?${param}`, {
+    next: { revalidate: 600 },
+  })
   const json = (await response.json()) as TokensMarketDataResponse
   return json.tokens.map((token) => ({
     issuer: token.issuer,
