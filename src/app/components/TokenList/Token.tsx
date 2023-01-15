@@ -1,7 +1,10 @@
 import Image from 'next/image'
-import { FC } from 'react'
+import { FC, useContext, useMemo } from 'react'
+
+import { CheckIcon } from '../Icon/Check'
 
 import { TokensMarketData } from '@/@types/xrpl'
+import { TokenContext } from '@/app/context/tokenContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSetTrustLine } from '@/hooks/useSetTrustLine'
 import { parseCurrencyCode } from '@/utils/xrpl'
@@ -12,8 +15,13 @@ type Props = {
 }
 
 export const Token: FC<Props> = ({ index, data }) => {
+  const { currencies } = useContext(TokenContext)
   const { setTrustLine } = useSetTrustLine()
   const { openWindow } = usePayloadOpen()
+
+  const hasTrustLined = useMemo(() => {
+    return currencies.some((c) => c.issuer === data.issuer && c.currency === parseCurrencyCode(data.currency))
+  }, [currencies, data.currency, data.issuer])
 
   const handleSetTrustLine = async () => {
     const payload = await setTrustLine({
@@ -58,9 +66,17 @@ export const Token: FC<Props> = ({ index, data }) => {
             </div>
           </div>
           <div className='card-actions justify-end'>
-            <button className='btn-primary btn-sm btn' onClick={handleSetTrustLine}>
-              Set Trustline
-            </button>
+            {hasTrustLined && (
+              <button className='btn-disabled btn-primary btn-sm btn text-gray-200'>
+                <CheckIcon className='h-6 w-6' />
+                Trustline
+              </button>
+            )}
+            {!hasTrustLined && (
+              <button className='btn-outline btn-primary btn-sm btn' onClick={handleSetTrustLine}>
+                Set Trustline
+              </button>
+            )}
           </div>
         </div>
       </div>
