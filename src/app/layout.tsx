@@ -9,12 +9,12 @@ import AuthContextProvider from '@/app/context/authContext'
 
 const MyApp = ({ children }: { children: React.ReactNode }) => {
   return (
-    <html>
+    <html className='text-[14px] md:text-[16px]'>
       <body>
         <AuthContextProvider>
           <Header />
           <TokenContextProvider>
-            <main>
+            <main className='py-16 md:py-28'>
               {children}
               <div id='root' />
             </main>

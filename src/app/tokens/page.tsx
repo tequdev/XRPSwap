@@ -4,12 +4,12 @@ import { TokenList } from '@/app/components/TokenList'
 
 const Tokens = () => {
   return (
-    <div className='py-28'>
-      <div className='mb-6 text-center text-5xl'>xLedger Tokens</div>
+    <>
+      <div className='mb-10 text-center text-5xl md:mb-6'>xLedger Tokens</div>
       <div className='flex justify-center'>
         <TokenList />
       </div>
-    </div>
+    </>
   )
 }
 

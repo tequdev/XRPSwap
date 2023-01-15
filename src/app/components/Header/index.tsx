@@ -24,7 +24,7 @@ export const Header = () => {
     <header className='navbar bg-base-100'>
       <div className='navbar-start'>
         <div className='dropdown'>
-          <label tabIndex={0} className='btn-ghost btn lg:hidden'>
+          <label tabIndex={0} className='btn-ghost btn md:hidden'>
             <svg
               xmlns='http://www.w3.org/2000/svg'
               className='h-5 w-5'
@@ -43,7 +43,7 @@ export const Header = () => {
           <span className='btn-ghost btn text-xl normal-case'>xLedger</span>
         </Link>
       </div>
-      <div className='navbar-center hidden lg:flex'>
+      <div className='navbar-center hidden md:flex'>
         <ul className='menu menu-horizontal px-1'>
           <MenuList />
         </ul>

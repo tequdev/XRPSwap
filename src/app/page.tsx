@@ -3,14 +3,14 @@ import { SwapContextProvider } from '@/app/context/swapContext'
 
 const Home = () => {
   return (
-    <div className='py-28'>
-      <div className='mb-6 text-center text-5xl'>xLedger Swap</div>
+    <>
+      <div className='mb-10 text-center text-5xl md:mb-6'>xLedger Swap</div>
       <div className='flex justify-center'>
         <SwapContextProvider>
           <Swap />
         </SwapContextProvider>
       </div>
-    </div>
+    </>
   )
 }
 
