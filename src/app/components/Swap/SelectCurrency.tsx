@@ -35,7 +35,7 @@ export const SelectCurrency: FC<Props> = ({ type, current }) => {
         {convertCurrencyCode(currency.currency)}
       </button>
       <Modal>
-        <SelectCurrencyModal current={current} onSelect={onSelectCurrency} />
+        <SelectCurrencyModal current={current} onSelect={onSelectCurrency} onClose={close} />
       </Modal>
     </>
   )
