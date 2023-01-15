@@ -26,6 +26,8 @@ export const useSwap = () => {
       Amount: convertCurrencyValueToString(currencies.to),
       SendMax: convertCurrencyValueToString(currencies.from),
       Paths: bestRoute?.paths_computed,
+      // tfPartialPayment: https://xrpl.org/payment.html#payment-flags
+      Flags: 131072,
     } as const
     return state.sdk.payload.create(payload).then((payload) => payload)
   }, [bestRoute?.paths_computed, currencies.from, currencies.to, state])
