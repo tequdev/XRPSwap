@@ -1,6 +1,6 @@
+import { Swap } from '@/app/components/Swap'
 import { SwapContextProvider } from '@/app/context/swapContext'
 import { TokenContextProvider } from '@/app/context/tokenContext'
-import { Swap } from '@/components/Swap'
 
 const Home = () => {
   return (

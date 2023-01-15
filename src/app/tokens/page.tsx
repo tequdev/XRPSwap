@@ -1,6 +1,6 @@
 // 'use client'
 
-import { TokenList } from '@/components/TokenList'
+import { TokenList } from '@/app/components/TokenList'
 
 const Tokens = () => {
   return (
