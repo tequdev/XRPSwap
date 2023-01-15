@@ -91,7 +91,10 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
   }
 
   const switchCurrencies = () => {
-    setCurrencies({ from: currenciesResult.to, to: currenciesResult.from })
+    setCurrencies({
+      from: { ...currenciesResult.to, value: currenciesResult.to.value || 1 },
+      to: currenciesResult.from,
+    })
   }
 
   const currenciesResult = useMemo((): Currencies => {
