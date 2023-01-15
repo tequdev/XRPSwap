@@ -1,3 +1,4 @@
+'use client'
 import { Token } from './Token'
 
 import { useTokenMarketData } from '@/hooks/useTokenMarketData'

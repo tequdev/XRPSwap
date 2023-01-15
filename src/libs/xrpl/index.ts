@@ -5,8 +5,8 @@ import { convertCurrencyCode } from '@/utils/xrpl'
 // const server = 'wss://s.altnet.rippletest.net:51233/'
 // const server = 'wss://amm.devnet.rippletest.net:51233'
 const server = 'wss://xrpl.ws'
-export const client = new Client(server)
-export const client2 = new Client(server)
+export const client = new Client(server, { connectionTimeout: 10000 })
+export const client2 = new Client(server, { connectionTimeout: 10000 })
 
 export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
   await client.connect()
@@ -75,7 +75,9 @@ export const getTokensMarketData = async ({ page, per_page }: TokensMarketDataOp
     per_page: per_page.toString(),
     page: page.toString(),
   })
-  const response = await fetch(`https://api.onthedex.live/public/v1/daily/tokens?${param}`)
+  const response = await fetch(`https://api.onthedex.live/public/v1/daily/tokens?${param}`, {
+    next: { revalidate: 10 },
+  })
   const json = (await response.json()) as TokensMarketDataResponse
   return json.tokens.map((token) => ({
     issuer: token.issuer,

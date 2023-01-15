@@ -4,7 +4,7 @@ import { useModal } from 'react-hooks-use-modal'
 import { SelectCurrencyModal } from './SelectCurrencyModal'
 
 import { CurrencyAmount, CurrencyInfo } from '@/@types/xrpl'
-import { SwapContext } from '@/context/swapContext'
+import { SwapContext } from '@/app/context/swapContext'
 import { convertCurrencyCode } from '@/utils/xrpl'
 
 type Props = {

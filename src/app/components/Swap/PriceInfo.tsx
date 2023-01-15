@@ -1,6 +1,6 @@
 import { useContext, useMemo } from 'react'
 
-import { SwapContext } from '@/context/swapContext'
+import { SwapContext } from '@/app/context/swapContext'
 
 export const PriceInfo = () => {
   const { bestPrice, swapPrice } = useContext(SwapContext)

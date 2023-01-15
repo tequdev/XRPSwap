@@ -1,7 +1,6 @@
-'use client'
-import { Swap } from '@/components/Swap'
-import { SwapContextProvider } from '@/context/swapContext'
-import { TokenContextProvider } from '@/context/tokenContext'
+import { Swap } from '@/app/components/Swap'
+import { SwapContextProvider } from '@/app/context/swapContext'
+import { TokenContextProvider } from '@/app/context/tokenContext'
 
 const Home = () => {
   return (

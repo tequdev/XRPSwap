@@ -1,6 +1,6 @@
 import { useContext } from 'react'
 
-import { AuthContext } from '@/context/authContext'
+import { AuthContext } from '@/app/context/authContext'
 
 export const AccountInfo = () => {
   const { state, disconnect } = useContext(AuthContext)

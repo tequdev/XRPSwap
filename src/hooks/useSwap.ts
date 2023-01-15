@@ -3,8 +3,8 @@ import { xrpToDrops } from 'xrpl'
 import { Amount } from 'xrpl/dist/npm/models/common'
 
 import { CurrencyAmount } from '@/@types/xrpl'
-import { AuthContext } from '@/context/authContext'
-import { SwapContext } from '@/context/swapContext'
+import { AuthContext } from '@/app/context/authContext'
+import { SwapContext } from '@/app/context/swapContext'
 
 export const useSwap = () => {
   const { bestRoute, currencies } = useContext(SwapContext)

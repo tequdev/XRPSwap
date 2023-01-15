@@ -4,8 +4,8 @@ import React, { ChangeEventHandler, FC, useCallback, useContext, useEffect, useM
 import { MaxAmountButton } from './MaxAmountButton'
 import { SelectCurrency } from './SelectCurrency'
 
-import { SwapContext } from '@/context/swapContext'
-import { TokenContext } from '@/context/tokenContext'
+import { SwapContext } from '@/app/context/swapContext'
+import { TokenContext } from '@/app/context/tokenContext'
 
 type Props = {
   type: 'from' | 'to'
