@@ -1,7 +1,7 @@
 import { useCallback, useContext } from 'react'
 import { IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 
-import { AuthContext } from '@/context/authContext'
+import { AuthContext } from '@/app/context/authContext'
 
 export const useSetTrustLine = () => {
   const { state } = useContext(AuthContext)

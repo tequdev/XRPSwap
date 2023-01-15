@@ -1,3 +1,4 @@
+'use client'
 import { createContext, FC, useContext, useEffect, useMemo, useState } from 'react'
 import { dropsToXrp } from 'xrpl'
 

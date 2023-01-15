@@ -1,4 +1,4 @@
-'use client'
+// 'use client'
 
 import { TokenList } from '@/components/TokenList'
 

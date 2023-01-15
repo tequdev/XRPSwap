@@ -1,9 +1,9 @@
 'use client'
 import 'tailwindcss/tailwind.css'
 
+import AuthContextProvider from '@/app/context/authContext'
 import { Footer } from '@/components/Footer'
 import { Header } from '@/components/Header'
-import AuthContextProvider from '@/context/authContext'
 
 const MyApp = ({ children }: { children: React.ReactNode }) => {
   return (

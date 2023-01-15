@@ -3,8 +3,8 @@ import { overrideTailwindClasses } from 'tailwind-override'
 import { Currency } from 'xrpl/dist/npm/models/common'
 
 import { CurrencyInfo } from '@/@types/xrpl'
-import { SwapContext } from '@/context/swapContext'
-import { TokenContext } from '@/context/tokenContext'
+import { SwapContext } from '@/app/context/swapContext'
+import { TokenContext } from '@/app/context/tokenContext'
 
 type Props = {
   onSelect: (currency: CurrencyInfo) => void

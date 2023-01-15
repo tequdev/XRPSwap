@@ -1,3 +1,4 @@
+'use client'
 import { useContext } from 'react'
 
 import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
@@ -8,8 +9,8 @@ import { Currency } from './Currency'
 import { PriceInfo } from './PriceInfo'
 import { SwapButton } from './SwapButton'
 
-import { AuthContext } from '@/context/authContext'
-import { SwapContext } from '@/context/swapContext'
+import { AuthContext } from '@/app/context/authContext'
+import { SwapContext } from '@/app/context/swapContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSwap } from '@/hooks/useSwap'
 
@@ -26,10 +27,14 @@ export const Swap = () => {
     }
   }
   return (
-    <div className='w-full max-w-[450px]'>
-      <div className='card flex flex-col gap-6 rounded-xl bg-base-200 p-4 shadow-xl'>
-        {!state && <ConnectWallet />}
-        {state && (
+    <div className='flex w-full max-w-[450px] flex-col items-center'>
+      {!state && (
+        <div className='mt-8'>
+          <ConnectWallet />
+        </div>
+      )}
+      {state && (
+        <div className='card flex flex-col justify-center gap-6 rounded-xl bg-base-200 p-4 shadow-xl'>
           <>
             <div className='relative flex flex-col gap-4'>
               <Currency type='from' />
@@ -47,8 +52,8 @@ export const Swap = () => {
             </div>
             <SwapButton onClick={handleSwap} />
           </>
-        )}
-      </div>
+        </div>
+      )}
       {/* {!!bestRoute && (
         <>
           <div className='mt-12' />

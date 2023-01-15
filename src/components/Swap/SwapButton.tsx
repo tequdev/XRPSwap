@@ -1,7 +1,7 @@
 import { FC, useContext, useMemo } from 'react'
 
-import { SwapContext } from '@/context/swapContext'
-import { TokenContext } from '@/context/tokenContext'
+import { SwapContext } from '@/app/context/swapContext'
+import { TokenContext } from '@/app/context/tokenContext'
 
 type Props = {
   onClick: () => Promise<void>

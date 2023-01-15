@@ -4,7 +4,7 @@ import { useContext } from 'react'
 import { AccountInfo } from './AccountInfo'
 import { ConnectWallet } from './ConnectWallet'
 
-import { AuthContext } from '@/context/authContext'
+import { AuthContext } from '@/app/context/authContext'
 
 export const Header = () => {
   const { state } = useContext(AuthContext)
