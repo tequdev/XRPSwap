@@ -7,6 +7,7 @@ import { TokensMarketData } from '@/@types/xrpl'
 import { TokenContext } from '@/app/context/tokenContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSetTrustLine } from '@/hooks/useSetTrustLine'
+import { significantDigits } from '@/utils/number'
 import { parseCurrencyCode } from '@/utils/xrpl'
 
 type Props = {
@@ -45,7 +46,7 @@ export const Token: FC<Props> = ({ index, data }) => {
               </div>
               <div className='text-2xl'>{data.currency}</div>
             </div>
-            <div className='text-3xl'>${data.price.toFixed(2)}</div>
+            <div className='text-3xl'>${significantDigits(data.price, 4)}</div>
           </div>
           <div className='ml-8 pl-2 text-sm text-gray-400'>{data.currency !== data.name ? data.name : data.issuer}</div>
           <div className='flex flex-col md:flex-row'>
