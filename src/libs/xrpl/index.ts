@@ -5,8 +5,8 @@ import { convertCurrencyCode } from '@/utils/xrpl'
 // const server = 'wss://s.altnet.rippletest.net:51233/'
 // const server = 'wss://amm.devnet.rippletest.net:51233'
 const server = 'wss://xrpl.ws'
-export const client = new Client(server)
-export const client2 = new Client(server)
+export const client = new Client(server, { connectionTimeout: 10000 })
+export const client2 = new Client(server, { connectionTimeout: 10000 })
 
 export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
   await client.connect()
