@@ -49,17 +49,17 @@ export const Token: FC<Props> = ({ index, data }) => {
           </div>
           <div className='ml-8 pl-2 text-sm text-gray-400'>{data.currency !== data.name ? data.name : data.issuer}</div>
           <div className='flex flex-col md:flex-row'>
-            <div className='stat place-items-center pb-0'>
+            <div className='stat place-items-center pb-0 md:pb-4'>
               <div className='stat-title'>Market Cap</div>
               <div className='stat-value text-xl'>${data.market_cap.toLocaleString()}</div>
-              <div className='stat-desc'>&nbsp;</div>
+              <div className='stat-desc hidden md:block'>&nbsp;</div>
             </div>
             <div className='stat place-items-center'>
               <div className='stat-title'>Volume</div>
               <div className='stat-value text-xl'>${data.volume.toLocaleString()}</div>
               <div className='stat-desc'>24h</div>
             </div>
-            <div className='stat place-items-center pt-0'>
+            <div className='stat place-items-center pt-0 md:pt-4'>
               <div className='stat-title'>Trades</div>
               <div className='stat-value text-xl'>{data.trades.toLocaleString()}</div>
               <div className='stat-desc'>24h</div>
