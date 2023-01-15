@@ -3,7 +3,7 @@ import { FC } from 'react'
 type Props = {
   className?: string
 }
-export const Swap: FC<Props> = ({ className }) => {
+export const SwapIcon: FC<Props> = ({ className }) => {
   return (
     <svg className={className} xmlns='http://www.w3.org/2000/svg' fill='none'>
       <path

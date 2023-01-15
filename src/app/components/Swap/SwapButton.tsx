@@ -31,7 +31,7 @@ export const SwapButton: FC<Props> = ({ onClick }) => {
 
   return (
     <button
-      className='btn-primary btn flex h-16 w-[420px] items-center justify-center rounded-xl text-2xl normal-case'
+      className='btn-primary btn flex h-16 w-full items-center justify-center rounded-xl text-2xl normal-case md:w-[420px]'
       disabled={pathLoading || !hasSufficientFunds}
       onClick={onClick}
     >

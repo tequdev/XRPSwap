@@ -34,7 +34,7 @@ export const Token: FC<Props> = ({ index, data }) => {
     }
   }
   return (
-    <div className='card my-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>
+    <div className='card m-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>
       <div className='flex'>
         <div className='w-full'>
           <div className='absolute top-2 left-4 font-bold'>#{index}</div>
@@ -48,8 +48,8 @@ export const Token: FC<Props> = ({ index, data }) => {
             <div className='text-3xl'>${data.price.toFixed(2)}</div>
           </div>
           <div className='ml-8 pl-2 text-sm text-gray-400'>{data.currency !== data.name ? data.name : data.issuer}</div>
-          <div className='flex'>
-            <div className='stat place-items-center'>
+          <div className='flex flex-col md:flex-row'>
+            <div className='stat place-items-center pb-0'>
               <div className='stat-title'>Market Cap</div>
               <div className='stat-value text-xl'>${data.market_cap.toLocaleString()}</div>
               <div className='stat-desc'>&nbsp;</div>
@@ -59,7 +59,7 @@ export const Token: FC<Props> = ({ index, data }) => {
               <div className='stat-value text-xl'>${data.volume.toLocaleString()}</div>
               <div className='stat-desc'>24h</div>
             </div>
-            <div className='stat place-items-center'>
+            <div className='stat place-items-center pt-0'>
               <div className='stat-title'>Trades</div>
               <div className='stat-value text-xl'>{data.trades.toLocaleString()}</div>
               <div className='stat-desc'>24h</div>
@@ -68,7 +68,7 @@ export const Token: FC<Props> = ({ index, data }) => {
           <div className='card-actions justify-end'>
             {hasTrustLined && (
               <button className='btn-disabled btn-primary btn-sm btn text-gray-200'>
-                <CheckIcon className='h-6 w-6' />
+                <CheckIcon className='-mt-1 mr-1 h-6 w-6 md:mt-auto md:mr-auto md:h-6 md:w-6' />
                 Trustline
               </button>
             )}
