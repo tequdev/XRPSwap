@@ -1,5 +1,5 @@
 {
-  "name": "xrpl-amm",
+  "name": "xrpswap",
   "private": true,
   "scripts": {
     "dev": "next dev",

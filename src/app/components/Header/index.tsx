@@ -3,6 +3,7 @@ import { usePathname } from 'next/navigation'
 import { useContext } from 'react'
 import { overrideTailwindClasses } from 'tailwind-override'
 
+import { LogoIcon } from '../Icon/Logo'
 import { SwapIcon } from '../Icon/Swap'
 import { TokenIcon } from '../Icon/Token'
 
@@ -35,8 +36,14 @@ export const Header = () => {
   return (
     <header className='navbar bg-base-100'>
       <div className='navbar-start'>
-        <Link href='/'>
-          <span className='btn-ghost btn text-xl normal-case'>xLedger</span>
+        <Link href='/' className='flex'>
+          <LogoIcon className='h-12 w-12' />
+          <div>
+            <div className='btn-ghost btn flex-col items-start text-xl normal-case'>
+              XRPSwap
+              <span className='text-xs font-light'>Swap XRP Ledger tokens</span>
+            </div>
+          </div>
         </Link>
       </div>
       <div className='navbar-center hidden md:flex'>
