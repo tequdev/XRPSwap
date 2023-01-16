@@ -31,7 +31,7 @@ export const Token: FC<Props> = ({ index, data }) => {
       value: data.supply.toString(),
     })
     if (payload) {
-      openWindow(payload.next.always)
+      openWindow(payload)
     }
   }
   return (

@@ -23,7 +23,7 @@ export const Swap = () => {
   const handleSwap = async () => {
     const payload = await swap()
     if (payload) {
-      openWindow(payload.next.always)
+      openWindow(payload)
     }
   }
   return (

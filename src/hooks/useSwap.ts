@@ -20,14 +20,20 @@ export const useSwap = () => {
   const swap = useCallback(async () => {
     if (!state?.account) return Promise.resolve(null)
     const payload = {
-      TransactionType: 'Payment',
-      Account: state.account,
-      Destination: state.account,
-      Amount: convertCurrencyValueToString(currencies.to),
-      SendMax: convertCurrencyValueToString(currencies.from),
-      Paths: bestRoute?.paths_computed,
-      // tfPartialPayment: https://xrpl.org/payment.html#payment-flags
-      Flags: 131072,
+      txjson: {
+        TransactionType: 'Payment',
+        Account: state.account,
+        Destination: state.account,
+        Amount: convertCurrencyValueToString(currencies.to),
+        SendMax: convertCurrencyValueToString(currencies.from),
+        Paths: bestRoute?.paths_computed,
+        // tfPartialPayment: https://xrpl.org/payment.html#payment-flags
+        Flags: 131072,
+      },
+      options: {
+        expire: 15,
+        pathfinding: true,
+      },
     } as const
     return sdk?.create(payload).then((payload) => payload)
   }, [bestRoute?.paths_computed, currencies.from, currencies.to, sdk, state?.account])
