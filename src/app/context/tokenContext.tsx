@@ -27,15 +27,14 @@ export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ chi
   const [currencies, setCurrencies] = useState<CurrencyInfo[]>([XRP])
 
   useEffect(() => {
-    if (state) {
-      const f = async () => {
-        const tokenCurrencies = await getAccountTokensMeta(state.me.account)
-        setCurrencies([...tokenCurrencies])
-        setLoading(false)
-      }
-      f()
+    const f = async () => {
+      if (!state?.account) return
+      const tokenCurrencies = await getAccountTokensMeta(state.account)
+      setCurrencies([...tokenCurrencies])
+      setLoading(false)
     }
-  }, [state])
+    f()
+  }, [state?.account])
 
   return (
     <TokenContext.Provider

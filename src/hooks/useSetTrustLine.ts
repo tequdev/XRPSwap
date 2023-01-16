@@ -4,19 +4,19 @@ import { IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 import { AuthContext } from '@/app/context/authContext'
 
 export const useSetTrustLine = () => {
-  const { state } = useContext(AuthContext)
+  const { state, sdk } = useContext(AuthContext)
 
   const setTrustLine = useCallback(
     async (trustLineAmount: IssuedCurrencyAmount) => {
-      if (!state) return Promise.resolve(null)
+      if (!state?.account) return Promise.resolve(null)
       const payload = {
         TransactionType: 'TrustSet',
-        Account: state.me.account,
+        Account: state.account,
         LimitAmount: trustLineAmount,
       } as const
-      return state.sdk.payload.create(payload).then((payload) => payload)
+      return sdk?.create(payload).then((payload) => payload)
     },
-    [state]
+    [sdk, state?.account]
   )
 
   return { setTrustLine }

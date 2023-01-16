@@ -1,17 +1,18 @@
 'use client'
 import React, { createContext, FC, useCallback, useEffect, useMemo, useState } from 'react'
-import { XummPkce } from 'xumm-oauth2-pkce'
+import { Xumm } from 'xumm'
 
 import { PromiseType } from '@/@types/utils'
 
-const xumm = new XummPkce(process.env.NEXT_PUBLIC_XUMM_APIKEY!)
+const xumm = new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!)
 
-type XummPkceState = NonNullable<PromiseType<NonNullable<ReturnType<XummPkce['state']>>>>
+type XummUser = { [P in keyof Xumm['user']]: PromiseType<Xumm['user'][P]> }
 
 type Context = {
-  connect: XummPkce['authorize']
-  disconnect: XummPkce['logout']
-  state: XummPkceState | undefined | null
+  connect: Xumm['authorize']
+  disconnect: Xumm['logout']
+  state: XummUser | undefined | null
+  sdk: Xumm['payload']
   loading: boolean
 }
 
@@ -20,12 +21,21 @@ export const AuthContext = createContext<Context>(null as any)
 const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const [state, setState] = useState<Context['state'] | undefined | null>(null)
 
-  const loading = useMemo(() => state === null, [state])
+  const loading = useMemo(() => false && state === null, [state])
+
+  const getUser = useCallback(async () => {
+    const user = xumm.user
+    const promisedUserArray = await Promise.all(
+      (Object.keys(user) as (keyof typeof user)[]).map(async (u) => {
+        return { [u]: await user[u] }
+      })
+    )
+    return Object.assign({}, ...promisedUserArray) as Promise<XummUser>
+  }, [])
 
   useEffect(() => {
     const handler = async () => {
-      const xummState = await xumm.state()
-      setState(xummState)
+      setState(await getUser())
     }
     const errorHandler = (e: Error) => {
       console.error(e)
@@ -39,28 +49,34 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
       xumm.off('error', errorHandler)
       xumm.off('retrieved', handler)
     }
-  }, [])
+  }, [getUser])
 
   const connect = useCallback(() => {
-    return xumm
-      .authorize()
-      ?.then((auth) => {
-        setState(auth)
-        return auth
-      })
-      .catch((e) => {
-        console.error(e.message)
-        return undefined
-      })
+    return (
+      xumm
+        .authorize()
+        // .then((auth) => {
+        //   setState(auth)
+        //   return auth
+        // })
+        ?.catch((e) => {
+          console.error(e.message)
+          return undefined
+        })
+    )
   }, [])
 
-  const disconnect = useCallback(() => {
-    xumm.logout()
+  const disconnect = useCallback(async () => {
+    await xumm.logout()
     // https://github.com/XRPL-Labs/XummPkce/pull/3
     setState(undefined)
   }, [])
 
-  return <AuthContext.Provider value={{ connect, disconnect, state, loading }}>{children}</AuthContext.Provider>
+  return (
+    <AuthContext.Provider value={{ connect, disconnect, state, sdk: xumm.payload, loading }}>
+      {children}
+    </AuthContext.Provider>
+  )
 }
 
 export default AuthContextProvider

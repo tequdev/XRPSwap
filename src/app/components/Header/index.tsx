@@ -52,8 +52,8 @@ export const Header = () => {
         </ul>
       </div>
       <div className='navbar-end'>
-        {!loading && !state && <ConnectWallet />}
-        {!loading && state && <AccountInfo />}
+        {!loading && !state?.account && <ConnectWallet />}
+        {!loading && state?.account && <AccountInfo />}
       </div>
       {/* eslint-disable-next-line tailwindcss/no-contradicting-classname */}
       <div

@@ -28,7 +28,7 @@ export const Swap = () => {
   }
   return (
     <div className='mx-1 flex w-full flex-col items-center md:max-w-[450px]'>
-      {!loading && !state && (
+      {!loading && !state?.account && (
         <div className='mt-8'>
           <ConnectWallet />
         </div>
