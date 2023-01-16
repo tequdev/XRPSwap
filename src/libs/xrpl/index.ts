@@ -32,9 +32,10 @@ export const getAccountTokensMeta = async (address: string): Promise<CurrencyInf
     name: convertCurrencyCode(line.currency),
     balance: parseFloat(line.value),
   }))
+  const targetTokens = lines.filter((l) => l.currency !== 'XRP')
   const responseMeta = await fetch('https://api.onthedex.live/public/v1/token/meta', {
     method: 'POST',
-    body: JSON.stringify({ tokens: lines.filter((l) => l.currency !== 'XRP') }),
+    body: JSON.stringify({ tokens: targetTokens }),
   })
   const metaJson = await responseMeta.json()
   const metas = metaJson.meta as any[]

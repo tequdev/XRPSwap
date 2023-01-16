@@ -15,7 +15,7 @@ import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSwap } from '@/hooks/useSwap'
 
 export const Swap = () => {
-  const { state } = useContext(AuthContext)
+  const { state, loading } = useContext(AuthContext)
   const { switchCurrencies, bestRoute } = useContext(SwapContext)
   const { swap } = useSwap()
   const { openWindow } = usePayloadOpen()
@@ -28,12 +28,12 @@ export const Swap = () => {
   }
   return (
     <div className='mx-1 flex w-full flex-col items-center md:max-w-[450px]'>
-      {!state && (
+      {!loading && !state && (
         <div className='mt-8'>
           <ConnectWallet />
         </div>
       )}
-      {state && (
+      {!loading && state && (
         <div className='card flex flex-col justify-center gap-6 rounded-xl bg-base-200 p-4 shadow-xl'>
           <>
             <div className='relative flex flex-col gap-4'>

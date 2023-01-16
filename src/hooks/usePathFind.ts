@@ -13,6 +13,7 @@ type Props = {
 }
 
 export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) => {
+  const [enable, setEnable] = useState(false)
   const [active, setActive] = useState(false)
   const [account, setAccount] = useState(_account)
   const [from, setPathFrom] = useState<Amount>(_from)
@@ -35,6 +36,7 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
 
   useEffect(() => {
     setPricePath([])
+    if (!enable) return
     client2.connect().then(() => {
       client2
         .request<PathFindCreateRequest, PathFindResponse>({
@@ -47,9 +49,10 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
         })
         .catch(() => null)
     })
-  }, [account, fromCurrency, toCurrency])
+  }, [account, enable, fromCurrency, toCurrency])
 
   useEffect(() => {
+    if (!enable) return
     setAlternatives([])
     if (['', '0'].includes(parseAmountValue(parseToXrpAmount(from)))) {
       setActive(false)
@@ -68,9 +71,10 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
         })
         .catch(() => null)
     })
-  }, [account, from, to])
+  }, [account, enable, from, to])
 
   useEffect(() => {
+    if (!enable) return
     const onPathFind = (stream: PathFindStream) => {
       if (!stream.full_reply) return
       const alternatives = stream.alternatives as PathOption[]
@@ -93,7 +97,7 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
       client.request({ command: 'path_find', subcommand: 'close' }).catch(() => null)
       client2.request({ command: 'path_find', subcommand: 'close' }).catch(() => null)
     }
-  }, [])
+  }, [enable])
 
   const routes = useCallback(
     (paths: PathOption[]) => {
@@ -145,7 +149,9 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
     return parseFloat(valueTo) / parseFloat(valueFrom)
   }, [alternatives, from, routes])
 
-  return { setAccount, setPathFrom, setPathTo, bestRoute, bestPrice, swapPrice }
+  const setPathfindEnable = useCallback(() => setEnable(true), [])
+
+  return { setAccount, setPathFrom, setPathTo, bestRoute, bestPrice, swapPrice, setPathfindEnable }
 }
 
 const transformDestAmount = (amount: Amount) => {

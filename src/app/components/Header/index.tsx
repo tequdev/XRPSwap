@@ -14,7 +14,7 @@ import { AuthContext } from '@/app/context/authContext'
 
 export const Header = () => {
   const pathname = usePathname()
-  const { state } = useContext(AuthContext)
+  const { state, loading } = useContext(AuthContext)
   const MenuList = () => {
     return (
       <>
@@ -52,8 +52,8 @@ export const Header = () => {
         </ul>
       </div>
       <div className='navbar-end'>
-        {!state && <ConnectWallet />}
-        {state && <AccountInfo />}
+        {!loading && !state && <ConnectWallet />}
+        {!loading && state && <AccountInfo />}
       </div>
       {/* eslint-disable-next-line tailwindcss/no-contradicting-classname */}
       <div

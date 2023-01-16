@@ -13,7 +13,6 @@ type Context = {
   disconnect: XummPkce['logout']
   state: XummPkceState | undefined | null
   loading: boolean
-  authorization: { Authorization: string } | undefined
 }
 
 export const AuthContext = createContext<Context>(null as any)
@@ -34,6 +33,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     xumm.on('success', handler)
     xumm.on('error', errorHandler)
     xumm.on('retrieved', handler)
+    handler()
     return () => {
       xumm.off('success', handler)
       xumm.off('error', errorHandler)
@@ -60,16 +60,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     setState(undefined)
   }, [])
 
-  const authorization = useMemo(
-    () => (state?.jwt ? { Authorization: `bearer ${state?.jwt}` } : undefined),
-    [state?.jwt]
-  )
-
-  return (
-    <AuthContext.Provider value={{ connect, disconnect, state, loading, authorization }}>
-      {children}
-    </AuthContext.Provider>
-  )
+  return <AuthContext.Provider value={{ connect, disconnect, state, loading }}>{children}</AuthContext.Provider>
 }
 
 export default AuthContextProvider

@@ -9,7 +9,7 @@ export const TokenIcon: FC<Props> = ({ className }) => {
       className={className}
       xmlns='http://www.w3.org/2000/svg'
       viewBox='0 0 512 512'
-      enable-background='new 0 0 512 512'
+      enableBackground='new 0 0 512 512'
       fill='none'
     >
       <g>

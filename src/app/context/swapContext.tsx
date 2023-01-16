@@ -32,11 +32,17 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
     from: { ...userCurrencies[0], value: 1 },
     to: { ...userCurrencies[1], value: 1 },
   })
-  const { bestRoute, setAccount, setPathFrom, setPathTo, bestPrice, swapPrice } = usePathFind({
+  const { bestRoute, setAccount, setPathFrom, setPathTo, bestPrice, swapPrice, setPathfindEnable } = usePathFind({
     account: state?.me.account || '',
     from: parseCurrencyToAmount(currencies.from),
     to: parseCurrencyToAmount(currencies.to),
   })
+
+  useEffect(() => {
+    if (userCurrencies.length > 1) {
+      setPathfindEnable()
+    }
+  }, [setPathfindEnable, userCurrencies.length])
 
   useEffect(() => {
     if (state?.me.account) {
