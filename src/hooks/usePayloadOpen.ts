@@ -1,6 +1,6 @@
 import { useCallback, useContext, useEffect, useState } from 'react'
 import { useOpenInWindow, UseOpenInWindowOptionsWithUrl } from 'use-open-window'
-import { Xumm } from 'xumm'
+import type { Xumm } from 'xumm'
 import { XummPostPayloadResponse } from 'xumm-sdk/dist/src/types'
 
 import { PromiseType } from '@/@types/utils'

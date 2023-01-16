@@ -4,7 +4,7 @@ import { Xumm } from 'xumm'
 
 import { PromiseType } from '@/@types/utils'
 
-const xumm = new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!)
+const xumm = new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!, process.env.XUMM_SECRET!)
 
 type XummUser = { [P in keyof Xumm['user']]: PromiseType<Xumm['user'][P]> }
 

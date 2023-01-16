@@ -9,6 +9,7 @@ const nextConfig = {
   },
   env: {
     NEXT_PUBLIC_XUMM_APIKEY: process.env.XUMM_APIKEY,
+    XUMM_SECRET: process.env.XUMM_SECRET,
   },
   webpack: (config, { buildId, dev, isServer, defaultLoaders, webpack }) => {
     const fallback = config.resolve.fallback || {}
