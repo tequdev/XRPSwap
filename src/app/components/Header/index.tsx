@@ -44,7 +44,7 @@ export const Header: FC<Props> = ({ className }) => {
           <div>
             <div className='btn-ghost btn flex-col items-start text-xl normal-case'>
               XRPSwap
-              <span className='text-xs font-light'>Swap XRP Ledger tokens</span>
+              <span className='hidden text-xs font-light sm:inline'>Swap XRP Ledger tokens</span>
             </div>
           </div>
         </Link>
