@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useContext } from 'react'
+import { FC, useContext } from 'react'
 import { overrideTailwindClasses } from 'tailwind-override'
 
 import { LogoIcon } from '../Icon/Logo'
@@ -12,7 +12,10 @@ import { ConnectWallet } from './ConnectWallet'
 
 import { AuthContext } from '@/app/context/authContext'
 
-export const Header = () => {
+type Props = {
+  className?: string
+}
+export const Header: FC<Props> = ({ className }) => {
   const pathname = usePathname()
   const { state, loading } = useContext(AuthContext)
   const MenuList = () => {
@@ -34,7 +37,7 @@ export const Header = () => {
     )
   }
   return (
-    <header className='navbar bg-base-100'>
+    <header className={overrideTailwindClasses('navbar bg-base-100 ' + className)}>
       <div className='navbar-start'>
         <Link href='/' className='flex'>
           <LogoIcon className='h-12 w-12' />

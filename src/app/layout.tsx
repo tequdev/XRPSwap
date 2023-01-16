@@ -12,9 +12,9 @@ const MyApp = ({ children }: { children: React.ReactNode }) => {
     <html className='text-[14px] md:text-[16px]'>
       <body>
         <AuthContextProvider>
-          <Header />
+          <Header className='h-16' />
           <TokenContextProvider>
-            <main className='py-16 md:py-28'>
+            <main className='h-[calc(100vh-4rem)] py-16 md:py-28'>
               {children}
               <div id='root' />
             </main>
