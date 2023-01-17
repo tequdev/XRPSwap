@@ -7,11 +7,11 @@ import { ConnectWallet } from './ConnectWallet'
 import { AuthContext } from '@/app/context/authContext'
 
 export const HeaderRightButton = () => {
-  const { state, loading } = useContext(AuthContext)
+  const { isConnected, loading } = useContext(AuthContext)
   return (
     <>
-      {!loading && !state?.account && <ConnectWallet />}
-      {!loading && state?.account && <AccountInfo />}
+      {!loading && !isConnected && <ConnectWallet />}
+      {!loading && isConnected && <AccountInfo />}
     </>
   )
 }

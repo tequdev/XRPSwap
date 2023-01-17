@@ -23,18 +23,18 @@ export const TokenContext = createContext<ContextState>({} as any)
 
 export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
   const [loading, setLoading] = useState(true)
-  const { state } = useContext(AuthContext)
+  const { state, isConnected } = useContext(AuthContext)
   const [currencies, setCurrencies] = useState<CurrencyInfo[]>([XRP])
 
   useEffect(() => {
     const f = async () => {
-      if (!state?.account) return
-      const tokenCurrencies = await getAccountTokensMeta(state.account)
+      if (!isConnected) return
+      const tokenCurrencies = await getAccountTokensMeta(state!.account!)
       setCurrencies([...tokenCurrencies])
       setLoading(false)
     }
     f()
-  }, [state?.account])
+  }, [isConnected, state])
 
   return (
     <TokenContext.Provider

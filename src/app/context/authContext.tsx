@@ -14,6 +14,7 @@ type Context = {
   state: XummUser | undefined | null
   sdk: Xumm['payload']
   loading: boolean
+  isConnected: boolean
 }
 
 export const AuthContext = createContext<Context>(null as any)
@@ -72,8 +73,10 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     setState(undefined)
   }, [])
 
+  const isConnected = useMemo(() => !!state?.account, [state?.account])
+
   return (
-    <AuthContext.Provider value={{ connect, disconnect, state, sdk: xumm.payload, loading }}>
+    <AuthContext.Provider value={{ connect, disconnect, state, sdk: xumm.payload, loading, isConnected }}>
       {children}
     </AuthContext.Provider>
   )

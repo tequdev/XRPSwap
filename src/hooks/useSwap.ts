@@ -8,7 +8,7 @@ import { SwapContext } from '@/app/context/swapContext'
 
 export const useSwap = () => {
   const { bestRoute, currencies } = useContext(SwapContext)
-  const { state, sdk } = useContext(AuthContext)
+  const { state, sdk, isConnected } = useContext(AuthContext)
 
   const convertCurrencyValueToString = (currency: CurrencyAmount, multipleBy: number = 1): Amount => {
     if (currency.currency === 'XRP') {
@@ -18,12 +18,12 @@ export const useSwap = () => {
   }
 
   const swap = useCallback(async () => {
-    if (!state?.account) return Promise.resolve(null)
+    if (!isConnected) return Promise.resolve(null)
     const payload = {
       txjson: {
         TransactionType: 'Payment',
-        Account: state.account,
-        Destination: state.account,
+        Account: state!.account,
+        Destination: state!.account,
         Amount: convertCurrencyValueToString(currencies.to),
         SendMax: convertCurrencyValueToString(currencies.from),
         Paths: bestRoute?.paths_computed,
@@ -36,7 +36,7 @@ export const useSwap = () => {
       },
     } as const
     return sdk?.create(payload).then((payload) => payload)
-  }, [bestRoute?.paths_computed, currencies.from, currencies.to, sdk, state?.account])
+  }, [bestRoute?.paths_computed, currencies.from, currencies.to, isConnected, sdk, state])
 
   return { swap }
 }
