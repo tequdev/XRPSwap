@@ -16,8 +16,8 @@ type Props = {
   data: TokensMarketData
 }
 
-export const Token: FC<Props> = ({ index, data }) => {
-  const { state, isConnected } = useContext(AuthContext)
+const Token: FC<Props> = ({ index, data }) => {
+  const { isConnected } = useContext(AuthContext)
   const { currencies } = useContext(TokenContext)
   const { setTrustLine } = useSetTrustLine()
   const { openWindow } = usePayloadOpen()
@@ -86,3 +86,5 @@ export const Token: FC<Props> = ({ index, data }) => {
     </div>
   )
 }
+
+export default Token

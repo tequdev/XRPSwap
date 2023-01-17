@@ -6,9 +6,9 @@ import { overrideTailwindClasses } from 'tailwind-override'
 import { SwapIcon } from '../../Icon/Swap'
 import { TokenIcon } from '../../Icon/Token'
 
-export const MobileMenu = () => {
+const MobileMenu = () => {
   const pathname = usePathname()
-  console.log({ pathname })
+
   return (
     <div
       className={overrideTailwindClasses(
@@ -37,3 +37,5 @@ export const MobileMenu = () => {
     </div>
   )
 }
+
+export default MobileMenu

@@ -6,7 +6,7 @@ import { ConnectWallet } from './ConnectWallet'
 
 import { AuthContext } from '@/app/context/authContext'
 
-export const HeaderRightButton = () => {
+const HeaderRightButton = () => {
   const { isConnected, loading } = useContext(AuthContext)
   return (
     <>
@@ -15,3 +15,5 @@ export const HeaderRightButton = () => {
     </>
   )
 }
+
+export default HeaderRightButton

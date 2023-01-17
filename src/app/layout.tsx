@@ -1,6 +1,6 @@
 import 'tailwindcss/tailwind.css'
 
-import { TokenContextProvider } from './context/tokenContext'
+import TokenContextProvider from './context/tokenContext'
 
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'

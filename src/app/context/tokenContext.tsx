@@ -21,7 +21,7 @@ const XRP = {
 
 export const TokenContext = createContext<ContextState>({} as any)
 
-export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
+const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
   const [loading, setLoading] = useState(true)
   const { state, isConnected } = useContext(AuthContext)
   const [currencies, setCurrencies] = useState<CurrencyInfo[]>([XRP])
@@ -47,3 +47,5 @@ export const TokenContextProvider: FC<{ children: React.ReactElement }> = ({ chi
     </TokenContext.Provider>
   )
 }
+
+export default TokenContextProvider

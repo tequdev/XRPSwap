@@ -25,7 +25,7 @@ type ContextState = {
 
 export const SwapContext = createContext<ContextState>({} as any)
 
-export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
+const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
   const { state } = useContext(AuthContext)
   const { currencies: userCurrencies } = useContext(TokenContext)
   const [currencies, setCurrencies] = useState<Currencies>({
@@ -139,3 +139,4 @@ export const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ chil
     </SwapContext.Provider>
   )
 }
+export default SwapContextProvider

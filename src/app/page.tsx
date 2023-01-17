@@ -1,7 +1,7 @@
 import PageTitle from './components/common/PageTitle'
 
-import { Swap } from '@/app/components/Swap'
-import { SwapContextProvider } from '@/app/context/swapContext'
+import Swap from '@/app/components/Swap'
+import SwapContextProvider from '@/app/context/swapContext'
 
 const Home = () => {
   return (

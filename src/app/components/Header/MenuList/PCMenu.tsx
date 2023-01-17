@@ -1,16 +1,12 @@
 'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useContext } from 'react'
 
 import { SwapIcon } from '../../Icon/Swap'
 import { TokenIcon } from '../../Icon/Token'
 
-import { AuthContext } from '@/app/context/authContext'
-
 export const PCMenu = () => {
   const pathname = usePathname()
-  const { state, loading } = useContext(AuthContext)
 
   return (
     <>
@@ -29,3 +25,5 @@ export const PCMenu = () => {
     </>
   )
 }
+
+export default PCMenu

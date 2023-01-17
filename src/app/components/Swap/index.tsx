@@ -14,7 +14,7 @@ import { SwapContext } from '@/app/context/swapContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSwap } from '@/hooks/useSwap'
 
-export const Swap = () => {
+const Swap = () => {
   const { loading, isConnected } = useContext(AuthContext)
   const { switchCurrencies, bestRoute } = useContext(SwapContext)
   const { swap } = useSwap()
@@ -63,3 +63,5 @@ export const Swap = () => {
     </div>
   )
 }
+
+export default Swap

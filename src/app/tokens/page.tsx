@@ -1,6 +1,6 @@
 import PageTitle from '../components/common/PageTitle'
 
-import { TokenList } from '@/app/components/TokenList'
+import TokenList from '@/app/components/TokenList'
 import { getTokensMarketData } from '@/libs/xrpl'
 
 const Tokens = async () => {

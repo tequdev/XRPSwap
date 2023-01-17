@@ -3,7 +3,7 @@ import { FC, useContext } from 'react'
 import { overrideTailwindClasses } from 'tailwind-override'
 import { Currency } from 'xrpl/dist/npm/models/common'
 
-import { CloseIcon } from '../Icon/Close'
+import { CloseIcon } from '../../Icon/Close'
 
 import { CurrencyInfo } from '@/@types/xrpl'
 import { SwapContext } from '@/app/context/swapContext'
