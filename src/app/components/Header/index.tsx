@@ -5,6 +5,7 @@ import { overrideTailwindClasses } from 'tailwind-override'
 import { LogoIcon } from '../Icon/Logo'
 
 import { HeaderRightButton } from './HeaderRightButton'
+import { MobileMenu } from './MenuList/MobileMenu'
 import { PCMenu } from './MenuList/PCMenu'
 
 type Props = {
@@ -32,6 +33,7 @@ const Header: FC<Props> = ({ className }) => {
       <div className='navbar-end'>
         <HeaderRightButton />
       </div>
+      <MobileMenu />
     </header>
   )
 }

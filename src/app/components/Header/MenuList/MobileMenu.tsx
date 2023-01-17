@@ -1,3 +1,4 @@
+'use client'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { overrideTailwindClasses } from 'tailwind-override'
@@ -7,6 +8,7 @@ import { TokenIcon } from '../../Icon/Token'
 
 export const MobileMenu = () => {
   const pathname = usePathname()
+  console.log({ pathname })
   return (
     <div
       className={overrideTailwindClasses(
