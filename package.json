@@ -33,6 +33,7 @@
     "use-open-window": "^1.4.0",
     "utf-8-validate": "^5.0.10",
     "xrpl": "2.7.0-beta.0",
+    "xrpl-client": "^2.0.1",
     "xumm": "^1.1.6"
   },
   "devDependencies": {

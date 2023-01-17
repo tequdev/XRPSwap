@@ -1,5 +1,5 @@
-import { PathFindResponse } from 'xrpl'
-import { Amount, IssuedCurrency } from 'xrpl/dist/npm/models/common'
+import type { PathFindResponse } from 'xrpl'
+import type { Amount, IssuedCurrency } from 'xrpl/dist/npm/models/common'
 
 export type CurrencyInfo = IssuedCurrency & { name: string; icon?: string; balance: number }
 

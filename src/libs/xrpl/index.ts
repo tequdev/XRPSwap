@@ -1,30 +1,107 @@
-import { AccountInfoRequest, AccountInfoResponse, Client, ServerInfoRequest, ServerInfoResponse } from 'xrpl'
+import type { AccountInfoResponse, AccountLinesResponse, ServerInfoResponse } from 'xrpl'
+import { XrplClient } from 'xrpl-client'
+import type { Trustline } from 'xrpl/dist/npm/models/methods/accountLines'
 
 import { CurrencyInfo, TokensMarketData } from '@/@types/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
-// const server = 'wss://s.altnet.rippletest.net:51233/'
-// const server = 'wss://amm.devnet.rippletest.net:51233'
-const server = 'wss://xrpl.ws'
-export const client = new Client(server, { connectionTimeout: 10000 })
-export const client2 = new Client(server, { connectionTimeout: 10000 })
 
-export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
-  await client.connect()
-  const [response, accountInfoResponse, serverInfoResponse] = await Promise.all([
-    client.getBalances(address),
-    client.request<AccountInfoRequest, AccountInfoResponse>({
+export const client = new XrplClient()
+export const client2 = new XrplClient()
+
+type Balance = {
+  value: string
+  currency: string
+  issuer?: string
+}
+
+const requestAll = async (request: any) => {
+  let result: any[] = []
+  let marker: string | undefined = undefined
+  do {
+    const json = (await client.send({
+      ...request,
+      limit: Infinity,
+      marker,
+      ledger_index: 'validated',
+    })) as any
+    marker = json.marker
+    const collectKey = getCollectKeyFromCommand(request.command)
+    if (!collectKey) {
+      throw new Error(`no collect key for command ${request.command}`)
+    }
+    result = result.concat(json[collectKey])
+  } while (marker)
+  return result
+}
+
+// https://github.com/XRPLF/xrpl.js/blob/45963b70356f4609781a6396407e2211fd15bcf1/packages/xrpl/src/client/index.ts#L131
+function getCollectKeyFromCommand(command: string): string | null {
+  switch (command) {
+    case 'account_channels':
+      return 'channels'
+    case 'account_lines':
+      return 'lines'
+    case 'account_objects':
+      return 'account_objects'
+    case 'account_tx':
+      return 'transactions'
+    case 'account_offers':
+    case 'book_offers':
+      return 'offers'
+    case 'ledger_data':
+      return 'state'
+    default:
+      return null
+  }
+}
+
+function formatBalances(trustlines: Trustline[]): Balance[] {
+  return trustlines.map((trustline) => ({
+    value: trustline.balance,
+    currency: trustline.currency,
+    issuer: trustline.account,
+  }))
+}
+
+const getBalances = async (address: string): Promise<Balance[]> => {
+  const xrpPromise = client
+    .send({
       command: 'account_info',
       account: address,
       ledger_index: 'validated',
-    }),
-    client.request<ServerInfoRequest, ServerInfoResponse>({ command: 'server_info' }),
+    })
+    .then((res) => res['account_data'].Balance as string)
+  const linesPromise = requestAll({
+    command: 'account_lines',
+    account: address,
+  }) as unknown as Promise<AccountLinesResponse['result']['lines']>
+
+  return Promise.all([xrpPromise, linesPromise]).then(([xrpBalance, linesBalance]) => {
+    const balances: Balance[] = []
+    const accountLinesBalance = formatBalances(linesBalance)
+    if (xrpBalance !== '') {
+      balances.push({ currency: 'XRP', value: xrpBalance })
+    }
+    balances.push(...accountLinesBalance)
+    return balances
+  })
+}
+
+export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
+  const [response, accountInfoResponse, serverInfoResponse] = await Promise.all([
+    getBalances(address),
+    client.send({
+      command: 'account_info',
+      account: address,
+      ledger_index: 'validated',
+    }) as unknown as AccountInfoResponse['result'],
+    client.send({ command: 'server_info' }) as unknown as ServerInfoResponse['result'],
   ])
-  const { reserve_base_xrp: baseReserve, reserve_inc_xrp: incReserve } = serverInfoResponse.result.info
-    .validated_ledger || {
+  const { reserve_base_xrp: baseReserve, reserve_inc_xrp: incReserve } = serverInfoResponse.info.validated_ledger || {
     reserve_base_xrp: 10,
     reserve_inc_xrp: 2,
   }
-  const ownerCount = accountInfoResponse.result.account_data.OwnerCount
+  const ownerCount = accountInfoResponse.account_data.OwnerCount
 
   const lines = response.map((line) => ({
     issuer: line.issuer || '',

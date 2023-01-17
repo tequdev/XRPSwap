@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react'
-import { xrpToDrops } from 'xrpl'
-import { Amount } from 'xrpl/dist/npm/models/common'
+import type { Amount } from 'xrpl/dist/npm/models/common'
+import { xrpToDrops } from 'xrpl/dist/npm/utils'
 
 import { CurrencyAmount } from '@/@types/xrpl'
 import { AuthContext } from '@/app/context/authContext'

@@ -6333,6 +6333,14 @@ xmlchars@^2.2.0:
   resolved "https://registry.yarnpkg.com/xmlchars/-/xmlchars-2.2.0.tgz#060fe1bcb7f9c76fe2a17db86a9bc3ab894210cb"
   integrity sha512-JZnDKK8B0RCDw84FNdDAIpZK+JuJw+s7Lz8nksI7SIuU3UXJJslUthsi+uWBUYOwPFwW7W7PRLRfUKpxjtjFCw==
 
+xrpl-client@^2.0.1:
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/xrpl-client/-/xrpl-client-2.0.1.tgz#893459555a4d47c659fc10c75cb45fbc9e261a0a"
+  integrity sha512-XdYKs15e5i7ZNHMVeJ2hAcp0pGwKIohUPfWuqsFChTafvwEm4Vf/ZhCISDnxO89mZztkCJMFbTvAKM5HLays+w==
+  dependencies:
+    debug "^4.1.1"
+    websocket "^1.0.34"
+
 xrpl@2.7.0-beta.0:
   version "2.7.0-beta.0"
   resolved "https://registry.yarnpkg.com/xrpl/-/xrpl-2.7.0-beta.0.tgz#2c5cdeb626a9de477ee906331eaef466c5afbf3a"

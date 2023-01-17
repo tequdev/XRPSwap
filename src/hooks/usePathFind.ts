@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
-import { dropsToXrp, PathFindCreateRequest, PathFindResponse, PathFindStream } from 'xrpl'
-import { Amount, IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
+import type { PathFindStream } from 'xrpl'
+import type { Amount, IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
+import { dropsToXrp } from 'xrpl/dist/npm/utils'
 
 import { PathOption } from '@/@types/xrpl'
 import { client, client2 } from '@/libs/xrpl'
@@ -37,17 +38,13 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
   useEffect(() => {
     setPricePath([])
     if (!enable) return
-    client2.connect().then(() => {
-      client2
-        .request<PathFindCreateRequest, PathFindResponse>({
-          command: 'path_find',
-          subcommand: 'create',
-          source_account: account,
-          destination_account: account,
-          destination_amount: parseToXrpAmount(transformDestAmount(toCurrency)),
-          send_max: parseToXrpAmount(transformMinAmount(fromCurrency)),
-        })
-        .catch(() => null)
+    client2.send({
+      command: 'path_find',
+      subcommand: 'create',
+      source_account: account,
+      destination_account: account,
+      destination_amount: parseToXrpAmount(transformDestAmount(toCurrency)),
+      send_max: parseToXrpAmount(transformMinAmount(fromCurrency)),
     })
   }, [account, enable, fromCurrency, toCurrency])
 
@@ -59,23 +56,19 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
       return
     }
     setActive(true)
-    client.connect().then(() => {
-      client
-        .request<PathFindCreateRequest, PathFindResponse>({
-          command: 'path_find',
-          subcommand: 'create',
-          source_account: account,
-          destination_account: account,
-          destination_amount: parseToXrpAmount(transformDestAmount(to)),
-          send_max: parseToXrpAmount(from),
-        })
-        .catch(() => null)
+    client.send({
+      command: 'path_find',
+      subcommand: 'create',
+      source_account: account,
+      destination_account: account,
+      destination_amount: parseToXrpAmount(transformDestAmount(to)),
+      send_max: parseToXrpAmount(from),
     })
   }, [account, enable, from, to])
 
   useEffect(() => {
     if (!enable) return
-    const onPathFind = (stream: PathFindStream) => {
+    const onPathFind = (stream: any) => {
       if (!stream.full_reply) return
       const alternatives = stream.alternatives as PathOption[]
       setAlternatives(alternatives)
@@ -86,16 +79,12 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
       setPricePath(alternatives)
     }
 
-    client.connect().then(() => {
-      client.on('path_find', onPathFind)
-    })
-    client2.connect().then(() => {
-      client2.on('path_find', onPriceFind)
-    })
+    client.on('path', onPathFind as (stream: any) => void)
+    client2.on('path', onPriceFind as (stream: any) => void)
 
     return () => {
-      client.request({ command: 'path_find', subcommand: 'close' }).catch(() => null)
-      client2.request({ command: 'path_find', subcommand: 'close' }).catch(() => null)
+      client.close()
+      client2.close()
     }
   }, [enable])
 

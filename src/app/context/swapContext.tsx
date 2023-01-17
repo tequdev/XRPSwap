@@ -1,6 +1,6 @@
 'use client'
 import { createContext, FC, useContext, useEffect, useMemo, useState } from 'react'
-import { dropsToXrp } from 'xrpl'
+import { dropsToXrp } from 'xrpl/dist/npm/utils'
 
 import { AuthContext } from './authContext'
 import { TokenContext } from './tokenContext'

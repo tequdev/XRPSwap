@@ -1,5 +1,5 @@
-import { convertStringToHex, xrpToDrops } from 'xrpl'
-import { Amount, Currency, IssuedCurrency } from 'xrpl/dist/npm/models/common'
+import type { Amount, Currency, IssuedCurrency } from 'xrpl/dist/npm/models/common'
+import { convertStringToHex, xrpToDrops } from 'xrpl/dist/npm/utils'
 
 import { CurrencyAmount } from '@/@types/xrpl'
 
