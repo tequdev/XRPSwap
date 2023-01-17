@@ -71,7 +71,7 @@ const Token: FC<Props> = ({ index, data }) => {
           <div className='card-actions justify-end'>
             {isConnected && hasTrustLined && (
               <button className='btn-disabled btn-primary btn-sm btn text-gray-200'>
-                <CheckIcon className='-mt-1 mr-1 h-6 w-6 md:mt-auto md:mr-auto md:h-6 md:w-6' />
+                <CheckIcon className='mr-1 h-6 w-6' />
                 Trustline
               </button>
             )}
