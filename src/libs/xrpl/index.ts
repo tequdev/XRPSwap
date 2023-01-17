@@ -156,7 +156,7 @@ export const getTokensMarketData = async (
     page: (page || 1).toString(),
   })
   const response = await fetch(`https://api.onthedex.live/public/v1/daily/tokens?${param}`, {
-    next: { revalidate: 600 },
+    next: { revalidate: 60 },
   })
   const json = (await response.json()) as TokensMarketDataResponse
   return json.tokens.map((token) => ({
