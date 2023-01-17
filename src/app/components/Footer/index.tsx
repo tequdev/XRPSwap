@@ -19,7 +19,7 @@ const Socials = () => {
   )
 }
 
-export const Footer = () => {
+const Footer = () => {
   return (
     <footer className='footer grid grid-cols-12 items-center justify-between gap-y-2 bg-base-200 p-4 pb-[calc(env(safe-area-inset-bottom)+6rem)] text-base-content md:flex md:px-12 md:pb-4'>
       <div className='col-span-12 flex w-full items-center justify-between'>
@@ -41,3 +41,5 @@ export const Footer = () => {
     </footer>
   )
 }
+
+export default Footer

@@ -1,41 +1,16 @@
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { FC, useContext } from 'react'
+import { FC } from 'react'
 import { overrideTailwindClasses } from 'tailwind-override'
 
 import { LogoIcon } from '../Icon/Logo'
-import { SwapIcon } from '../Icon/Swap'
-import { TokenIcon } from '../Icon/Token'
 
-import { AccountInfo } from './AccountInfo'
-import { ConnectWallet } from './ConnectWallet'
-
-import { AuthContext } from '@/app/context/authContext'
+import { HeaderRightButton } from './HeaderRightButton'
+import { PCMenu } from './MenuList/PCMenu'
 
 type Props = {
   className?: string
 }
-export const Header: FC<Props> = ({ className }) => {
-  const pathname = usePathname()
-  const { state, loading } = useContext(AuthContext)
-  const MenuList = () => {
-    return (
-      <>
-        <li className={pathname === '/' ? 'border-b-2 border-gray-600' : ''}>
-          <Link href='/' className='pl-2 pb-2'>
-            <SwapIcon className='h-6 w-6 text-black' />
-            Swap
-          </Link>
-        </li>
-        <li className={pathname === '/tokens' ? 'border-b-2 border-gray-600' : ''}>
-          <Link href='/tokens' className='pl-2 pb-2'>
-            <TokenIcon className='h-6 w-6 text-black' />
-            Tokens
-          </Link>
-        </li>
-      </>
-    )
-  }
+const Header: FC<Props> = ({ className }) => {
   return (
     <header className={overrideTailwindClasses('navbar bg-base-100 ' + className)}>
       <div className='navbar-start'>
@@ -51,41 +26,14 @@ export const Header: FC<Props> = ({ className }) => {
       </div>
       <div className='navbar-center hidden md:flex'>
         <ul className='menu menu-horizontal px-1'>
-          <MenuList />
+          <PCMenu />
         </ul>
       </div>
       <div className='navbar-end'>
-        {!loading && !state?.account && <ConnectWallet />}
-        {!loading && state?.account && <AccountInfo />}
-      </div>
-      {/* eslint-disable-next-line tailwindcss/no-contradicting-classname */}
-      <div
-        className={overrideTailwindClasses(
-          'btm-nav z-50 m-2  w-auto rounded-3xl border-[1px] border-gray-200 pb-0 md:hidden ' +
-            'mb-[calc(env(safe-area-inset-bottom)+8px)]'
-        )}
-      >
-        <button
-          className={overrideTailwindClasses(
-            'text-gray-300 ' + (pathname === '/' ? 'text-black ' : '') + 'rounded-3xl'
-          )}
-        >
-          <Link href='/' className='flex flex-col items-center'>
-            <SwapIcon className='h-8 w-8 text-current' />
-            Swap
-          </Link>
-        </button>
-        <button
-          className={overrideTailwindClasses(
-            'text-gray-300 ' + (pathname === '/tokens' ? 'text-black ' : '') + 'rounded-3xl'
-          )}
-        >
-          <Link href='/tokens' className='flex flex-col items-center'>
-            <TokenIcon className='h-8 w-8 text-current' />
-            Tokens
-          </Link>
-        </button>
+        <HeaderRightButton />
       </div>
     </header>
   )
 }
+
+export default Header
