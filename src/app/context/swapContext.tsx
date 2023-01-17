@@ -64,7 +64,7 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
       issuer: currency.issuer,
       currency: currency.currency,
       name: currency.name,
-      value: 0,
+      value: 1,
     }
     setCurrencies({ from: currencyFrom, to: currencies.to })
   }

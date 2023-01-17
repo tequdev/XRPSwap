@@ -19,7 +19,7 @@ export const SelectCurrency: FC<Props> = ({ type, current }) => {
 
   const setCurrency = useCallback(
     (currencyProp: CurrencyInfo) => {
-      const currency = { ...currencyProp, value: 0 }
+      const currency = { ...currencyProp, value: 1 }
       type === 'from' ? setCurrencyFrom(currency) : setCurrencyTo(currency)
     },
     [setCurrencyFrom, setCurrencyTo, type]
