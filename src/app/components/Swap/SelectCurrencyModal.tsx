@@ -19,7 +19,7 @@ export const SelectCurrencyModal: FC<Props> = ({ onSelect, onClose }) => {
   const { currencies: allCurrencies, loading } = useContext(TokenContext)
   const { currencies } = useContext(SwapContext)
   return (
-    <div className='mx-2 box-border h-[36rem] w-full rounded-3xl border-4 border-white bg-white px-4 py-6 shadow md:mx-auto md:w-[450px]'>
+    <div className='mx-2 box-border h-[36rem] w-full min-w-[300px] rounded-3xl border-4 border-white bg-white px-4 py-6 shadow md:mx-auto md:w-[450px]'>
       <div className='flex h-12 justify-between text-2xl font-bold'>
         <div>Select Currency</div>
         <div>
