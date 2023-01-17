@@ -4,6 +4,7 @@ import { FC, useContext, useMemo } from 'react'
 import { CheckIcon } from '../Icon/Check'
 
 import { TokensMarketData } from '@/@types/xrpl'
+import { AuthContext } from '@/app/context/authContext'
 import { TokenContext } from '@/app/context/tokenContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSetTrustLine } from '@/hooks/useSetTrustLine'
@@ -16,6 +17,7 @@ type Props = {
 }
 
 export const Token: FC<Props> = ({ index, data }) => {
+  const { state } = useContext(AuthContext)
   const { currencies } = useContext(TokenContext)
   const { setTrustLine } = useSetTrustLine()
   const { openWindow } = usePayloadOpen()
@@ -67,13 +69,13 @@ export const Token: FC<Props> = ({ index, data }) => {
             </div>
           </div>
           <div className='card-actions justify-end'>
-            {hasTrustLined && (
+            {state?.account && hasTrustLined && (
               <button className='btn-disabled btn-primary btn-sm btn text-gray-200'>
                 <CheckIcon className='-mt-1 mr-1 h-6 w-6 md:mt-auto md:mr-auto md:h-6 md:w-6' />
                 Trustline
               </button>
             )}
-            {!hasTrustLined && (
+            {state?.account && !hasTrustLined && (
               <button className='btn-outline btn-primary btn-sm btn' onClick={handleSetTrustLine}>
                 Set Trustline
               </button>
