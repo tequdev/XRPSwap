@@ -9,10 +9,12 @@ const xumm = new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!, process.env.XUMM_SEC
 type XummUser = { [P in keyof Xumm['user']]: PromiseType<Xumm['user'][P]> }
 
 type Context = {
+  runtime: Xumm['runtime']
   connect: Xumm['authorize']
   disconnect: Xumm['logout']
   state: XummUser | undefined | null
   sdk: Xumm['payload']
+  xapp: Xumm['xapp']
   loading: boolean
   isConnected: boolean
 }
@@ -76,7 +78,18 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   const isConnected = useMemo(() => !!state?.account, [state?.account])
 
   return (
-    <AuthContext.Provider value={{ connect, disconnect, state, sdk: xumm.payload, loading, isConnected }}>
+    <AuthContext.Provider
+      value={{
+        runtime: xumm.runtime,
+        connect,
+        disconnect,
+        state,
+        sdk: xumm.payload,
+        xapp: xumm.xapp,
+        loading,
+        isConnected,
+      }}
+    >
       {children}
     </AuthContext.Provider>
   )

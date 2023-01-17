@@ -25,14 +25,18 @@ const options: UseOpenInWindowOptionsWithUrl = {
 type PayloadSubscription = PromiseType<PromiseType<ReturnType<NonNullable<Xumm['payload']>['subscribe']>>>
 
 export const usePayloadOpen = () => {
-  const { sdk } = useContext(AuthContext)
+  const { sdk, runtime, xapp } = useContext(AuthContext)
   const [subscription, setSubscription] = useState<PayloadSubscription | null>(null)
   const [handleWindowOpen, popup] = useOpenInWindow(options)
   const openWindow = useCallback(
     async (payload: XummPostPayloadResponse) => {
       const url = payload.next.always
       const uuid = payload.uuid
-      if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
+      if (runtime.xapp) {
+        await xapp?.openSignRequest({
+          uuid: payload.uuid,
+        })
+      } else if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         location.replace(url)
       } else {
         handleWindowOpen(undefined as any, { ...options, url })
@@ -41,7 +45,7 @@ export const usePayloadOpen = () => {
         setSubscription(sub)
       }
     },
-    [handleWindowOpen, sdk]
+    [handleWindowOpen, runtime.xapp, sdk, xapp]
   )
 
   useEffect(() => {
