@@ -14,7 +14,7 @@ const MyApp = ({ children }: { children: React.ReactNode }) => {
         <AuthContextProvider>
           <Header className='h-16 px-4 md:px-12' />
           <TokenContextProvider>
-            <main className='min-h-[calc(100vh-4rem)] py-16 md:py-28'>
+            <main className='min-h-[calc(100vh-4rem)] py-8 md:py-20'>
               {children}
               <div id='root' />
             </main>
