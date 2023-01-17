@@ -55,6 +55,7 @@ export const Currency: FC<Props> = ({ type }) => {
           <div>
             <input
               type='text'
+              inputMode='decimal'
               className={`w-full appearance-none text-3xl text-gray-600 outline-none ${
                 type === 'to' && pathLoading && 'animate-pulse text-gray-400'
               }`}
