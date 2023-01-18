@@ -70,7 +70,11 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   }, [])
 
   const disconnect = useCallback(async () => {
-    await xumm.logout()
+    if (xumm.runtime.xapp) {
+      await xumm.xapp?.close()
+    } else {
+      await xumm.logout()
+    }
     // https://github.com/XRPL-Labs/XummPkce/pull/3
     setState(undefined)
   }, [])

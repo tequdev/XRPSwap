@@ -3,7 +3,7 @@ import { useContext } from 'react'
 import { AuthContext } from '@/app/context/authContext'
 
 export const AccountInfo = () => {
-  const { state, disconnect } = useContext(AuthContext)
+  const { state, disconnect, runtime } = useContext(AuthContext)
   return (
     <ul className='menu rounded-box menu-horizontal bg-base-100 px-1 shadow'>
       <li tabIndex={0} className=''>
@@ -15,7 +15,7 @@ export const AccountInfo = () => {
         </a>
         <ul className='rounded-box bg-base-100 shadow'>
           <li>
-            <a onClick={disconnect}>Disconnect</a>
+            <a onClick={disconnect}>{runtime.xapp ? 'Close' : 'Disconnect'}</a>
           </li>
         </ul>
       </li>

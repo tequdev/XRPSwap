@@ -38,7 +38,6 @@ const Token: FC<Props> = ({ index, data }) => {
   }
 
   useEffect(() => {
-    console.log({ signed })
     if (signed) refetch()
   }, [refetch, signed])
 
