@@ -2,8 +2,7 @@ import type { AccountInfoResponse, AccountLinesResponse, ServerInfoResponse } fr
 import { XrplClient } from 'xrpl-client'
 import type { Trustline } from 'xrpl/dist/npm/models/methods/accountLines'
 
-import { CurrencyInfo, TokensMarketData } from '@/@types/xrpl'
-import { convertCurrencyCode } from '@/utils/xrpl'
+import { TokensMarketData } from '@/@types/xrpl'
 
 export const client = new XrplClient()
 export const client2 = new XrplClient()
@@ -63,7 +62,7 @@ function formatBalances(trustlines: Trustline[]): Balance[] {
   }))
 }
 
-const getBalances = async (address: string): Promise<Balance[]> => {
+export const getBalances = async (address: string): Promise<Balance[]> => {
   const xrpPromise = client
     .send({
       command: 'account_info',
@@ -87,45 +86,16 @@ const getBalances = async (address: string): Promise<Balance[]> => {
   })
 }
 
-export const getAccountTokensMeta = async (address: string): Promise<CurrencyInfo[]> => {
-  const [response, accountInfoResponse, serverInfoResponse] = await Promise.all([
-    getBalances(address),
-    client.send({
-      command: 'account_info',
-      account: address,
-      ledger_index: 'validated',
-    }) as unknown as AccountInfoResponse['result'],
-    client.send({ command: 'server_info' }) as unknown as ServerInfoResponse['result'],
-  ])
-  const { reserve_base_xrp: baseReserve, reserve_inc_xrp: incReserve } = serverInfoResponse.info.validated_ledger || {
-    reserve_base_xrp: 10,
-    reserve_inc_xrp: 2,
-  }
-  const ownerCount = accountInfoResponse.account_data.OwnerCount
+export const getAccountInfo = (address: string): Promise<AccountInfoResponse['result']> => {
+  return client.send({
+    command: 'account_info',
+    account: address,
+    ledger_index: 'validated',
+  }) as any
+}
 
-  const lines = response.map((line) => ({
-    issuer: line.issuer || '',
-    currency: line.currency,
-    name: convertCurrencyCode(line.currency),
-    balance: parseFloat(line.value),
-  }))
-  const targetTokens = lines.filter((l) => l.currency !== 'XRP')
-  const responseMeta = await fetch('https://api.onthedex.live/public/v1/token/meta', {
-    method: 'POST',
-    body: JSON.stringify({ tokens: targetTokens }),
-  })
-  const metaJson = await responseMeta.json()
-  const metas = metaJson.meta as any[]
-  return lines.map((line) => {
-    const meta = metas.find((m) => m.issuer === line.issuer && m.currency === line.currency)
-    return {
-      issuer: line.issuer,
-      currency: line.currency,
-      name: meta?.token_name || line.name,
-      icon: line.currency !== 'XRP' ? meta?.logo_file : 'https://cryptologos.cc/logos/xrp-xrp-logo.svg',
-      balance: line.currency !== 'XRP' ? line.balance : line.balance - (baseReserve + incReserve * ownerCount),
-    }
-  })
+export const getServerInfo = (): Promise<ServerInfoResponse['result']> => {
+  return client.send({ command: 'server_info' }) as any
 }
 
 type TokensMarketDataOption = {
