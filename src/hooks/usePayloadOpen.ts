@@ -2,6 +2,7 @@ import { useCallback, useContext, useEffect, useState } from 'react'
 import { useOpenInWindow, UseOpenInWindowOptionsWithUrl } from 'use-open-window'
 import type { Xumm } from 'xumm'
 import { XummPostPayloadResponse } from 'xumm-sdk/dist/src/types'
+import type { payloadEventData } from 'xumm-xapp-sdk'
 
 import { PromiseType } from '@/@types/utils'
 import { AuthContext } from '@/app/context/authContext'
@@ -25,17 +26,37 @@ const options: UseOpenInWindowOptionsWithUrl = {
 type PayloadSubscription = PromiseType<PromiseType<ReturnType<NonNullable<Xumm['payload']>['subscribe']>>>
 
 export const usePayloadOpen = () => {
+  const [signed, setSigned] = useState<boolean>(false)
   const { sdk, runtime, xapp } = useContext(AuthContext)
   const [subscription, setSubscription] = useState<PayloadSubscription | null>(null)
   const [handleWindowOpen, popup] = useOpenInWindow(options)
+
+  const xAppPayloadHandler = useCallback(() => {
+    const handler = (event: payloadEventData) => {
+      if (signed) return
+      const result = event.reason === 'SIGNED'
+      setSigned(result)
+      return result
+    }
+    xapp?.on('payload', (event) => {
+      const signed = handler(event)
+      if (signed) {
+        xapp?.off('payload', handler)
+      }
+    })
+  }, [signed, xapp])
+
   const openWindow = useCallback(
     async (payload: XummPostPayloadResponse) => {
       const url = payload.next.always
       const uuid = payload.uuid
       if (runtime.xapp) {
-        await xapp?.openSignRequest({
+        const openResult = await xapp?.openSignRequest({
           uuid: payload.uuid,
         })
+        if (typeof openResult === 'boolean' && openResult) {
+          xAppPayloadHandler()
+        }
       } else if (navigator.userAgent.match(/(iPhone|iPad|iPod|Android)/i)) {
         location.replace(url)
       } else {
@@ -45,22 +66,23 @@ export const usePayloadOpen = () => {
         setSubscription(sub)
       }
     },
-    [handleWindowOpen, runtime.xapp, sdk, xapp]
+    [handleWindowOpen, runtime.xapp, sdk, xAppPayloadHandler, xapp]
   )
 
   useEffect(() => {
-    if (!subscription) return
+    if (!subscription || !runtime.browser) return
     subscription.websocket.onmessage = (message) => {
       if (message.data.toString().match(/signed/)) {
-        subscription.resolve()
+        const json = JSON.parse(message.data.toString())
+        subscription.resolve(json.signed)
       }
     }
-    subscription.resolved?.then(() => {
+    subscription.resolved?.then((signed) => {
       setSubscription(null)
-      subscription.resolved
       setTimeout(() => popup?.close(), 750)
+      setSigned(signed as boolean)
     })
-  }, [popup, subscription])
+  }, [popup, runtime.browser, subscription])
 
-  return { openWindow }
+  return { openWindow, signed }
 }

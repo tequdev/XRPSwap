@@ -1,5 +1,5 @@
 import Image from 'next/image'
-import { FC, useContext, useMemo } from 'react'
+import { FC, useContext, useEffect, useMemo } from 'react'
 
 import { CheckIcon } from '../Icon/Check'
 
@@ -18,9 +18,9 @@ type Props = {
 
 const Token: FC<Props> = ({ index, data }) => {
   const { isConnected } = useContext(AuthContext)
-  const { currencies } = useContext(TokenContext)
+  const { currencies, refetch } = useContext(TokenContext)
   const { setTrustLine } = useSetTrustLine()
-  const { openWindow } = usePayloadOpen()
+  const { openWindow, signed } = usePayloadOpen()
 
   const hasTrustLined = useMemo(() => {
     return currencies.some((c) => c.issuer === data.issuer && c.currency === parseCurrencyCode(data.currency))
@@ -36,6 +36,12 @@ const Token: FC<Props> = ({ index, data }) => {
       openWindow(payload)
     }
   }
+
+  useEffect(() => {
+    console.log({ signed })
+    if (signed) refetch()
+  }, [refetch, signed])
+
   return (
     <div className='card m-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>
       <div className='flex'>

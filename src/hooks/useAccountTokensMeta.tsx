@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { useAccountReserve } from './useAccountReserve'
 
@@ -28,7 +28,7 @@ const XRP: CurrencyInfo = {
   balance: 100000000000,
 }
 
-type Response = { info: CurrencyInfo[]; loading: boolean }
+type Response = { info: CurrencyInfo[]; loading: boolean; refetch: () => void }
 
 export const useAccountTokensMeta = (): Response => {
   const [loading, setLoading] = useState(true)
@@ -37,8 +37,7 @@ export const useAccountTokensMeta = (): Response => {
   const [tokens, setTokens] = useState<Token[]>([])
   const [meta, setMeta] = useState<Meta[]>([])
 
-  useEffect(() => {
-    if (!isConnected) return
+  const balanceHandler = useCallback(() => {
     getBalances(state!.account!).then((res) => {
       const lines = res.map((line) => ({
         issuer: line.issuer || '',
@@ -48,7 +47,12 @@ export const useAccountTokensMeta = (): Response => {
       }))
       setTokens(lines)
     })
-  }, [isConnected, state])
+  }, [state])
+
+  useEffect(() => {
+    if (!isConnected) return
+    balanceHandler()
+  }, [balanceHandler, isConnected])
 
   useEffect(() => {
     const targetTokens = tokens.filter((l) => l.currency !== 'XRP')
@@ -80,5 +84,9 @@ export const useAccountTokensMeta = (): Response => {
     })
   }, [meta, reserve, tokens])
 
-  return { info: tokensMeta, loading }
+  const refetch = useCallback(() => {
+    balanceHandler()
+  }, [balanceHandler])
+
+  return { info: tokensMeta, loading, refetch }
 }
