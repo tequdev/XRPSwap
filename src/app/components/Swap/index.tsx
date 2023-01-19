@@ -1,5 +1,5 @@
 'use client'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 
 import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 
@@ -16,9 +16,9 @@ import { useSwap } from '@/hooks/useSwap'
 
 const Swap = () => {
   const { loading, isConnected } = useContext(AuthContext)
-  const { switchCurrencies, bestRoute } = useContext(SwapContext)
+  const { switchCurrencies, bestRoute, refetch } = useContext(SwapContext)
   const { swap } = useSwap()
-  const { openWindow } = usePayloadOpen()
+  const { openWindow, signed } = usePayloadOpen()
 
   const handleSwap = async () => {
     const payload = await swap()
@@ -26,6 +26,11 @@ const Swap = () => {
       openWindow(payload)
     }
   }
+
+  useEffect(() => {
+    if (signed) refetch()
+  }, [refetch, signed])
+
   return (
     <div className='mx-1 flex w-full flex-col items-center md:max-w-[450px]'>
       {!loading && !isConnected && (

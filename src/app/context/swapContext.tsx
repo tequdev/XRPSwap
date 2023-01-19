@@ -21,13 +21,14 @@ type ContextState = {
   bestRoute: PathOption | null
   bestPrice: number
   swapPrice: number
+  refetch: () => void
 }
 
 export const SwapContext = createContext<ContextState>({} as any)
 
 const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
   const { state } = useContext(AuthContext)
-  const { currencies: userCurrencies } = useContext(TokenContext)
+  const { currencies: userCurrencies, refetch } = useContext(TokenContext)
   const [currencies, setCurrencies] = useState<Currencies>({
     from: { ...userCurrencies[0], value: 1 },
     to: { ...userCurrencies[1], value: 1 },
@@ -133,6 +134,7 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
         bestRoute,
         bestPrice: parseFloat(bestPrice.toFixed(6)),
         swapPrice: parseFloat(swapPrice.toFixed(6)),
+        refetch,
       }}
     >
       {children}
