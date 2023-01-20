@@ -62,7 +62,7 @@ export const useAccountTokensMeta = (): Response => {
     }).then(async (res) => {
       const metaJson = await res.json()
       const metas = metaJson.meta as Meta[]
-      setMeta(metas)
+      setMeta(metas || [])
       setLoading(false)
     })
     // eslint-disable-next-line react-hooks/exhaustive-deps

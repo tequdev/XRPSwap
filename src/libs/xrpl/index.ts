@@ -129,7 +129,7 @@ export const getTokensMarketData = async (
     next: { revalidate: 60 },
   })
   const json = (await response.json()) as TokensMarketDataResponse
-  return json.tokens.map((token) => ({
+  return (json?.tokens || []).map((token) => ({
     issuer: token.issuer,
     currency: token.currency,
     name: token.token_name || token.currency,
