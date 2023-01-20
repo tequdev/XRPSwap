@@ -56,6 +56,9 @@ const Swap = () => {
               </div>
             </div>
             <SwapButton onClick={handleSwap} />
+            <div className='-mt-4 -mb-2 text-xs text-gray-400'>
+              <span>The swap price may vary at the time of transaction signing.</span>
+            </div>
           </>
         </div>
       )}
