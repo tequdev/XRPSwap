@@ -4,8 +4,6 @@ import { Xumm } from 'xumm'
 
 import { PromiseType } from '@/@types/utils'
 
-const xumm = new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!, process.env.XUMM_SECRET!)
-
 type XummUser = { [P in keyof Xumm['user']]: PromiseType<Xumm['user'][P]> }
 
 type Context = {
@@ -22,6 +20,7 @@ type Context = {
 export const AuthContext = createContext<Context>(null as any)
 
 const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+  const xumm = useMemo(() => new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!, process.env.XUMM_SECRET!), [])
   const [state, setState] = useState<Context['state'] | undefined | null>(null)
 
   const loading = useMemo(() => false && state === null, [state])
@@ -34,7 +33,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
       })
     )
     return Object.assign({}, ...promisedUserArray) as Promise<XummUser>
-  }, [])
+  }, [xumm.user])
 
   useEffect(() => {
     const handler = async () => {
@@ -52,7 +51,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
       xumm.off('error', errorHandler)
       xumm.off('retrieved', handler)
     }
-  }, [getUser])
+  }, [getUser, xumm])
 
   const connect = useCallback(() => {
     return (
@@ -67,7 +66,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
           return undefined
         })
     )
-  }, [])
+  }, [xumm])
 
   const disconnect = useCallback(async () => {
     if (xumm.runtime.xapp) {
@@ -77,7 +76,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     }
     // https://github.com/XRPL-Labs/XummPkce/pull/3
     setState(undefined)
-  }, [])
+  }, [xumm])
 
   const isConnected = useMemo(() => !!state?.account, [state?.account])
 
