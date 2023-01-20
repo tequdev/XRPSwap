@@ -1,3 +1,5 @@
+import GoogleAnalytics from './components/common/GoogleAnalytics'
+
 const Head = () => {
   const host = 'http://XRPSw.app'
   return (
@@ -12,6 +14,7 @@ const Head = () => {
       <meta name='og:description' key='og:description' content='Swap XRP Ledger tokens' />
       <meta name='twitter:card' key='twitter:card' content='summary_large_image' />
       <link rel='icon' href='/favicon.svg' />
+      <GoogleAnalytics />
     </>
   )
 }
