@@ -1,4 +1,4 @@
-import type { AccountInfoResponse, AccountLinesResponse, ServerInfoResponse } from 'xrpl'
+import { AccountInfoResponse, AccountLinesResponse, dropsToXrp, ServerInfoResponse } from 'xrpl'
 import { XrplClient } from 'xrpl-client'
 import type { Trustline } from 'xrpl/dist/npm/models/methods/accountLines'
 
@@ -79,7 +79,7 @@ export const getBalances = async (address: string): Promise<Balance[]> => {
     const balances: Balance[] = []
     const accountLinesBalance = formatBalances(linesBalance)
     if (xrpBalance !== '') {
-      balances.push({ currency: 'XRP', value: xrpBalance })
+      balances.push({ currency: 'XRP', value: dropsToXrp(xrpBalance) })
     }
     balances.push(...accountLinesBalance)
     return balances
