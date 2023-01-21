@@ -3,7 +3,7 @@ const parseLocaleString = (integer: string) => {
 }
 export const significantDigits = (value: number, n: number) => {
   if (value === 0) return '0'
-  if (value > 1) {
+  if (value >= 1) {
     const str = value.toString()
     const splitted = str.split('.')
     const [integer, _decimal] = splitted
