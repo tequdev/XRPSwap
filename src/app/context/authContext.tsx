@@ -23,7 +23,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   const xumm = useMemo(() => new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!, process.env.XUMM_SECRET!), [])
   const [state, setState] = useState<Context['state'] | undefined | null>(null)
 
-  const loading = useMemo(() => false && state === null, [state])
+  const loading = useMemo(() => state === null, [state])
 
   const getUser = useCallback(async () => {
     const user = xumm.user
@@ -37,6 +37,8 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
 
   useEffect(() => {
     const handler = async () => {
+      // TODO
+      setState(undefined)
       setState(await getUser())
     }
     const errorHandler = (e: Error) => {

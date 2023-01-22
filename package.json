@@ -22,7 +22,7 @@
     "use-open-window": "^1.4.0",
     "xrpl": "^2.8.0-beta.0",
     "xrpl-client": "^2.0.1",
-    "xumm": "^1.1.6"
+    "xumm": "1.1.13"
   },
   "devDependencies": {
     "@testing-library/jest-dom": "^5.16.5",
