@@ -5,7 +5,8 @@ import { significantDigits } from '@/utils/number'
 
 export const PriceInfo = () => {
   const { bestPrice, swapPrice } = useContext(SwapContext)
-  const fixedSlippage = useMemo(() => ((1 - swapPrice / bestPrice) * 100).toFixed(2) + '%', [bestPrice, swapPrice])
+  const slippage = useMemo(() => Math.abs((1 - swapPrice / bestPrice) * 100), [bestPrice, swapPrice])
+  const fixedSlippage = useMemo(() => slippage.toFixed(2) + '%', [slippage])
   return (
     <>
       <div className='flex items-center justify-between'>
@@ -30,7 +31,11 @@ export const PriceInfo = () => {
             Slippage
           </label>
           <span id='slippage' className='text-xl font-semibold'>
-            {fixedSlippage}
+            {(isFinite(slippage) && fixedSlippage) || (
+              <div className='w-full text-center'>
+                <span className='animate-ping text-center'>...</span>
+              </div>
+            )}
           </span>
         </div>
       </div>
