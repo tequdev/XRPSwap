@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { overrideTailwindClasses } from 'tailwind-override'
 
+import { PoolIcon } from '../../Icon/Pool'
 import { SwapIcon } from '../../Icon/Swap'
 import { TokenIcon } from '../../Icon/Token'
 
@@ -32,6 +33,17 @@ const MobileMenu = () => {
         <Link href='/tokens' className='flex flex-col items-center'>
           <TokenIcon className='h-8 w-8 text-current' />
           Tokens
+        </Link>
+      </button>
+
+      <button
+        className={overrideTailwindClasses(
+          'text-gray-300 ' + (pathname === '/pools' ? 'text-black ' : '') + 'rounded-3xl'
+        )}
+      >
+        <Link href='/pools' className='flex flex-col items-center'>
+          <PoolIcon className='h-8 w-8 text-current' />
+          Pools
         </Link>
       </button>
     </div>
