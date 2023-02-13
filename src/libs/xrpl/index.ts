@@ -148,3 +148,13 @@ export const getTokensMarketData = async (
     logo: token.logo_file || undefined,
   }))
 }
+
+export const getAccountLpTokensIssuer = async (address: string | undefined) => {
+  if (!address) return []
+  const response = (await client.send({
+    command: 'account_lines',
+    account: address,
+  })) as AccountLinesResponse['result']
+  const issuers = response.lines.filter((line) => line.currency.startsWith('0x03')).map((line) => line.account)
+  return issuers
+}
