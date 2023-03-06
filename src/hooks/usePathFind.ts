@@ -20,6 +20,7 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
   const [from, setPathFrom] = useState<Amount>(_from)
   const [to, setPathTo] = useState<Amount>(_to)
   const [alternatives, setAlternatives] = useState<PathOption[]>([])
+  const [isFullPath, setIsFullPath] = useState<boolean>()
   const [pricePath, setPricePath] = useState<PathOption[]>([])
   const fromCurrencyType = useMemo(() => typeof from, [from])
   const fromCurrency = useMemo(
@@ -51,6 +52,7 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
   useEffect(() => {
     if (!enable) return
     setAlternatives([])
+    setIsFullPath(undefined)
     if (['', '0'].includes(parseAmountValue(parseToXrpAmount(from)))) {
       setActive(false)
       return
@@ -69,14 +71,17 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
   useEffect(() => {
     if (!enable) return
     const onPathFind = (stream: any) => {
-      if (!stream.full_reply) return
       const alternatives = stream.alternatives as PathOption[]
-      setAlternatives(alternatives)
+      setAlternatives(alternatives || [])
+      if (stream.full_reply !== true) {
+        setIsFullPath(false)
+      } else {
+        setIsFullPath(true)
+      }
     }
     const onPriceFind = (stream: PathFindStream) => {
-      if (!stream.full_reply) return
       const alternatives = stream.alternatives as PathOption[]
-      setPricePath(alternatives)
+      setPricePath(alternatives || [])
     }
 
     client.on('path', onPathFind as (stream: any) => void)
@@ -140,7 +145,7 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
 
   const setPathfindEnable = useCallback(() => setEnable(true), [])
 
-  return { setAccount, setPathFrom, setPathTo, bestRoute, bestPrice, swapPrice, setPathfindEnable }
+  return { setAccount, setPathFrom, setPathTo, bestRoute, bestPrice, swapPrice, setPathfindEnable, isFullPath }
 }
 
 const transformDestAmount = (amount: Amount) => {
