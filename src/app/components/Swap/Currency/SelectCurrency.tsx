@@ -13,11 +13,7 @@ type Props = {
 }
 
 export const SelectCurrency: FC<Props> = ({ type, current }) => {
-  const [Modal, open, close] = useModal('root', {
-    focusTrapOptions: {
-      preventScroll: false,
-    },
-  })
+  const [Modal, open, close] = useModal('root')
   const { currencies, setCurrencyFrom, setCurrencyTo } = useContext(SwapContext)
   const currency = useMemo(() => (type === 'from' ? currencies.from : currencies.to), [currencies, type])
 
