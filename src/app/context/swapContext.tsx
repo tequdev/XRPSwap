@@ -107,7 +107,10 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
 
   const switchCurrencies = () => {
     setCurrencies({
-      from: { ...currenciesResult.to, value: currenciesResult.to.value || 1 },
+      from: {
+        ...currenciesResult.to,
+        value: Math.min(getCurrencyBalance(currencies.to).balance, currenciesResult.to.value || 1),
+      },
       to: currenciesResult.from,
     })
   }
