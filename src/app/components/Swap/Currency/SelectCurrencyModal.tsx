@@ -46,7 +46,7 @@ export const SelectCurrencyModal: FC<Props> = ({ onSelect, onClose }) => {
               <div
                 key={key}
                 className={overrideTailwindClasses(
-                  'my-1 flex gap-2 ' + (isUsed ? 'opacity-50' : 'cursor-pointer hover:bg-slate-100')
+                  'my-1 flex gap-2 ' + (isUsed ? 'opacity-50' : 'cursor-pointer hover:md:bg-slate-100')
                 )}
                 onClick={() => (isUsed ? null : onSelect(data))}
               >
