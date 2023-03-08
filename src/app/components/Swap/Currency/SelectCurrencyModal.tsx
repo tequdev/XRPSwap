@@ -63,12 +63,9 @@ export const SelectCurrencyModal: FC<Props> = ({ onSelect, onClose }) => {
                 </div>
               )
             })}
-            <div
-              className={overrideTailwindClasses('my-1 flex gap-2 cursor-pointer hover:md:bg-slate-100')}
-              onClick={() => router.push('/tokens')}
-            >
+            <div className={overrideTailwindClasses('my-3 flex gap-2')} onClick={() => router.push('/tokens')}>
               <div className='flex h-12 w-full items-center justify-center truncate'>
-                <span className='block text-lg font-semibold text-current'>Find new tokens→</span>
+                <span className='btn-outline btn-primary btn'>Find new tokens →</span>
               </div>
             </div>
           </>
