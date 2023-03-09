@@ -1,3 +1,4 @@
+import BigNumber from 'bignumber.js'
 import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 
 import { useAccountReserve } from './useAccountReserve'
@@ -79,7 +80,7 @@ export const useAccountTokensMeta = (): Response => {
         currency: line.currency,
         name: m?.token_name || line.name,
         icon: line.currency !== 'XRP' ? m?.logo_file : 'https://cryptologos.cc/logos/xrp-xrp-logo.svg',
-        balance: line.currency !== 'XRP' ? line.balance : line.balance - reserve,
+        balance: line.currency !== 'XRP' ? line.balance : BigNumber(line.balance).minus(BigNumber(reserve)).toNumber(),
       }
     })
   }, [meta, reserve, tokens])

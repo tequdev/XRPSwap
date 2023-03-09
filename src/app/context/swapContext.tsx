@@ -1,5 +1,5 @@
 'use client'
-import { createContext, FC, useContext, useEffect, useMemo, useState } from 'react'
+import { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { dropsToXrp } from 'xrpl/dist/npm/utils'
 
 import { AuthContext } from './authContext'
@@ -60,12 +60,19 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
     setPathTo(parseCurrencyToAmount(currencies.to))
   }, [currencies, setPathFrom, setPathTo])
 
+  const getCurrencyBalance = useCallback(
+    (currency: CurrencyAmount) => {
+      return userCurrencies.find((c) => c.issuer === currency.issuer && c.currency === currency.currency)!
+    },
+    [userCurrencies]
+  )
+
   const setCurrencyFrom = (currency: Omit<CurrencyAmount, 'value'>) => {
     const currencyFrom: CurrencyAmount = {
       issuer: currency.issuer,
       currency: currency.currency,
       name: currency.name,
-      value: 1,
+      value: Math.min(getCurrencyBalance({ ...currency, value: 0 }).balance, 1),
     }
     setCurrencies({ from: currencyFrom, to: currencies.to })
   }
@@ -81,9 +88,10 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
   }
 
   const setValueFrom = (value: number) => {
-    const currencyFrom = { ...currencies.from, value }
+    // if value is bigger than token balance, set balance
+    const currencyFrom = { ...currencies.from, value: Math.min(getCurrencyBalance(currencies.from).balance, value) }
     const currencyTo = currencies.to
-    if (value === 0) {
+    if (currencyFrom.value === 0) {
       currencyTo.value = 0
       setCurrencies({ from: currencyFrom, to: currencyTo })
     } else {
@@ -99,8 +107,11 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
 
   const switchCurrencies = () => {
     setCurrencies({
-      from: { ...currenciesResult.to, value: currenciesResult.to.value || 1 },
-      to: currenciesResult.from,
+      from: {
+        ...currenciesResult.to,
+        value: Math.min(getCurrencyBalance(currencies.to).balance, currenciesResult.to.value || 1),
+      },
+      to: { ...currenciesResult.from, value: 0 },
     })
   }
 
