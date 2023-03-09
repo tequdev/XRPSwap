@@ -16,6 +16,11 @@ export const Currency: FC<Props> = ({ type }) => {
   const currency = useMemo(() => (type === 'from' ? currencies.from : currencies.to), [currencies, type])
   const [value, setDefaultValue] = useState(currency.value || '')
 
+  const tokenBalance = useMemo(
+    () => currencyDataList.find((c) => c.currency === currency.currency)?.balance,
+    [currency.currency, currencyDataList]
+  )
+
   const setValue = useCallback(
     (value: number) => (type === 'from' ? setValueFrom(value) : setValueTo(value)),
     [setValueFrom, setValueTo, type]
@@ -35,18 +40,21 @@ export const Currency: FC<Props> = ({ type }) => {
         if (currency.name === 'XRP' && RegExp(/^[0-9]+[.,]?[0-9]{7}$/).test(value)) {
           return
         }
+        if (parseFloat(value) > (tokenBalance || 0)) {
+          return
+        }
         setDefaultValue(value)
         setValue(parseFloat(value))
       }
     },
-    [currency.name, setValue]
+    [currency.name, setValue, tokenBalance]
   )
+
   const setMax = useCallback(() => {
-    const tokenMaxValue = currencyDataList.find((c) => c.currency === currency.currency)?.balance
-    if (tokenMaxValue === undefined) return
-    setDefaultValue(tokenMaxValue)
-    setValue(tokenMaxValue)
-  }, [currency.currency, currencyDataList, setValue])
+    if (tokenBalance === undefined) return
+    setDefaultValue(tokenBalance)
+    setValue(tokenBalance)
+  }, [setValue, tokenBalance])
 
   return (
     <div>

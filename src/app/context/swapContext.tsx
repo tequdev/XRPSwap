@@ -72,7 +72,7 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
       issuer: currency.issuer,
       currency: currency.currency,
       name: currency.name,
-      value: Math.min(getCurrencyBalance(currencies.from).balance, 1),
+      value: Math.min(getCurrencyBalance({ ...currency, value: 0 }).balance, 1),
     }
     setCurrencies({ from: currencyFrom, to: currencies.to })
   }
@@ -111,7 +111,7 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
         ...currenciesResult.to,
         value: Math.min(getCurrencyBalance(currencies.to).balance, currenciesResult.to.value || 1),
       },
-      to: currenciesResult.from,
+      to: { ...currenciesResult.from, value: 0 },
     })
   }
 
