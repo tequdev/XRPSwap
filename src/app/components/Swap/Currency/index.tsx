@@ -17,8 +17,8 @@ export const Currency: FC<Props> = ({ type }) => {
   const [value, setDefaultValue] = useState(currency.value || '')
 
   const tokenBalance = useMemo(
-    () => currencyDataList.find((c) => c.currency === currency.currency)?.balance,
-    [currency.currency, currencyDataList]
+    () => currencyDataList.find((c) => c.issuer === currency.issuer && c.currency === currency.currency)?.balance,
+    [currency.currency, currency.issuer, currencyDataList]
   )
 
   const setValue = useCallback(
