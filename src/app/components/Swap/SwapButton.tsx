@@ -7,7 +7,7 @@ type Props = {
   onClick: () => Promise<void>
 }
 export const SwapButton: FC<Props> = ({ onClick }) => {
-  const { currencies: swapInfo, pathLoading } = useContext(SwapContext)
+  const { currencies: swapInfo, pathLoading, isFullPath } = useContext(SwapContext)
   const { currencies: tokenInfo } = useContext(TokenContext)
 
   const swapFrom = useMemo(() => swapInfo.from, [swapInfo])
@@ -25,6 +25,15 @@ export const SwapButton: FC<Props> = ({ onClick }) => {
     }
     if (!hasSufficientFunds) {
       return <>Insufficient funds</>
+    }
+    if (isFullPath === false) {
+      return (
+        <div className='relative'>
+          <div>Swap</div>
+          <div className='text-xs'>It may find better path.</div>
+          <div className='absolute inset-y-0 -right-12 my-auto h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent' />
+        </div>
+      )
     }
     return <>Swap</>
   }

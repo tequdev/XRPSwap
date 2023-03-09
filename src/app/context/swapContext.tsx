@@ -19,6 +19,7 @@ type ContextState = {
   switchCurrencies: () => void
   pathLoading: boolean
   bestRoute: PathOption | null
+  isFullPath: boolean | undefined
   bestPrice: number
   swapPrice: number
   refetch: () => void
@@ -33,11 +34,12 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
     from: { ...userCurrencies[0], value: 1 },
     to: { ...userCurrencies[1], value: 1 },
   })
-  const { bestRoute, setAccount, setPathFrom, setPathTo, bestPrice, swapPrice, setPathfindEnable } = usePathFind({
-    account: state?.account || '',
-    from: parseCurrencyToAmount(currencies.from),
-    to: parseCurrencyToAmount(currencies.to),
-  })
+  const { bestRoute, setAccount, setPathFrom, setPathTo, bestPrice, swapPrice, setPathfindEnable, isFullPath } =
+    usePathFind({
+      account: state?.account || '',
+      from: parseCurrencyToAmount(currencies.from),
+      to: parseCurrencyToAmount(currencies.to),
+    })
 
   useEffect(() => {
     if (userCurrencies.length > 1) {
@@ -130,7 +132,7 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
     }
   }, [bestRoute, currencies])
 
-  const pathLoading = useMemo(() => bestRoute === null, [bestRoute])
+  const pathLoading = useMemo(() => isFullPath === undefined, [isFullPath])
 
   return (
     <SwapContext.Provider
@@ -143,6 +145,7 @@ const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children })
         switchCurrencies,
         pathLoading,
         bestRoute,
+        isFullPath,
         bestPrice: parseFloat(bestPrice.toFixed(6)),
         swapPrice: parseFloat(swapPrice.toFixed(6)),
         refetch,
