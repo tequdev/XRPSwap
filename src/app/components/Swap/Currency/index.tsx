@@ -1,5 +1,5 @@
 'use client'
-import React, { ChangeEventHandler, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import React, { ChangeEventHandler, FC, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 
 import { MaxAmountButton } from './MaxAmountButton'
 import { SelectCurrency } from './SelectCurrency'
@@ -11,6 +11,7 @@ type Props = {
   type: 'from' | 'to'
 }
 export const Currency: FC<Props> = ({ type }) => {
+  const inputRef = useRef<HTMLInputElement>(null)
   const { currencies, setValueFrom, setValueTo, pathLoading } = useContext(SwapContext)
   const { currencies: currencyDataList } = useContext(TokenContext)
   const currency = useMemo(() => (type === 'from' ? currencies.from : currencies.to), [currencies, type])
@@ -41,6 +42,11 @@ export const Currency: FC<Props> = ({ type }) => {
           return
         }
         if (parseFloat(value) > (tokenBalance || 0)) {
+          setDefaultValue(value)
+          setTimeout(() => {
+            setDefaultValue(tokenBalance || 0)
+            inputRef?.current?.blur()
+          }, 300)
           return
         }
         setDefaultValue(value)
@@ -62,6 +68,7 @@ export const Currency: FC<Props> = ({ type }) => {
         <div className='box-border flex w-full items-center justify-between'>
           <div>
             <input
+              ref={inputRef}
               type='text'
               inputMode='decimal'
               className={`w-full appearance-none text-3xl text-gray-600 outline-none ${
