@@ -32,7 +32,6 @@ export const useSwap = () => {
       },
       options: {
         expire: 15,
-        pathfinding: true,
       },
     } as const
     return sdk?.create(payload).then((payload) => payload)
