@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { PathFindStream } from 'xrpl'
+import type { AnyJson } from 'xrpl-client'
 import type { Amount, IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 import { dropsToXrp } from 'xrpl/dist/npm/utils'
 
@@ -36,42 +37,67 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
     [(to as IssuedCurrencyAmount).currency, (to as IssuedCurrencyAmount).issuer, toCurrencyType]
   )
 
+  const pathFindClose = useCallback(async (_client: typeof client) => {
+    _client.send({
+      command: 'path_find',
+      subcommand: 'close',
+    })
+  }, [])
+
+  const pathFindCreate = useCallback(
+    async (_client: typeof client, call: AnyJson) => {
+      _client.send({
+        command: 'path_find',
+        subcommand: 'create',
+        source_account: account,
+        destination_account: account,
+        ...call,
+      })
+    },
+    [account]
+  )
+
   useEffect(() => {
     setPricePath([])
     if (!enable) return
-    client2.send({
-      command: 'path_find',
-      subcommand: 'create',
-      source_account: account,
-      destination_account: account,
-      destination_amount: parseToXrpAmount(transformDestAmount(toCurrency)),
-      send_max: parseToXrpAmount(transformMinAmount(fromCurrency)),
+    pathFindClose(client2).then(() => {
+      pathFindCreate(client2, {
+        destination_amount: parseToXrpAmount(transformDestAmount(toCurrency)),
+        send_max: parseToXrpAmount(transformMinAmount(fromCurrency)),
+      })
     })
-  }, [account, enable, fromCurrency, toCurrency])
-
-  useEffect(() => {
-    if (!enable) return
-    setAlternatives([])
-    setIsFullPath(undefined)
-    if (['', '0'].includes(parseAmountValue(parseToXrpAmount(from)))) {
-      setActive(false)
-      return
+    return () => {
+      pathFindClose(client2)
     }
-    setActive(true)
-    client.send({
-      command: 'path_find',
-      subcommand: 'create',
-      source_account: account,
-      destination_account: account,
-      destination_amount: parseToXrpAmount(transformDestAmount(to)),
-      send_max: parseToXrpAmount(from),
-    })
-  }, [account, enable, from, to])
+  }, [enable, fromCurrency, pathFindClose, pathFindCreate, toCurrency])
 
   useEffect(() => {
     if (!enable) return
-    const onPathFind = (stream: any) => {
-      const alternatives = stream.alternatives as PathOption[]
+    pathFindClose(client).then(() => {
+      setAlternatives([])
+      setIsFullPath(undefined)
+      if (['', '0'].includes(parseAmountValue(parseToXrpAmount(from)))) {
+        setActive(false)
+        return
+      }
+      setActive(true)
+      pathFindCreate(client, {
+        destination_amount: parseToXrpAmount(transformDestAmount(to)),
+        send_max: parseToXrpAmount(from),
+      })
+    })
+    return () => {
+      pathFindClose(client)
+    }
+  }, [enable, from, pathFindClose, pathFindCreate, to])
+
+  useEffect(() => {
+    if (!enable) return
+    const onSwapPathFind = (stream: any) => {
+      if (!stream.alternatives && !stream.result?.alternatives) {
+        return
+      }
+      const alternatives = (stream.alternatives || stream.result.alternatives) as PathOption[]
       setAlternatives(alternatives || [])
       if (stream.full_reply !== true) {
         setIsFullPath(false)
@@ -79,13 +105,13 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
         setIsFullPath(true)
       }
     }
-    const onPriceFind = (stream: PathFindStream) => {
+    const onBestPriceFind = (stream: PathFindStream) => {
       const alternatives = stream.alternatives as PathOption[]
       setPricePath(alternatives || [])
     }
 
-    client.on('path', onPathFind as (stream: any) => void)
-    client2.on('path', onPriceFind as (stream: any) => void)
+    client.on('path', onSwapPathFind as (stream: any) => void)
+    client2.on('path', onBestPriceFind as (stream: any) => void)
 
     return () => {
       client.close()
