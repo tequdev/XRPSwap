@@ -63,10 +63,9 @@ const Swap = () => {
         </div>
       )}
       {/* {!!bestRoute && (
-        <>
-          <div className='mt-12' />
+        <div className='mt-12' style={{ width: '500px', height: '500px' }}>
           <PathFlow path={bestRoute} />
-        </>
+        </div>
       )} */}
     </div>
   )

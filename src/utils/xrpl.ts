@@ -4,7 +4,10 @@ import { convertStringToHex, xrpToDrops } from 'xrpl/dist/npm/utils'
 import { CurrencyAmount } from '@/@types/xrpl'
 
 export const parseCurrencyName = (currency: Currency | Amount) => {
-  return typeof currency === 'string' ? 'XRP' : convertCurrencyCode(currency.currency)
+  return typeof currency === 'string' || currency.currency === 'XRP'
+    ? 'XRP'
+    : // @ts-ignore
+      convertCurrencyCode(currency.currency) + '.' + currency.issuer?.slice(0, 8) + '...'
 }
 
 export const convertCurrencyCode = (currency: string): string => {

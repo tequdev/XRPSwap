@@ -37,8 +37,9 @@ export const PathFlow: FC<Props> = ({ path }) => {
       data: { label: parseCurrencyName(destination) },
     }
     const middleNodes = path.paths_computed
-      .map((computed, computedIndex, originalPath) =>
-        computed.map((step, stepIndex, originalSteps): PathNode => {
+      .map((computed, computedIndex, originalPath) => {
+        let cur_currency: string = parseCurrencyName(source)
+        return computed.map((step, stepIndex, originalSteps): PathNode => {
           const getId = (stepIdx: number) => computedIndex + '-' + stepIdx
           const id = getId(stepIndex)
           const nextId = getId(stepIndex + 1)
@@ -57,24 +58,34 @@ export const PathFlow: FC<Props> = ({ path }) => {
           }
           if (!isFirst && !isLast) {
           }
-          const label = () => {
-            if (stepIndex === 0) {
-              // source/stepCurrency
-              return parseCurrencyName(source) + '/' + parseCurrencyName(step as Currency)
+
+          const label = (step: PathOption['paths_computed'][number][number]) => {
+            if (step.issuer) {
+              // type: 32(issuer) or type: 48(issuer+currency)
+              return cur_currency + '/' + parseCurrencyName(step as Currency)
             }
-            return (
-              parseCurrencyName(originalSteps[stepIndex - 1] as Currency) + '/' + parseCurrencyName(step as Currency)
-            )
+            if (step.account) {
+              // type: 1(account)(rippling)
+              return parseCurrencyName({
+                currency: cur_currency.split('.')[0],
+                issuer: step.account,
+              } as Currency)
+            }
+            return parseCurrencyName(step as Currency)
           }
-          return {
+          const node = {
             id: computedIndex + '-' + stepIndex,
             position: { x: 200 * (computedIndex + 1 - 1), y: 100 * (stepIndex + 1) },
             data: {
-              label: label(),
+              label: label(step),
             },
           }
+          if (step.currency) {
+            cur_currency = parseCurrencyName(step as Currency)
+          }
+          return node
         })
-      )
+      })
       .flatMap((path) => path)
     setNodes([inputNode, ...middleNodes, outputNode])
     setEdges(edges)
