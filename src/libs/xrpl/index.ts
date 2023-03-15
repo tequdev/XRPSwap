@@ -1,11 +1,15 @@
-import { AccountInfoResponse, AccountLinesResponse, dropsToXrp, ServerInfoResponse } from 'xrpl'
+import { AccountInfoResponse, AccountObjectsResponse, dropsToXrp, ServerInfoResponse } from 'xrpl'
 import { XrplClient } from 'xrpl-client'
 import type { Trustline } from 'xrpl/dist/npm/models/methods/accountLines'
+
+import { accountObjectsToAccountLines } from './accountObjectsToAccountLines'
 
 import { TokensMarketData } from '@/@types/xrpl'
 
 export const client = new XrplClient()
 export const client2 = new XrplClient()
+
+type AccountObject = AccountObjectsResponse['result']['account_objects'][number]
 
 type Balance = {
   value: string
@@ -70,13 +74,15 @@ export const getBalances = async (address: string): Promise<Balance[]> => {
       ledger_index: 'validated',
     })
     .then((res) => res['account_data'].Balance as string)
-  const linesPromise = requestAll({
-    command: 'account_lines',
+  const accountObjectsPromise = requestAll({
+    command: 'account_objects',
     account: address,
-  }) as unknown as Promise<AccountLinesResponse['result']['lines']>
+    type: 'state',
+  }) as unknown as Promise<AccountObject[]>
 
-  return Promise.all([xrpPromise, linesPromise]).then(([xrpBalance, linesBalance]) => {
+  return Promise.all([xrpPromise, accountObjectsPromise]).then(([xrpBalance, accountObjects]) => {
     const balances: Balance[] = []
+    const linesBalance = accountObjectsToAccountLines(address, accountObjects, true)
     const accountLinesBalance = formatBalances(linesBalance)
     if (xrpBalance !== '') {
       balances.push({ currency: 'XRP', value: dropsToXrp(xrpBalance) })
