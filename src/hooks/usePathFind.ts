@@ -75,7 +75,6 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
     if (!enable) return
     pathFindClose(client).then(() => {
       setAlternatives([])
-      setIsFullPath(undefined)
       if (['', '0'].includes(parseAmountValue(parseToXrpAmount(from)))) {
         setActive(false)
         return
@@ -93,11 +92,17 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
 
   useEffect(() => {
     if (!enable) return
-    const onSwapPathFind = (stream: any) => {
-      if (!stream.alternatives && !stream.result?.alternatives) {
+    const onSwapPathFind = (_stream: any) => {
+      const stream = _stream.result ? _stream.result : _stream
+      if (stream?.closed) {
+        setIsFullPath(undefined)
         return
       }
-      const alternatives = (stream.alternatives || stream.result.alternatives) as PathOption[]
+      if (!stream.alternatives || (stream.full_reply !== true && stream.alternatives.length === 0)) {
+        // Skip if (not a path stream) or (not full_reply and alternatives is empty)
+        return
+      }
+      const alternatives = stream.alternatives as PathOption[]
       setAlternatives(alternatives || [])
       if (stream.full_reply !== true) {
         setIsFullPath(false)
