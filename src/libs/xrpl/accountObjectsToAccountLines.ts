@@ -40,7 +40,7 @@ export const accountObjectsToAccountLines = (
     ]
     const [no_ripple, no_ripple_peer] = obj.HighLimit.issuer === account ? ripplingFlags : ripplingFlags.reverse()
 
-    const balance = obj.Balance.value === '0' ? obj.Balance.value : obj.Balance.value.slice(1)
+    const balance = obj.Balance.value.replace('-', '')
 
     return {
       account: counterparty.issuer,
