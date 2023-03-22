@@ -1,6 +1,6 @@
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
-import { FC, useContext } from 'react'
+import { FC, useCallback, useContext, useState } from 'react'
 import { overrideTailwindClasses } from 'tailwind-override'
 import { Currency } from 'xrpl/dist/npm/models/common'
 
@@ -20,6 +20,19 @@ export const SelectCurrencyModal: FC<Props> = ({ onSelect, onClose }) => {
   const router = useRouter()
   const { currencies: allCurrencies, loading } = useContext(TokenContext)
   const { currencies } = useContext(SwapContext)
+  const [searchText, setSearchText] = useState('')
+
+  const currencyFilter = useCallback(
+    (currency: CurrencyInfo) => {
+      if (!searchText) return true
+      if (currency.name.toUpperCase().includes(searchText.toUpperCase())) return true
+      if (currency.currency.length === 3 && currency.currency.toUpperCase().includes(searchText.toUpperCase()))
+        return true
+      return false
+    },
+    [searchText]
+  )
+
   return (
     <div className='mx-2 box-border h-[36rem] w-full min-w-[300px] rounded-3xl border-4 border-white bg-white px-4 py-6 shadow md:mx-auto md:w-[450px]'>
       <div className='flex h-12 justify-between text-2xl font-bold'>
@@ -38,7 +51,15 @@ export const SelectCurrencyModal: FC<Props> = ({ onSelect, onClose }) => {
         )}
         {!loading && (
           <>
-            {allCurrencies.map((data, index) => {
+            <div className='my-3 mt-1 flex justify-center px-1'>
+              <input
+                type='text'
+                placeholder='Search...'
+                className='input-bordered input w-full'
+                onChange={(e) => setSearchText(e.target.value)}
+              />
+            </div>
+            {allCurrencies.filter(currencyFilter).map((data, index) => {
               const currency = data.currency
               const issuer = (data as any)?.issuer
               const key = currency + issuer
