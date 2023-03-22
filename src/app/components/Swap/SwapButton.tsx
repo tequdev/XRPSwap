@@ -30,7 +30,7 @@ export const SwapButton: FC<Props> = ({ onClick }) => {
       return (
         <div className='relative'>
           <div>Swap</div>
-          <div className='text-xs'>It may find better path.</div>
+          <div className='text-xs'>Looking for more routes</div>
           <div className='absolute inset-y-0 -right-12 my-auto h-10 w-10 animate-spin rounded-full border-4 border-white border-t-transparent' />
         </div>
       )
