@@ -6115,17 +6115,17 @@ xumm-js-pkce@^1.0.0:
   dependencies:
     crypto-js "^4.0.0"
 
-xumm-oauth2-pkce@^2.7.5:
-  version "2.7.5"
-  resolved "https://registry.yarnpkg.com/xumm-oauth2-pkce/-/xumm-oauth2-pkce-2.7.5.tgz#468925544379ed9cb8aa38b5469b9136d4085b5c"
-  integrity sha512-Vo9SJZGWh/BManEEHEQzCCgbLezqI4oWSE126iOos2fkfnbeHrX/0N0indefc0zXuOzMPlRXyOtE236NszKD7Q==
+xumm-oauth2-pkce@^2.7.6:
+  version "2.7.8"
+  resolved "https://registry.yarnpkg.com/xumm-oauth2-pkce/-/xumm-oauth2-pkce-2.7.8.tgz#c3b3bfcf1509392f74699f80d303e936ffb5dd64"
+  integrity sha512-ZDRNPtDfMcTQ4CDMwlH5kPfJ4WawIT3x9dIhPMOUPCkgVLBg0nTg+pTP1Sr8MhqWkHA0aaZ++srbyUsHHn2rbQ==
   dependencies:
     debug "^4.1.1"
     events "^3.3.0"
     xumm-js-pkce "^1.0.0"
     xumm-sdk "^1.5.0"
 
-xumm-sdk@^1.5.0, xumm-sdk@^1.7.1:
+xumm-sdk@^1.5.0:
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/xumm-sdk/-/xumm-sdk-1.7.1.tgz#d493d40cf907f67458e58860bd4a8f43a7ed9afd"
   integrity sha512-bqeLVW2sBuh6rzROI1tozK9zK2KPyIRm0jWpgOfJmKyXz45zl8zGB3jBHH+a8Ri+BOXVEx0z0zXNPsou1ddMyg==
@@ -6140,25 +6140,40 @@ xumm-sdk@^1.5.0, xumm-sdk@^1.7.1:
     os-browserify "^0.3.0"
     websocket "^1.0.34"
 
-xumm-xapp-sdk@^1.5.1:
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/xumm-xapp-sdk/-/xumm-xapp-sdk-1.5.1.tgz#861d9048fff1d837341295b214c181891e513a8a"
-  integrity sha512-HF4HnYMjTXk3H0J6gkWEtE1r++Ea/3OG9bddmIs6Yfehy/2XZwToH4QcUUSz6YZpGx8XY7NHu5ppXTz8C2AN2A==
+xumm-sdk@^1.8.3:
+  version "1.8.3"
+  resolved "https://registry.yarnpkg.com/xumm-sdk/-/xumm-sdk-1.8.3.tgz#537f69b7d33870f54dc85b7b9c66d549c54a270d"
+  integrity sha512-1zW2Sd3SG75dbP6TKiYFTj6bZ+qQoBBKUkyBA7/B89CrMXF+XasMGXje4OrDqw/ljfpb4sL5K636qVuqWcAeTQ==
+  dependencies:
+    "@types/websocket" "^1.0.5"
+    assert "^2.0.0"
+    bignumber.js "^9.0.0"
+    debug "^4.1.1"
+    events "^3.3.0"
+    fetch-ponyfill "^7.1.0"
+    node-fetch "^2.6.1"
+    os-browserify "^0.3.0"
+    websocket "^1.0.34"
+
+xumm-xapp-sdk@^1.5.4:
+  version "1.5.4"
+  resolved "https://registry.yarnpkg.com/xumm-xapp-sdk/-/xumm-xapp-sdk-1.5.4.tgz#9d17de2832a63141b0484a9d4a42a595df637572"
+  integrity sha512-4XOpAqJMO8jI7zgnxYBUAckXtPw0mLvCRRQyjfoJODCDZBL7LuOC78zhUmlXHocAD/FruQ0fGmW97vZLOq6f9w==
   dependencies:
     debug "^4.1.1"
     events "^3.3.0"
 
-xumm@1.1.13:
-  version "1.1.13"
-  resolved "https://registry.yarnpkg.com/xumm/-/xumm-1.1.13.tgz#163537e22ce6b22cadf289d645a546cf71379382"
-  integrity sha512-1iOB5BK5bqqO9FKTpeT6zx3UMn6on7CHrO1k3Z9D7SaDLdk63ni/EiBJV1VwVceOZG+T8Do80rJfM+mGp4t/vQ==
+xumm@^1.3.9:
+  version "1.3.9"
+  resolved "https://registry.yarnpkg.com/xumm/-/xumm-1.3.9.tgz#4cda501ae3e220c5e66b2e7645a57b415138957c"
+  integrity sha512-tjlYHVX4KdePRhVggdXc3/F9NdVY1rj46/JaNgnH1Cm/WItLjpANMEbkY/OCxLP6HwOUrk2B7GOYBBh3Pv17uw==
   dependencies:
     events "^3.3.0"
     nodemon "^2.0.20"
     xumm-js-pkce "^1.0.0"
-    xumm-oauth2-pkce "^2.7.5"
-    xumm-sdk "^1.7.1"
-    xumm-xapp-sdk "^1.5.1"
+    xumm-oauth2-pkce "^2.7.6"
+    xumm-sdk "^1.8.3"
+    xumm-xapp-sdk "^1.5.4"
 
 y18n@^5.0.5:
   version "5.0.8"
