@@ -38,7 +38,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   useEffect(() => {
     const handler = async () => {
       if (process.env.NODE_ENV === 'development') {
-        // TODO: xumm ready event not work in dev server
+        // TODO: xumm ready event doesn't work in dev server(strict mode)
         setState(undefined)
         setLoading(false)
       }
