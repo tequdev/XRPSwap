@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { AuthContext } from '@/app/context/authContext'
+import { XummContext } from '@/app/context/xummContext'
 import { getAccountInfo, getServerInfo } from '@/libs/xrpl'
 
 type ServerReserve = {
@@ -9,7 +9,7 @@ type ServerReserve = {
 }
 
 export const useAccountReserve = () => {
-  const { state } = useContext(AuthContext)
+  const { state } = useContext(XummContext)
   const [serverReserve, setServerReserve] = useState<ServerReserve>({ baseReserve: 10, incReserve: 2 })
   const [ownerCount, setOwnerCount] = useState(0)
 

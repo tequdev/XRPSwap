@@ -1,10 +1,10 @@
 import { useCallback, useContext } from 'react'
 import { IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 
-import { AuthContext } from '@/app/context/authContext'
+import { XummContext } from '@/app/context/xummContext'
 
 export const useSetTrustLine = () => {
-  const { state, sdk, isConnected } = useContext(AuthContext)
+  const { state, sdk, isConnected } = useContext(XummContext)
 
   const setTrustLine = useCallback(
     async (trustLineAmount: IssuedCurrencyAmount) => {

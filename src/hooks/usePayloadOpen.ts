@@ -5,7 +5,7 @@ import { XummPostPayloadResponse } from 'xumm-sdk/dist/src/types'
 import type { payloadEventData } from 'xumm-xapp-sdk'
 
 import { PromiseType } from '@/@types/utils'
-import { AuthContext } from '@/app/context/authContext'
+import { XummContext } from '@/app/context/xummContext'
 
 const options: UseOpenInWindowOptionsWithUrl = {
   url: '' /* url to page to open */,
@@ -27,7 +27,7 @@ type PayloadSubscription = PromiseType<PromiseType<ReturnType<NonNullable<Xumm['
 
 export const usePayloadOpen = () => {
   const [signed, setSigned] = useState<boolean>(false)
-  const { sdk, runtime, xapp } = useContext(AuthContext)
+  const { sdk, runtime, xapp } = useContext(XummContext)
   const [subscription, setSubscription] = useState<PayloadSubscription | null>(null)
   const [handleWindowOpen, popup] = useOpenInWindow(options)
 

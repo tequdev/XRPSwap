@@ -4,8 +4,8 @@ import { FC, useContext, useEffect, useMemo } from 'react'
 import { CheckIcon } from '../Icon/Check'
 
 import { TokensMarketData } from '@/@types/xrpl'
-import { AuthContext } from '@/app/context/authContext'
 import { TokenContext } from '@/app/context/tokenContext'
+import { XummContext } from '@/app/context/xummContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSetTrustLine } from '@/hooks/useSetTrustLine'
 import { significantDigits } from '@/utils/number'
@@ -17,7 +17,7 @@ type Props = {
 }
 
 const Token: FC<Props> = ({ index, data }) => {
-  const { isConnected } = useContext(AuthContext)
+  const { isConnected } = useContext(XummContext)
   const { currencies, refetch } = useContext(TokenContext)
   const { setTrustLine } = useSetTrustLine()
   const { openWindow, signed } = usePayloadOpen()

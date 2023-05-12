@@ -1,9 +1,9 @@
 import { useContext } from 'react'
 
-import { AuthContext } from '@/app/context/authContext'
+import { XummContext } from '@/app/context/xummContext'
 
 export const AccountInfo = () => {
-  const { state, disconnect, runtime } = useContext(AuthContext)
+  const { state, disconnect, runtime } = useContext(XummContext)
   return (
     <ul className='menu rounded-box menu-horizontal bg-base-100 px-1 shadow'>
       <li tabIndex={0} className=''>

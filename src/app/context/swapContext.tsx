@@ -2,8 +2,8 @@
 import { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { dropsToXrp } from 'xrpl/dist/npm/utils'
 
-import { AuthContext } from './authContext'
 import { TokenContext } from './tokenContext'
+import { XummContext } from './xummContext'
 
 import { CurrencyAmount, PathOption } from '@/@types/xrpl'
 import { usePathFind } from '@/hooks/usePathFind'
@@ -28,7 +28,7 @@ type ContextState = {
 export const SwapContext = createContext<ContextState>({} as any)
 
 const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
-  const { state } = useContext(AuthContext)
+  const { state } = useContext(XummContext)
   const { currencies: userCurrencies, refetch } = useContext(TokenContext)
   const [currencies, setCurrencies] = useState<Currencies>({
     from: { ...userCurrencies[0], value: 1 },

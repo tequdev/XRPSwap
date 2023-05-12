@@ -3,12 +3,12 @@ import type { Amount } from 'xrpl/dist/npm/models/common'
 import { xrpToDrops } from 'xrpl/dist/npm/utils'
 
 import { CurrencyAmount } from '@/@types/xrpl'
-import { AuthContext } from '@/app/context/authContext'
 import { SwapContext } from '@/app/context/swapContext'
+import { XummContext } from '@/app/context/xummContext'
 
 export const useSwap = () => {
   const { bestRoute, currencies } = useContext(SwapContext)
-  const { state, sdk, isConnected } = useContext(AuthContext)
+  const { state, sdk, isConnected } = useContext(XummContext)
 
   const convertCurrencyValueToString = (currency: CurrencyAmount, multipleBy: number = 1): Amount => {
     if (currency.currency === 'XRP') {

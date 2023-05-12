@@ -7,10 +7,10 @@ import { overrideTailwindClasses } from 'tailwind-override'
 import { SwapIcon } from '../../Icon/Swap'
 import { TokenIcon } from '../../Icon/Token'
 
-import { AuthContext } from '@/app/context/authContext'
+import { XummContext } from '@/app/context/xummContext'
 
 const MobileMenu = () => {
-  const { runtime } = useContext(AuthContext)
+  const { runtime } = useContext(XummContext)
   const pathname = usePathname()
 
   return (

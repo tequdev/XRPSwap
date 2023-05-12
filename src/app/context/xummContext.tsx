@@ -17,9 +17,9 @@ type Context = {
   isConnected: boolean
 }
 
-export const AuthContext = createContext<Context>(null as any)
+export const XummContext = createContext<Context>(null as any)
 
-const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
+const XummContextProvider: FC<{ children: React.ReactNode }> = ({ children }) => {
   const xumm = useMemo(() => new Xumm(process.env.NEXT_PUBLIC_XUMM_APIKEY!, process.env.XUMM_SECRET!), [])
   const [state, setState] = useState<Context['state'] | undefined | null>(null)
 
@@ -91,7 +91,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   const isConnected = useMemo(() => !!state?.account, [state?.account])
 
   return (
-    <AuthContext.Provider
+    <XummContext.Provider
       value={{
         runtime: xumm.runtime,
         connect,
@@ -104,8 +104,8 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
       }}
     >
       {children}
-    </AuthContext.Provider>
+    </XummContext.Provider>
   )
 }
 
-export default AuthContextProvider
+export default XummContextProvider

@@ -9,13 +9,13 @@ import { Currency } from './Currency'
 import { PriceInfo } from './PriceInfo'
 import { SwapButton } from './SwapButton'
 
-import { AuthContext } from '@/app/context/authContext'
 import { SwapContext } from '@/app/context/swapContext'
+import { XummContext } from '@/app/context/xummContext'
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSwap } from '@/hooks/useSwap'
 
 const Swap = () => {
-  const { loading, isConnected } = useContext(AuthContext)
+  const { loading, isConnected } = useContext(XummContext)
   const { switchCurrencies, bestRoute, refetch } = useContext(SwapContext)
   const { swap } = useSwap()
   const { openWindow, signed } = usePayloadOpen()

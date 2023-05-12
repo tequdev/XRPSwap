@@ -1,10 +1,10 @@
 'use client'
 import { useContext } from 'react'
 
-import { AuthContext } from '@/app/context/authContext'
+import { XummContext } from '@/app/context/xummContext'
 
 const Socials = () => {
-  const { runtime, xapp } = useContext(AuthContext)
+  const { runtime, xapp } = useContext(XummContext)
   const openLink = (url: string) => {
     if (runtime.xapp) {
       xapp?.openBrowser({ url })
