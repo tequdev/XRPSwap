@@ -1,6 +1,6 @@
 import { useContext, useEffect, useMemo, useState } from 'react'
 
-import { XummContext } from '@/app/context/xummContext'
+import { AuthContext } from '@/app/context/authContext'
 import { getAccountInfo, getServerInfo } from '@/libs/xrpl'
 
 type ServerReserve = {
@@ -9,7 +9,7 @@ type ServerReserve = {
 }
 
 export const useAccountReserve = () => {
-  const { state } = useContext(XummContext)
+  const { account } = useContext(AuthContext)
   const [serverReserve, setServerReserve] = useState<ServerReserve>({ baseReserve: 10, incReserve: 2 })
   const [ownerCount, setOwnerCount] = useState(0)
 
@@ -24,11 +24,11 @@ export const useAccountReserve = () => {
   }, [])
 
   useEffect(() => {
-    if (!state?.account) return
-    getAccountInfo(state.account).then((result) => {
+    if (!account) return
+    getAccountInfo(account).then((result) => {
       setOwnerCount(result.account_data.OwnerCount)
     })
-  }, [state?.account])
+  }, [account])
 
   const reserve = useMemo(
     () => serverReserve.baseReserve + serverReserve.incReserve * ownerCount,

@@ -4,7 +4,7 @@ import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { useAccountReserve } from './useAccountReserve'
 
 import { CurrencyInfo } from '@/@types/xrpl'
-import { XummContext } from '@/app/context/xummContext'
+import { AuthContext } from '@/app/context/authContext'
 import { getBalances } from '@/libs/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
 
@@ -33,13 +33,13 @@ type Response = { info: CurrencyInfo[]; loading: boolean; refetch: () => void }
 
 export const useAccountTokensMeta = (): Response => {
   const [loading, setLoading] = useState(true)
-  const { state, isConnected } = useContext(XummContext)
+  const { account, isConnected } = useContext(AuthContext)
   const reserve = useAccountReserve()
   const [tokens, setTokens] = useState<Token[]>([])
   const [meta, setMeta] = useState<Meta[]>([])
 
   const balanceHandler = useCallback(() => {
-    getBalances(state!.account!).then((res) => {
+    getBalances(account!).then((res) => {
       const lines = res.map((line) => ({
         issuer: line.issuer || '',
         currency: line.currency,
@@ -48,7 +48,7 @@ export const useAccountTokensMeta = (): Response => {
       }))
       setTokens(lines)
     })
-  }, [state])
+  }, [account])
 
   useEffect(() => {
     if (!isConnected) return

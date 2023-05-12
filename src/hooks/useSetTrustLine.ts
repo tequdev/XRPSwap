@@ -1,22 +1,22 @@
 import { useCallback, useContext } from 'react'
 import { IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 
-import { XummContext } from '@/app/context/xummContext'
+import { AuthContext } from '@/app/context/authContext'
 
 export const useSetTrustLine = () => {
-  const { state, sdk, isConnected } = useContext(XummContext)
+  const { account, signTransaction, isConnected } = useContext(AuthContext)
 
   const setTrustLine = useCallback(
     async (trustLineAmount: IssuedCurrencyAmount) => {
       if (!isConnected) return Promise.resolve(null)
       const payload = {
         TransactionType: 'TrustSet',
-        Account: state!.account,
+        Account: account,
         LimitAmount: trustLineAmount,
       } as const
-      return sdk?.create(payload).then((payload) => payload)
+      return signTransaction(payload)
     },
-    [isConnected, sdk, state]
+    [isConnected, signTransaction, account]
   )
 
   return { setTrustLine }

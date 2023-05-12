@@ -7,10 +7,10 @@ import { overrideTailwindClasses } from 'tailwind-override'
 import { SwapIcon } from '../../Icon/Swap'
 import { TokenIcon } from '../../Icon/Token'
 
-import { XummContext } from '@/app/context/xummContext'
+import { AuthContext } from '@/app/context/authContext'
 
 const MobileMenu = () => {
-  const { runtime } = useContext(XummContext)
+  const { runtime } = useContext(AuthContext)
   const pathname = usePathname()
 
   return (
@@ -18,7 +18,7 @@ const MobileMenu = () => {
       className={overrideTailwindClasses(
         'btm-nav z-50 m-2  w-auto rounded-3xl border-[1px] border-gray-200 pb-0 md:hidden ' +
           // xapp does not support safe-area-inset-bottom
-          (runtime.xapp ? 'mb-[calc(34px+8px)]' : 'mb-[calc(env(safe-area-inset-bottom)+8px)]')
+          (runtime === 'xumm-xapp' ? 'mb-[calc(34px+8px)]' : 'mb-[calc(env(safe-area-inset-bottom)+8px)]')
       )}
     >
       <button

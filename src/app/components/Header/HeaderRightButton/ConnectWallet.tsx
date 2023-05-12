@@ -1,11 +1,12 @@
 import { useContext } from 'react'
 
-import { XummContext } from '@/app/context/xummContext'
+import { AuthContext } from '@/app/context/authContext'
 
 export const ConnectWallet = () => {
-  const { connect } = useContext(XummContext)
+  const { connect } = useContext(AuthContext)
   return (
-    <button className='btn-primary btn' onClick={connect}>
+    // TODO: Select Wallet (Xumm/WalletConnect)
+    <button className='btn-primary btn' onClick={() => connect('xumm')}>
       <span className='sm:hidden'>Connect</span>
       <span className='hidden sm:inline'>Connect Wallet </span>
     </button>

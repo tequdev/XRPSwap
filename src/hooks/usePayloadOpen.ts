@@ -26,7 +26,7 @@ const options: UseOpenInWindowOptionsWithUrl = {
 type PayloadSubscription = PromiseType<PromiseType<ReturnType<NonNullable<Xumm['payload']>['subscribe']>>>
 
 export const usePayloadOpen = () => {
-  const [signed, setSigned] = useState<boolean>(false)
+  const [signed, setSigned] = useState<boolean>()
   const { sdk, runtime, xapp } = useContext(XummContext)
   const [subscription, setSubscription] = useState<PayloadSubscription | null>(null)
   const [handleWindowOpen, popup] = useOpenInWindow(options)

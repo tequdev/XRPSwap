@@ -4,10 +4,10 @@ import { useContext } from 'react'
 import { AccountInfo } from './AccountInfo'
 import { ConnectWallet } from './ConnectWallet'
 
-import { XummContext } from '@/app/context/xummContext'
+import { AuthContext } from '@/app/context/authContext'
 
 const HeaderRightButton = () => {
-  const { isConnected, loading } = useContext(XummContext)
+  const { isConnected, loading } = useContext(AuthContext)
   return (
     <>
       {!loading && !isConnected && <ConnectWallet />}
