@@ -5,6 +5,7 @@ import { ClientContextProvider } from '@xrpl-walletconnect/react'
 
 import AuthContextProvider from './context/authContext'
 import TokenContextProvider from './context/tokenContext'
+import XummContextProvider from './context/xummContext'
 
 import Footer from '@/app/components/Footer'
 import Header from '@/app/components/Header'
@@ -22,18 +23,20 @@ const MyApp = ({ children }: { children: React.ReactNode }) => {
   return (
     <html className='text-[14px] md:text-[16px]'>
       <body>
-        <ClientContextProvider projectId={projectId} relayUrl={realyUrl} metadata={metadata}>
-          <AuthContextProvider>
-            <Header className='h-16 px-4 md:px-12' />
-            <TokenContextProvider>
-              <main className='min-h-[calc(100vh-4rem)] py-8 md:py-20'>
-                {children}
-                <div id='root' />
-              </main>
-            </TokenContextProvider>
-            <Footer />
-          </AuthContextProvider>
-        </ClientContextProvider>
+        <XummContextProvider>
+          <ClientContextProvider projectId={projectId} relayUrl={realyUrl} metadata={metadata}>
+            <AuthContextProvider>
+              <Header className='h-16 px-4 md:px-12' />
+              <TokenContextProvider>
+                <main className='min-h-[calc(100vh-4rem)] py-8 md:py-20'>
+                  {children}
+                  <div id='root' />
+                </main>
+              </TokenContextProvider>
+              <Footer />
+            </AuthContextProvider>
+          </ClientContextProvider>
+        </XummContextProvider>
       </body>
     </html>
   )

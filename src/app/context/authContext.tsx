@@ -55,7 +55,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     } else {
       throw new Error('Invalid NETWORK')
     }
-    setChains([chain])
+    setChains([chain.id])
   }, [setChains])
 
   const connectedService = state?.account

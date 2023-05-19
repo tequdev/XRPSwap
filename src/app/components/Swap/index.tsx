@@ -1,9 +1,9 @@
 'use client'
 import { useContext } from 'react'
 
+import { ConnectWallet } from '../Button/ConnectWallet'
 import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 
-import { ConnectWallet } from './ConnectWallet'
 import { Currency } from './Currency'
 // import { PathFlow } from './PathFlow'
 import { PriceInfo } from './PriceInfo'
