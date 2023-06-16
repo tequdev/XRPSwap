@@ -1,10 +1,11 @@
 import Image from 'next/image'
 import { useContext } from 'react'
 
-import walletconnect from '../../../../public/connects/walletconnect.svg'
-import xumm from '../../../../public/connects/xumm.png'
-
 import { AuthContext } from '@/app/context/authContext'
+import crossmarkBoiler from 'public/connects/crossmark-boiler.png'
+import crossmarkLogo from 'public/connects/crossmark-logo.png'
+import walletconnect from 'public/connects/walletconnect.svg'
+import xumm from 'public/connects/xumm.png'
 
 export const ConnectWallet = () => {
   const { connect } = useContext(AuthContext)
@@ -28,6 +29,14 @@ export const ConnectWallet = () => {
             <button className='m-2 w-72 cursor-pointer' onClick={() => connect('walletconnect')}>
               <label htmlFor='my-modal'>
                 <Image className='cursor-pointer' src={walletconnect} alt='walletconnect' />
+              </label>
+            </button>
+            <button className='m-2 w-72 cursor-pointer' onClick={() => connect('crossmark')}>
+              <label htmlFor='my-modal'>
+                <div className='flex items-center'>
+                  <Image className='mr-1 w-10 cursor-pointer' src={crossmarkLogo} alt='CROSSMARK-logo' />
+                  <Image className='h-6 cursor-pointer' src={crossmarkBoiler} alt='CROSSMARK-boiler' />
+                </div>
               </label>
             </button>
           </div>

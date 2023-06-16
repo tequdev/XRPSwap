@@ -3,13 +3,14 @@ import { mainnet, testnet, devnet } from '@xrpl-walletconnect/core'
 import { useWalletConnectClient } from '@xrpl-walletconnect/react'
 import React, { createContext, FC, useContext, useEffect } from 'react'
 
+import { CrossmarkContext } from './crossmarkContext'
 import { XummContext } from './xummContext'
 
 import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 
 type Context = {
   runtime: 'browser' | 'xumm-xapp'
-  connect: (string: 'xumm' | 'walletconnect') => Promise<void>
+  connect: (string: 'xumm' | 'walletconnect' | 'crossmark') => Promise<void>
   disconnect: () => Promise<void>
   account: string | undefined
   signTransaction: (txJson: Record<string, any>) => Promise<boolean>
@@ -40,6 +41,13 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     chains,
     setChains,
   } = useWalletConnectClient()
+  const {
+    account: crossmarkAccount,
+    connect: connectWithCrossmark,
+    disconnect: disconnectFromCrossmark,
+    sign: signWithCrossmark,
+    loading: crossmarkLoading,
+  } = useContext(CrossmarkContext)
   const { openWindow, signed } = usePayloadOpen()
 
   const runtime: Context['runtime'] = xummRuntime.xapp ? 'xumm-xapp' : 'browser'
@@ -62,13 +70,17 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
     ? 'xumm'
     : walletconnectAccounts.length && walletconnectAccounts[0]
     ? 'walletconnect'
+    : crossmarkAccount
+    ? 'crossmark'
     : undefined
 
-  const connect: Context['connect'] = async (service: 'xumm' | 'walletconnect') => {
+  const connect: Context['connect'] = async (service: 'xumm' | 'walletconnect' | 'crossmark') => {
     if (service === 'xumm') {
       await connectWithXumm()
-    } else {
+    } else if (service === 'walletconnect') {
       await connectWithWalletConnect()
+    } else {
+      await connectWithCrossmark()
     }
   }
 
@@ -77,11 +89,13 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
       await disconnectFromXumm()
     } else if (walletconnectAccounts.length) {
       await disconnectFromWalletConnect()
+    } else {
+      await disconnectFromCrossmark()
     }
   }
 
   const account: Context['account'] =
-    state?.account || (walletconnectAccounts.length && walletconnectAccounts[0]) || undefined
+    state?.account || (walletconnectAccounts.length && walletconnectAccounts[0]) || crossmarkAccount
 
   const signTransaction: Context['signTransaction'] = async (txjson) => {
     if (connectedService === 'xumm') {
@@ -102,14 +116,18 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
       } else {
         return false
       }
-    } else {
+    } else if (connectedService === 'walletconnect') {
       const result = await signTransactionWithWalletconnect(chains[0], txjson)
+      // TODO: check result
+      return !!result
+    } else {
+      const result = await signWithCrossmark(txjson)
       // TODO: check result
       return !!result
     }
   }
 
-  const loading = xummLoading || walletconnectLoading
+  const loading = xummLoading || walletconnectLoading || crossmarkLoading
 
   const isConnected = !!account
 
