@@ -1764,22 +1764,22 @@
     motion "10.15.5"
     qrcode "1.5.3"
 
-"@xrpl-walletconnect/core@0.0.1", "@xrpl-walletconnect/core@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@xrpl-walletconnect/core/-/core-0.0.1.tgz#44161d84b8a6e654bbf98f6c0ab75a2401b5f085"
-  integrity sha512-sn0w8JEnrLgYzT8ZnUQwUwumugmSLGBjhPhYeRTjxlbQANPjDJktcrU/DLR5+a9HsgVYzYkOfJM0Zohu1ggLnA==
+"@xrpl-walletconnect/core@0.1.0", "@xrpl-walletconnect/core@^0.1.0":
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/@xrpl-walletconnect/core/-/core-0.1.0.tgz#d91546d176a7c4c66450197eb7465d46fd845051"
+  integrity sha512-Mo52v2T5PO2cRRySbL6lGjDHexpBxyLY74v07MCE+ryryzwIxeV86E2Eab5Wwg+UISGsIXMSl+T9+IoPoXsU7A==
 
-"@xrpl-walletconnect/react@^0.0.1":
-  version "0.0.1"
-  resolved "https://registry.yarnpkg.com/@xrpl-walletconnect/react/-/react-0.0.1.tgz#a941531d2f4cf1df900de7384729834b3e9bfbab"
-  integrity sha512-2yVNs4R7EA5Ng3iG7A+3zWHUaL+1tf9ADI0lrMxN1o3Zw3tdkfUTPy7qDjcy6blj//wfAWe0PQz9nDRzuGJKwA==
+"@xrpl-walletconnect/react@^0.1.1":
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/@xrpl-walletconnect/react/-/react-0.1.1.tgz#205f7fa209a47de93b8647f14fc915d2c5292742"
+  integrity sha512-WH2yZKx4ODlesmxGMOBUCXUZxYDApzJvWay0a8SHhSudoBDTNCXP4iiP/L6rzh/1LtqVFQHm2ZCbX/YqwUoC9Q==
   dependencies:
     "@walletconnect/jsonrpc-utils" "^1.0.7"
     "@walletconnect/sign-client" "^2.7.3"
     "@walletconnect/types" "^2.7.3"
     "@walletconnect/utils" "^2.7.3"
     "@web3modal/standalone" "^2.4.1"
-    "@xrpl-walletconnect/core" "0.0.1"
+    "@xrpl-walletconnect/core" "0.1.0"
     react "^18.2.0"
     react-dom "^18.2.0"
 
