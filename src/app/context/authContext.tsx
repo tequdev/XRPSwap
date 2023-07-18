@@ -95,7 +95,7 @@ const AuthContextProvider: FC<{ children: React.ReactNode }> = ({ children }) =>
   }
 
   const account: Context['account'] =
-    state?.account || (walletconnectAccounts.length && walletconnectAccounts[0]) || crossmarkAccount
+    state?.account || (walletconnectAccounts.length && walletconnectAccounts[0].split(':')[2]) || crossmarkAccount
 
   const signTransaction: Context['signTransaction'] = async (txjson) => {
     if (connectedService === 'xumm') {
