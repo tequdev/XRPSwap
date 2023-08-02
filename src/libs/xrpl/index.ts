@@ -6,8 +6,10 @@ import { accountObjectsToAccountLines } from './accountObjectsToAccountLines'
 
 import { TokensMarketData } from '@/@types/xrpl'
 
-export const client = new XrplClient()
-export const client2 = new XrplClient()
+const endpoint = process.env.NEXT_PUBLIC_XRPL_SERVER
+
+export const client = new XrplClient(endpoint)
+export const client2 = new XrplClient(endpoint)
 
 type AccountObject = AccountObjectsResponse['result']['account_objects'][number]
 
