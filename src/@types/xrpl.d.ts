@@ -1,4 +1,4 @@
-import type { PathFindResponse } from 'xrpl'
+import type { AMMInfoResponse, PathFindResponse } from 'xrpl'
 import type { Amount, IssuedCurrency } from 'xrpl/dist/npm/models/common'
 
 export type CurrencyInfo = IssuedCurrency & { name: string; icon?: string; balance: number }
@@ -19,3 +19,5 @@ export type TokensMarketData = {
   supply: number
   logo?: string
 }
+
+export type AMMInfo = AMMInfoResponse['result']['amm']

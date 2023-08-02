@@ -1,16 +1,25 @@
-// 'use client'
-
+'use client'
 import { Suspense } from 'react'
 
 import Pool from '../components/Pool'
 
+import { useAccountPools } from '@/hooks/useAccountPools'
+
 const AccountPools = () => {
-  // useAccountPools()
+  const { ammAssets } = useAccountPools()
+  console.log(ammAssets)
   return (
     <>
-      <Suspense fallback={<>Loading</>}>
-        <Pool asset={{ currency: 'XRP' }} asset2={{ currency: 'JPY', issuer: 'rfLpkj24oMFDyWV1mK4uEP454gFTeJfN2x' }} />
-      </Suspense>
+      {/* dev start */}
+      {/* <Suspense fallback={<>Loading</>}>
+        <Pool asset={{ currency: 'XRP' }} asset2={{ currency: 'JPY', issuer: 'r9ipnvUgT4ZYVbiNib4sLCzJ3RGzxfXp6y' }} />
+      </Suspense> */}
+      {/* dev end */}
+      {ammAssets.map((asset, index) => (
+        <Suspense key={index} fallback={<>Loading</>}>
+          <Pool asset={asset.asset} asset2={asset.asset2} />
+        </Suspense>
+      ))}
     </>
   )
 }

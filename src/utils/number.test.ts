@@ -1,4 +1,4 @@
-import { significantDigits } from './number'
+import { keepRatio, significantDigits } from './number'
 
 describe('significantDigits', () => {
   const tests = [
@@ -19,5 +19,42 @@ describe('significantDigits', () => {
   ] as const
   it.each(tests)('%s', (input, output) => {
     expect(significantDigits(input, 4)).toBe(output)
+  })
+})
+
+describe('keepRatio', () => {
+  const tests: [[[number, number], [number, number]], [number, number]][] = [
+    // target, base, expect
+    [
+      [
+        [1, 10],
+        [10, 100],
+      ],
+      [1, 10],
+    ],
+    [
+      [
+        [2, 10],
+        [10, 100],
+      ],
+      [1, 10],
+    ],
+    [
+      [
+        [1, 20],
+        [10, 100],
+      ],
+      [1, 10],
+    ],
+    [
+      [
+        [10, 1],
+        [1, 100],
+      ],
+      [0.01, 1],
+    ],
+  ]
+  it.each(tests)('%s', ([target, base], output) => {
+    expect(keepRatio(target, base)).toEqual(output)
   })
 })

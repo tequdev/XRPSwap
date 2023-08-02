@@ -1,13 +1,20 @@
-import { AccountInfoResponse, AccountObjectsResponse, dropsToXrp, ServerInfoResponse } from 'xrpl'
+import { AccountInfoResponse, AccountObjectsResponse, AccountLinesResponse, dropsToXrp, ServerInfoResponse } from 'xrpl'
 import { XrplClient } from 'xrpl-client'
+import { Currency } from 'xrpl/dist/npm/models/common'
 import type { Trustline } from 'xrpl/dist/npm/models/methods/accountLines'
 
 import { accountObjectsToAccountLines } from './accountObjectsToAccountLines'
 
 import { TokensMarketData } from '@/@types/xrpl'
 
-export const client = new XrplClient()
-export const client2 = new XrplClient()
+enum PARALEL_NETWORK {
+  TESTNET = 'wss://testnet.xrpl-labs.com',
+  DEVNET = 'wss://s.devnet.rippletest.net:51233/',
+  AMM_DEVNET = 'wss://amm.devnet.rippletest.net:51233/',
+}
+
+export const client = new XrplClient(PARALEL_NETWORK.AMM_DEVNET)
+export const client2 = new XrplClient(PARALEL_NETWORK.AMM_DEVNET)
 
 type AccountObject = AccountObjectsResponse['result']['account_objects'][number]
 
@@ -155,6 +162,54 @@ export const getAccountLpTokensIssuer = async (address: string | undefined) => {
     command: 'account_lines',
     account: address,
   })) as AccountLinesResponse['result']
-  const issuers = response.lines.filter((line) => line.currency.startsWith('0x03')).map((line) => line.account)
+  const issuers = response.lines
+    .filter((line) => line.currency.length !== 3 && line.currency.startsWith('03'))
+    .map((line) => line.account)
   return issuers
+}
+
+export const getLedgerPools = async () => {
+  let ledger_index = 'validated';
+  let marker = undefined;
+  let amm: any[] = [];
+  do {
+    const response: any = await client.send({
+      command: 'ledger_data',
+      ledger_index,
+      marker,
+      // limit: 10,
+    });
+    marker = response.maker;
+    amm = [
+      ...amm,
+      ...response.state.filter((s: any) => s.LedgerEntryType === 'AMM'),
+    ];
+  } while (marker);
+  return amm.map((a: any) => ({
+    asset: a.Asset as Currency,
+    asset2: a.Asset2 as Currency
+  }))
+}
+
+export const getAmmAccountPairs = async (ammAddress: string) => {
+  const response = (await client.send({
+    command: 'account_lines',
+    account: ammAddress,
+  })) as AccountLinesResponse['result']
+  console.log(response.lines)
+  // TODO: check if issuer account has lsfAMM flag by acount_info method
+  const currencies = response.lines
+    .filter((line) => !line.currency.startsWith('03'))
+    .map((line) => ({ currency: line.currency, issuer: line.account }))
+  if (currencies.length > 1) throw new Error('amm account has more than 2 currencies')
+  if (currencies.length === 1) {
+    return {
+      asset: { currency: 'XRP' } as const,
+      asset2: currencies[0],
+    }
+  }
+  return {
+    asset: currencies[0],
+    asset2: currencies[1],
+  }
 }

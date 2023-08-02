@@ -20,3 +20,16 @@ export const significantDigits = (value: number, n: number) => {
   const nonZeroIndex = decimal.split('').findIndex((s) => s !== '0')
   return parseLocaleString(integer) + '.' + decimal.padEnd(nonZeroIndex + 1 + n, '0').slice(0, nonZeroIndex + n)
 }
+
+export const keepRatio = (target: [number, number], base: [number, number]): [number, number] => {
+  const baseRatio = base[0] / base[1]
+  const targetRatio = target[0] / target[1]
+  if (targetRatio === baseRatio) {
+    return target
+  }
+  if (targetRatio > baseRatio) {
+    return [target[1] * baseRatio, target[1]]
+  } else {
+    return [target[0], target[0] / baseRatio]
+  }
+}

@@ -10,6 +10,13 @@ export const parseCurrencyName = (currency: Currency | Amount) => {
       convertCurrencyCode(currency.currency) + '.' + currency.issuer?.slice(0, 8) + '...'
 }
 
+export const parseCurrencyUnique = (currency: Currency | Amount) => {
+  return typeof currency === 'string' || currency.currency === 'XRP'
+    ? 'XRP'
+    : // @ts-ignore
+      convertCurrencyCode(currency.currency) + '.' + currency.issuer
+}
+
 export const convertCurrencyCode = (currency: string): string => {
   if (currency && currency.length > 3) {
     return Buffer.from(currency, 'hex').toString('utf-8').replace(/\0/g, '')
