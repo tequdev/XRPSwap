@@ -13,6 +13,7 @@ export const useSetTrustLine = () => {
         TransactionType: 'TrustSet',
         Account: state!.account,
         LimitAmount: trustLineAmount,
+        Flags: 131072
       } as const
       return sdk?.create(payload).then((payload) => payload)
     },
