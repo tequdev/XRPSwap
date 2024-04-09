@@ -29,11 +29,15 @@ export const SelectCurrency: FC<Props> = ({ type, current }) => {
     setCurrency(currency)
     close()
   }
+  const currencyName = currency.currency?.startsWith('03')
+    ? `LP${currency.currency.slice(0, 5)}`
+    : convertCurrencyCode(currency.currency)
+
   return (
     <>
       {currency.currency && (
         <button className='btn-outline btn-secondary btn rounded-xl px-4 py-2 text-xl' onClick={open}>
-          {convertCurrencyCode(currency.currency)}
+          {currencyName}
         </button>
       )}
       {!currency.currency && (

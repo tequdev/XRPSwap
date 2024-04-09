@@ -1,5 +1,5 @@
 import type { Amount, Currency, IssuedCurrency } from 'xrpl/dist/npm/models/common'
-import { convertStringToHex, xrpToDrops } from 'xrpl/dist/npm/utils'
+import { convertStringToHex, xrpToDrops, isValidClassicAddress } from 'xrpl/dist/npm/utils'
 
 import { CurrencyAmount } from '@/@types/xrpl'
 
@@ -7,7 +7,7 @@ export const parseCurrencyName = (currency: Currency | Amount) => {
   return typeof currency === 'string' || currency.currency === 'XRP'
     ? 'XRP'
     : // @ts-ignore
-      convertCurrencyCode(currency.currency) + '.' + currency.issuer?.slice(0, 8) + '...'
+    convertCurrencyCode(currency.currency) + '.' + currency.issuer?.slice(0, 8) + '...'
 }
 
 export const convertCurrencyCode = (currency: string): string => {
@@ -55,4 +55,8 @@ export const parseCurrencyCode = (currencyName: string) => {
   }
   const code = convertStringToHex(currencyName).padEnd(40, '0')
   return code
+}
+
+export const isAccountAddress = (address: string): boolean => {
+  return isValidClassicAddress(address)
 }

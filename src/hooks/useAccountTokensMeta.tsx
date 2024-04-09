@@ -43,7 +43,7 @@ export const useAccountTokensMeta = (): Response => {
       const lines = res.map((line) => ({
         issuer: line.issuer || '',
         currency: line.currency,
-        name: convertCurrencyCode(line.currency),
+        name: line.currency.startsWith('03') ? `LP-${line.currency.slice(0, 10)}` : convertCurrencyCode(line.currency),
         balance: parseFloat(line.value),
       }))
       setTokens(lines)
