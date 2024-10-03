@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   experimental: {
     appDir: true,
+    esmExternals: 'loose',
   },
   env: {
     NEXT_PUBLIC_GA_ID: process.env.GA_ID,

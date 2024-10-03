@@ -1,22 +1,23 @@
-import { useCallback, useContext } from 'react'
+import { useAccount, useSignAndSubmitTransaction } from '@xrpl-wallet-standard/react'
+import { useCallback } from 'react'
 import { IssuedCurrencyAmount } from 'xrpl/dist/npm/models/common'
 
-import { AuthContext } from '@/app/context/authContext'
 
 export const useSetTrustLine = () => {
-  const { state, sdk, isConnected } = useContext(AuthContext)
+  const account = useAccount()
+  const signAndSubmitTransaction = useSignAndSubmitTransaction()
 
   const setTrustLine = useCallback(
     async (trustLineAmount: IssuedCurrencyAmount) => {
-      if (!isConnected) return Promise.resolve(null)
+      if (!account) return Promise.resolve(null)
       const payload = {
         TransactionType: 'TrustSet',
-        Account: state!.account,
+        Account: account.address,
         LimitAmount: trustLineAmount,
       } as const
-      return sdk?.create(payload).then((payload) => payload)
+      return await signAndSubmitTransaction(payload, 'xrpl:mainnet')
     },
-    [isConnected, sdk, state]
+    [account, signAndSubmitTransaction]
   )
 
   return { setTrustLine }

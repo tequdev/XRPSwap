@@ -1,14 +1,15 @@
+import { useAccount, useSignAndSubmitTransaction } from '@xrpl-wallet-standard/react'
 import { useCallback, useContext } from 'react'
 import type { Amount } from 'xrpl/dist/npm/models/common'
 import { xrpToDrops } from 'xrpl/dist/npm/utils'
 
 import { CurrencyAmount } from '@/@types/xrpl'
-import { AuthContext } from '@/app/context/authContext'
 import { SwapContext } from '@/app/context/swapContext'
 
 export const useSwap = () => {
   const { bestRoute, currencies } = useContext(SwapContext)
-  const { state, sdk, isConnected } = useContext(AuthContext)
+  const account = useAccount()
+  const signAndSubmitTransaction = useSignAndSubmitTransaction()
 
   const convertCurrencyValueToString = (currency: CurrencyAmount, multipleBy: number = 1): Amount => {
     if (currency.currency === 'XRP') {
@@ -18,24 +19,19 @@ export const useSwap = () => {
   }
 
   const swap = useCallback(async () => {
-    if (!isConnected) return Promise.resolve(null)
+    if (!account) return Promise.resolve(null)
     const payload = {
-      txjson: {
-        TransactionType: 'Payment',
-        Account: state!.account,
-        Destination: state!.account,
-        Amount: convertCurrencyValueToString(currencies.to),
-        SendMax: convertCurrencyValueToString(currencies.from),
-        Paths: bestRoute?.paths_computed,
-        // tfPartialPayment: https://xrpl.org/payment.html#payment-flags
-        Flags: 131072,
-      },
-      options: {
-        expire: 15,
-      },
+      TransactionType: 'Payment',
+      Account: account.address,
+      Destination: account.address,
+      Amount: convertCurrencyValueToString(currencies.to),
+      SendMax: convertCurrencyValueToString(currencies.from),
+      Paths: bestRoute?.paths_computed,
+      // tfPartialPayment: https://xrpl.org/payment.html#payment-flags
+      Flags: 131072,
     } as const
-    return sdk?.create(payload).then((payload) => payload)
-  }, [bestRoute?.paths_computed, currencies.from, currencies.to, isConnected, sdk, state])
+    return await signAndSubmitTransaction(payload, 'xrpl:mainnet')
+  }, [bestRoute?.paths_computed, currencies.from, currencies.to, account, signAndSubmitTransaction])
 
   return { swap }
 }

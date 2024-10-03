@@ -1,12 +1,11 @@
+import { useWallet } from '@xrpl-wallet-standard/react'
 import Image from 'next/image'
-import { FC, useContext, useEffect, useMemo } from 'react'
+import { FC, useContext, useMemo } from 'react'
 
 import { CheckIcon } from '../Icon/Check'
 
 import { TokensMarketData } from '@/@types/xrpl'
-import { AuthContext } from '@/app/context/authContext'
 import { TokenContext } from '@/app/context/tokenContext'
-import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSetTrustLine } from '@/hooks/useSetTrustLine'
 import { significantDigits } from '@/utils/number'
 import { parseCurrencyCode } from '@/utils/xrpl'
@@ -17,10 +16,10 @@ type Props = {
 }
 
 const Token: FC<Props> = ({ index, data }) => {
-  const { isConnected } = useContext(AuthContext)
+  const { status } = useWallet()
+  const isConnected = status === 'connected'
   const { currencies, refetch } = useContext(TokenContext)
   const { setTrustLine } = useSetTrustLine()
-  const { openWindow, signed } = usePayloadOpen()
 
   const hasTrustLined = useMemo(() => {
     return currencies.some((c) => c.issuer === data.issuer && c.currency === parseCurrencyCode(data.currency))
@@ -32,14 +31,7 @@ const Token: FC<Props> = ({ index, data }) => {
       currency: parseCurrencyCode(data.currency),
       value: data.supply.toString(),
     })
-    if (payload) {
-      openWindow(payload)
-    }
   }
-
-  useEffect(() => {
-    if (signed) refetch()
-  }, [refetch, signed])
 
   return (
     <div className='card m-2 flex flex-col gap-6 rounded-xl bg-base-200 p-6 pt-8 shadow-xl'>

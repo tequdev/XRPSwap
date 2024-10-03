@@ -69,23 +69,28 @@ function formatBalances(trustlines: Trustline[]): Balance[] {
 }
 
 export const getBalances = async (address: string): Promise<Balance[]> => {
-  const xrpPromise = client
+  const accountPromise = client
     .send({
       command: 'account_info',
       account: address,
       ledger_index: 'validated',
     })
-    .then((res) => res['account_data'].Balance as string)
   const accountObjectsPromise = requestAll({
     command: 'account_objects',
     account: address,
     type: 'state',
   }) as unknown as Promise<AccountObject[]>
 
-  return Promise.all([xrpPromise, accountObjectsPromise]).then(([xrpBalance, accountObjects]) => {
+  return Promise.all([accountPromise, accountObjectsPromise]).then(([accountInfo, accountObjects]) => {
     const balances: Balance[] = []
+    if (accountInfo.error === 'actNotFound' || accountObjects === undefined || accountObjects.length === 1 && accountObjects[0] === undefined) {
+      console.error('actNotFound')
+      return []
+    }
+    console.log('accountObjects', accountObjects)
     const linesBalance = accountObjectsToAccountLines(address, accountObjects, true)
     const accountLinesBalance = formatBalances(linesBalance)
+    const xrpBalance = accountInfo.account_data.Balance as string
     if (xrpBalance !== '') {
       balances.push({ currency: 'XRP', value: dropsToXrp(xrpBalance) })
     }

@@ -1,6 +1,6 @@
-import { useContext, useEffect, useMemo, useState } from 'react'
+import { useAccount, useDisconnect } from '@xrpl-wallet-standard/react'
+import { useEffect, useMemo, useState } from 'react'
 
-import { AuthContext } from '@/app/context/authContext'
 import { getAccountInfo, getServerInfo } from '@/libs/xrpl'
 
 type ServerReserve = {
@@ -9,7 +9,8 @@ type ServerReserve = {
 }
 
 export const useAccountReserve = () => {
-  const { state } = useContext(AuthContext)
+  const account = useAccount()
+  const disconnect = useDisconnect()
   const [serverReserve, setServerReserve] = useState<ServerReserve>({ baseReserve: 10, incReserve: 2 })
   const [ownerCount, setOwnerCount] = useState(0)
 
@@ -24,11 +25,17 @@ export const useAccountReserve = () => {
   }, [])
 
   useEffect(() => {
-    if (!state?.account) return
-    getAccountInfo(state.account).then((result) => {
-      setOwnerCount(result.account_data.OwnerCount)
+    if (!account) return
+    getAccountInfo(account.address).then((result) => {
+      if ((result as any).error === 'actNotFound') {
+        console.error('actNotFound')
+        alert('Account not Activated')
+        disconnect()
+      } else {
+        setOwnerCount(result.account_data.OwnerCount)
+      }
     })
-  }, [state?.account])
+  }, [account, disconnect])
 
   const reserve = useMemo(
     () => serverReserve.baseReserve + serverReserve.incReserve * ownerCount,

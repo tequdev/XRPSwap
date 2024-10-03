@@ -1,44 +1,34 @@
 'use client'
-import { useContext, useEffect } from 'react'
+import { ConnectButton, useWallet } from '@xrpl-wallet-standard/react'
+import { useContext } from 'react'
 
 import { SwapCurrencyButton } from '../Button/SwapCurrencyButton'
 
-import { ConnectWallet } from './ConnectWallet'
 import { Currency } from './Currency'
 // import { PathFlow } from './PathFlow'
 import { PriceInfo } from './PriceInfo'
 import { SwapButton } from './SwapButton'
 
-import { AuthContext } from '@/app/context/authContext'
 import { SwapContext } from '@/app/context/swapContext'
-import { usePayloadOpen } from '@/hooks/usePayloadOpen'
 import { useSwap } from '@/hooks/useSwap'
 
 const Swap = () => {
-  const { loading, isConnected } = useContext(AuthContext)
+  const { status } = useWallet()
   const { switchCurrencies, bestRoute, refetch } = useContext(SwapContext)
   const { swap } = useSwap()
-  const { openWindow, signed } = usePayloadOpen()
 
   const handleSwap = async () => {
-    const payload = await swap()
-    if (payload) {
-      openWindow(payload)
-    }
+    await swap()
   }
-
-  useEffect(() => {
-    if (signed) refetch()
-  }, [refetch, signed])
 
   return (
     <div className='mx-1 flex w-full flex-col items-center md:max-w-[450px]'>
-      {!loading && !isConnected && (
+      {status === 'disconnected' && (
         <div className='mt-8'>
-          <ConnectWallet />
+          <ConnectButton />
         </div>
       )}
-      {!loading && isConnected && (
+      {status === 'connected' && (
         <div className='card flex flex-col justify-center gap-6 rounded-xl bg-base-200 p-4 shadow-xl'>
           <>
             <div className='relative flex flex-col gap-4'>

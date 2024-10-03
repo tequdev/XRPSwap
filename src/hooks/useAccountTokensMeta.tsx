@@ -1,10 +1,10 @@
+import { useAccount } from '@xrpl-wallet-standard/react'
 import BigNumber from 'bignumber.js'
-import { useCallback, useContext, useEffect, useMemo, useState } from 'react'
+import { useCallback, useEffect, useMemo, useState } from 'react'
 
 import { useAccountReserve } from './useAccountReserve'
 
 import { CurrencyInfo } from '@/@types/xrpl'
-import { AuthContext } from '@/app/context/authContext'
 import { getBalances } from '@/libs/xrpl'
 import { convertCurrencyCode } from '@/utils/xrpl'
 
@@ -33,13 +33,13 @@ type Response = { info: CurrencyInfo[]; loading: boolean; refetch: () => void }
 
 export const useAccountTokensMeta = (): Response => {
   const [loading, setLoading] = useState(true)
-  const { state, isConnected } = useContext(AuthContext)
+  const account = useAccount()
   const reserve = useAccountReserve()
   const [tokens, setTokens] = useState<Token[]>([])
   const [meta, setMeta] = useState<Meta[]>([])
 
   const balanceHandler = useCallback(() => {
-    getBalances(state!.account!).then((res) => {
+    getBalances(account!.address!).then((res) => {
       const lines = res.map((line) => ({
         issuer: line.issuer || '',
         currency: line.currency,
@@ -48,12 +48,12 @@ export const useAccountTokensMeta = (): Response => {
       }))
       setTokens(lines)
     })
-  }, [state])
+  }, [account])
 
   useEffect(() => {
-    if (!isConnected) return
+    if (!account) return
     balanceHandler()
-  }, [balanceHandler, isConnected])
+  }, [account, balanceHandler])
 
   useEffect(() => {
     const targetTokens = tokens.filter((l) => l.currency !== 'XRP')

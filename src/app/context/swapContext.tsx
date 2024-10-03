@@ -2,7 +2,6 @@
 import { createContext, FC, useCallback, useContext, useEffect, useMemo, useState } from 'react'
 import { dropsToXrp } from 'xrpl/dist/npm/utils'
 
-import { AuthContext } from './authContext'
 import { TokenContext } from './tokenContext'
 
 import { CurrencyAmount, PathOption } from '@/@types/xrpl'
@@ -28,30 +27,21 @@ type ContextState = {
 export const SwapContext = createContext<ContextState>({} as any)
 
 const SwapContextProvider: FC<{ children: React.ReactElement }> = ({ children }) => {
-  const { state } = useContext(AuthContext)
   const { currencies: userCurrencies, refetch } = useContext(TokenContext)
   const [currencies, setCurrencies] = useState<Currencies>({
     from: { ...userCurrencies[0], value: 1 },
     to: { ...userCurrencies[1], value: 1 },
   })
-  const { bestRoute, setAccount, setPathFrom, setPathTo, bestPrice, swapPrice, setPathfindEnable, isFullPath } =
-    usePathFind({
-      account: state?.account || '',
-      from: parseCurrencyToAmount(currencies.from),
-      to: parseCurrencyToAmount(currencies.to),
-    })
+  const { bestRoute, setPathFrom, setPathTo, bestPrice, swapPrice, setPathfindEnable, isFullPath } = usePathFind({
+    from: parseCurrencyToAmount(currencies.from),
+    to: parseCurrencyToAmount(currencies.to),
+  })
 
   useEffect(() => {
     if (userCurrencies.length > 1) {
       setPathfindEnable()
     }
   }, [setPathfindEnable, userCurrencies.length])
-
-  useEffect(() => {
-    if (state?.account) {
-      setAccount(state.account)
-    }
-  }, [setAccount, state?.account])
 
   useEffect(() => {
     setCurrencies({ from: { ...userCurrencies[0], value: 1 }, to: { ...userCurrencies[1], value: 1 } })

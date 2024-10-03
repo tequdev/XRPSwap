@@ -1,3 +1,4 @@
+import { useAccount } from '@xrpl-wallet-standard/react'
 import { useCallback, useEffect, useMemo, useState } from 'react'
 import type { PathFindStream } from 'xrpl'
 import type { AnyJson } from 'xrpl-client'
@@ -9,15 +10,14 @@ import { client, client2 } from '@/libs/xrpl'
 import { parseToXrpAmount, parseAmountValue } from '@/utils/xrpl'
 
 type Props = {
-  account: string
   from: Amount
   to: Amount
 }
 
-export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) => {
+export const usePathFind = ({ from: _from, to: _to }: Props) => {
+  const account = useAccount()
   const [enable, setEnable] = useState(false)
   const [active, setActive] = useState(false)
-  const [account, setAccount] = useState(_account)
   const [from, setPathFrom] = useState<Amount>(_from)
   const [to, setPathTo] = useState<Amount>(_to)
   const [alternatives, setAlternatives] = useState<PathOption[]>([])
@@ -49,8 +49,8 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
       _client.send({
         command: 'path_find',
         subcommand: 'create',
-        source_account: account,
-        destination_account: account,
+        source_account: account?.address,
+        destination_account: account?.address,
         ...call,
       })
     },
@@ -176,7 +176,7 @@ export const usePathFind = ({ account: _account, from: _from, to: _to }: Props) 
 
   const setPathfindEnable = useCallback(() => setEnable(true), [])
 
-  return { setAccount, setPathFrom, setPathTo, bestRoute, bestPrice, swapPrice, setPathfindEnable, isFullPath }
+  return { setPathFrom, setPathTo, bestRoute, bestPrice, swapPrice, setPathfindEnable, isFullPath }
 }
 
 const transformDestAmount = (amount: Amount) => {

@@ -1,16 +1,8 @@
 'use client'
-import { useContext } from 'react'
-
-import { AuthContext } from '@/app/context/authContext'
 
 const Socials = () => {
-  const { runtime, xapp } = useContext(AuthContext)
   const openLink = (url: string) => {
-    if (runtime.xapp) {
-      xapp?.openBrowser({ url })
-    } else {
-      window.open(url, '_blank')
-    }
+    window.open(url, '_blank')
   }
   return (
     <div className='flex grid-flow-col gap-2 md:place-self-center md:justify-self-end'>

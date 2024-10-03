@@ -1,17 +1,15 @@
 'use client'
-import { useContext } from 'react'
+
+import { useAccount, ConnectButton } from '@xrpl-wallet-standard/react'
 
 import { AccountInfo } from './AccountInfo'
-import { ConnectWallet } from './ConnectWallet'
-
-import { AuthContext } from '@/app/context/authContext'
 
 const HeaderRightButton = () => {
-  const { isConnected, loading } = useContext(AuthContext)
+  const account = useAccount()
   return (
     <>
-      {!loading && !isConnected && <ConnectWallet />}
-      {!loading && isConnected && <AccountInfo />}
+      {!account && <ConnectButton />}
+      {!!account && <AccountInfo />}
     </>
   )
 }
